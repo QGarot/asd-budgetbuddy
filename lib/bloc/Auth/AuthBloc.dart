@@ -1,9 +1,11 @@
 import 'package:budgetbuddy/pojos/UserAuth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthCubit extends Cubit<UserAuth?> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   UserAuth? _userAuth;
 
   AuthCubit() : super(null) {
@@ -25,20 +27,37 @@ class AuthCubit extends Cubit<UserAuth?> {
     }
   }
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(UserRegistrationInfo credentials) async {
     try {
       final UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
-      _updateUser(userCredential.user);
+          .createUserWithEmailAndPassword(
+            email: credentials.email,
+            password: credentials.password,
+          );
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'username': credentials.userName,
+          'email': credentials.email,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      _updateUser(user);
     } catch (e) {
       print("Sign Up Error: $e");
     }
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn(UserLoginInfo userLoginInfo) async {
     try {
       final UserCredential userCredential = await _auth
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(
+            email: userLoginInfo.email,
+            password: userLoginInfo.password,
+          );
       _updateUser(userCredential.user);
     } catch (e) {
       print("Login Error: $e");

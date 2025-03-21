@@ -4,16 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthEvent {
-  static void signUp(BuildContext context, String email, String password) {
-    context.read<AuthCubit>().signUp(email, password);
+  static Future<void> signUp(
+    BuildContext context,
+    UserRegistrationInfo userRegistrationInfo,
+  ) async {
+    await context.read<AuthCubit>().signUp(userRegistrationInfo);
   }
 
-  static void signIn(BuildContext context, String email, String password) {
-    context.read<AuthCubit>().signIn(email, password);
+  static Future<void> signIn(
+    BuildContext context,
+    UserLoginInfo userLoginInfo,
+  ) async {
+    await context.read<AuthCubit>().signIn(userLoginInfo);
   }
 
-  static void signOut(BuildContext context) {
-    context.read<AuthCubit>().signOut();
+  static Future<void> signOut(BuildContext context) async {
+    await context.read<AuthCubit>().signOut();
   }
 
   static UserAuth? getCredentials(BuildContext context) {

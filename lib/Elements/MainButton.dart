@@ -1,3 +1,4 @@
+import 'package:budgetbuddy/Elements/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {
@@ -15,7 +16,7 @@ class MainButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           overlayColor: Colors.white,
           minimumSize: Size(double.infinity, 50),
-          backgroundColor: Colors.purple,
+          backgroundColor: AppColors.primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

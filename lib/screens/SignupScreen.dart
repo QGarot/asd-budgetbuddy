@@ -1,4 +1,9 @@
+import 'package:budgetbuddy/Elements/AppColors.dart';
 import 'package:budgetbuddy/Elements/MainButton.dart';
+import 'package:budgetbuddy/Elements/MessageToUser.dart';
+import 'package:budgetbuddy/bloc/Auth/AuthEvent.dart';
+import 'package:budgetbuddy/pojos/UserAuth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -15,29 +20,42 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
+
+      await AuthEvent.signUp(
+        context,
+        UserRegistrationInfo(
+          email: _emailController.text,
+          userName: _usernameController.text,
+          password: _passwordController.text,
+        ),
+      );
+
+      if (!AuthEvent.isLoggedIn(context)) {
+        MessageToUser.showMessage(context, "Account creation failed!");
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
 
       Future.delayed(Duration(seconds: 1), () {
         if (!mounted) return;
         setState(() {
           _isLoading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Account created successfully!")),
-        );
-        Navigator.pushReplacementNamed(context, '/login');
+        MessageToUser.showMessage(context, "Account created successfully!");
+        Navigator.pushReplacementNamed(context, '/home');
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Colors.purple;
-
     return Scaffold(
       body: Center(
         child: SizedBox(
@@ -54,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(10),
                     ),
@@ -140,9 +158,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         SizedBox(height: 20),
                         MainButton(
                           text: "Sign up",
-                          onPressed: () {
+                          onPressed: () async {
                             if (!_isLoading) {
-                              _submitForm();
+                              await _submitForm();
                             }
                           },
                         ),

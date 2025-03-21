@@ -1,4 +1,8 @@
+import 'package:budgetbuddy/Elements/AppColors.dart';
 import 'package:budgetbuddy/Elements/MainButton.dart';
+import 'package:budgetbuddy/Elements/MessageToUser.dart';
+import 'package:budgetbuddy/bloc/Auth/AuthEvent.dart';
+import 'package:budgetbuddy/pojos/UserAuth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,21 +19,37 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   String? _error;
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
+    //guard check
+
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
         _error = null;
       });
 
+      await AuthEvent.signIn(
+        context,
+        UserLoginInfo(
+          email: _usernameController.text,
+          password: _passwordController.text,
+        ),
+      );
+
+      if (!AuthEvent.isLoggedIn(context)) {
+        MessageToUser.showMessage(context, "Login failed!");
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
       Future.delayed(Duration(seconds: 1), () {
         if (!mounted) return;
         setState(() {
           _isLoading = false;
         });
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Login successful!")));
+        MessageToUser.showMessage(context, "Login successful!");
         Navigator.pushReplacementNamed(context, '/home');
       });
     }
@@ -54,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
-                    color: Colors.purple,
+                    color: AppColors.primaryColor,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(10),
                     ),
@@ -94,13 +114,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextFormField(
                               controller: _usernameController,
                               decoration: InputDecoration(
-                                labelText: "Username",
+                                labelText: "Email",
                                 prefixIcon: Icon(Icons.person),
                                 border: OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return "Username is required";
+                                  return "Email is required";
+                                } else if (!RegExp(
+                                  r"\S+@\S+\.\S+",
+                                ).hasMatch(value)) {
+                                  return "Email is invalid";
                                 }
                                 return null;
                               },
@@ -138,9 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 20),
                             MainButton(
                               text: "Sign in",
-                              onPressed: () {
+                              onPressed: () async {
                                 if (!_isLoading) {
-                                  _submitForm();
+                                  await _submitForm();
                                 }
                               },
                             ),
