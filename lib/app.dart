@@ -1,6 +1,8 @@
-import 'package:budgetbuddy/IndexScreen.dart';
+import 'package:budgetbuddy/screens/CounterScreen.dart';
+import 'package:budgetbuddy/screens/LoginScreen.dart';
+import 'package:budgetbuddy/screens/SignupScreen.dart';
+import 'package:budgetbuddy/screens/TextScreen.dart';
 import 'package:flutter/material.dart';
-
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -11,13 +13,15 @@ class App extends StatelessWidget {
     //var user = auth.currentUser;
 
     return MaterialApp(
-      // theme: ThemeData(fontFamily: "sfpro"),
-      //initialRoute: "/test",
+      debugShowCheckedModeBanner: false,
+      title: 'Budget Buddy',
       routes: {
-        '/': (context) => const MyHomePage(title: "Hello World"),
+        '/': (context) => LoginScreen(),
+        '/login': (context) => LoginScreen(),
+        '/signup': (context) => SignupScreen(),
+        //'/': (context) => CounterScreen(),
+        '/home': (context) => TextScreen(),
         //'/': (context) => user == null ? const LoginScreen() : const LoadingScreen(),
-        //'/login': (context) => const LoginScreen(),
-        //'/home': (context) => const HomeScreen(),
       },
     );
   }
