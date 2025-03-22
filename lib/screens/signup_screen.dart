@@ -1,19 +1,18 @@
-import 'package:budgetbuddy/Elements/AppColors.dart';
-import 'package:budgetbuddy/Elements/MainButton.dart';
-import 'package:budgetbuddy/Elements/MessageToUser.dart';
-import 'package:budgetbuddy/bloc/Auth/AuthEvent.dart';
-import 'package:budgetbuddy/pojos/UserAuth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:budgetbuddy/Elements/main_button.dart';
+import 'package:budgetbuddy/Elements/message_to_user.dart';
+import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
+import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  SignupScreenState createState() => SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -49,7 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
           _isLoading = false;
         });
         MessageToUser.showMessage(context, "Account created successfully!");
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/loading');
       });
     }
   }
@@ -171,7 +170,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             Text("Already have an account?"),
                             TextButton(
                               onPressed:
-                                  () => Navigator.pushNamed(context, '/login'),
+                                  () => Navigator.pushReplacementNamed(
+                                    context,
+                                    '/login',
+                                  ),
                               child: Text(
                                 "Login",
                                 style: TextStyle(fontWeight: FontWeight.bold),

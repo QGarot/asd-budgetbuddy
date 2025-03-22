@@ -1,7 +1,8 @@
-import 'package:budgetbuddy/bloc/Auth/AuthEvent.dart';
-import 'package:budgetbuddy/screens/CounterScreen.dart';
-import 'package:budgetbuddy/screens/LoginScreen.dart';
-import 'package:budgetbuddy/screens/SignupScreen.dart';
+import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
+import 'package:budgetbuddy/screens/counter_screen.dart';
+import 'package:budgetbuddy/screens/loading_screen.dart';
+import 'package:budgetbuddy/screens/login_screen.dart';
+import 'package:budgetbuddy/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -15,7 +16,8 @@ class App extends StatelessWidget {
       routes: {
         '/':
             (context) =>
-                AuthEvent.isLoggedIn(context) ? CounterScreen() : LoginScreen(),
+                AuthEvent.isLoggedIn(context) ? LoadingScreen() : LoginScreen(),
+        '/loading': (context) => LoadingScreen(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
         '/home': (context) => CounterScreen(),

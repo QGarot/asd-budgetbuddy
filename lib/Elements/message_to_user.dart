@@ -1,4 +1,4 @@
-import 'package:budgetbuddy/Elements/AppColors.dart';
+import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class MessageToUser {

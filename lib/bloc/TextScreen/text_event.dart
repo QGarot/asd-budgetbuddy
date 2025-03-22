@@ -1,4 +1,4 @@
-import 'package:budgetbuddy/bloc/TextScreen/TextCubit.dart';
+import 'package:budgetbuddy/bloc/TextScreen/text_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

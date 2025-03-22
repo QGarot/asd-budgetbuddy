@@ -1,5 +1,7 @@
-import 'package:budgetbuddy/bloc/CounterScreen/CounterCubit.dart';
-import 'package:budgetbuddy/pojos/Counter.dart';
+import 'package:budgetbuddy/AppData/app_data.dart';
+import 'package:budgetbuddy/bloc/CounterScreen/counter_cubit.dart';
+import 'package:budgetbuddy/bloc/CounterScreen/counter_event.dart';
+import 'package:budgetbuddy/pojos/counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,11 +32,13 @@ class CounterScreen extends StatelessWidget {
           children: [
             CounterDisplay(),
             ElevatedButton(
-              onPressed: () => context.read<CounterCubit>().increment(),
+              onPressed: () => CounterEvent.increment(context),
               child: Text("Increment Counter"),
             ),
+            Text(UserData.firestoreUserData!.email),
+            Text(UserData.firestoreUserData!.username),
             ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/second'),
+              onPressed: () => Navigator.pushNamed(context, '/text'),
               child: Text("Go to Second Page"),
             ),
           ],

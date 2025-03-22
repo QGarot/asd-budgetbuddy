@@ -1,28 +1,29 @@
-import 'package:budgetbuddy/pojos/UserAuth.dart';
+import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthCubit extends Cubit<UserAuth?> {
+class AuthCubit extends Cubit<AuthUserData?> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  UserAuth? _userAuth;
+  AuthUserData? _userAuth;
 
   AuthCubit() : super(null) {
     _checkUser();
   }
 
-  void _checkUser() {
+  Future<void> _checkUser() async {
     final user = _auth.currentUser;
     if (user != null) {
-      _userAuth = UserAuth(uid: user.uid, email: user.email);
+      _userAuth = AuthUserData(uid: user.uid, email: user.email);
+
       emit(_userAuth);
     }
   }
 
   void _updateUser(User? user) {
     if (user != null) {
-      _userAuth = UserAuth(uid: user.uid, email: user.email);
+      _userAuth = AuthUserData(uid: user.uid, email: user.email);
       emit(_userAuth);
     }
   }
@@ -70,7 +71,7 @@ class AuthCubit extends Cubit<UserAuth?> {
     emit(null);
   }
 
-  UserAuth? getCredentials() {
+  AuthUserData? getCredentials() {
     return _userAuth;
   }
 

@@ -1,5 +1,5 @@
-import 'package:budgetbuddy/bloc/Auth/AuthBloc.dart';
-import 'package:budgetbuddy/pojos/UserAuth.dart';
+import 'package:budgetbuddy/bloc/Auth/auth_bloc.dart';
+import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +22,7 @@ class AuthEvent {
     await context.read<AuthCubit>().signOut();
   }
 
-  static UserAuth? getCredentials(BuildContext context) {
+  static AuthUserData? getCredentials(BuildContext context) {
     return context.read<AuthCubit>().getCredentials();
   }
 

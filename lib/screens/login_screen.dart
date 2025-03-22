@@ -1,18 +1,18 @@
-import 'package:budgetbuddy/Elements/AppColors.dart';
-import 'package:budgetbuddy/Elements/MainButton.dart';
-import 'package:budgetbuddy/Elements/MessageToUser.dart';
-import 'package:budgetbuddy/bloc/Auth/AuthEvent.dart';
-import 'package:budgetbuddy/pojos/UserAuth.dart';
+import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:budgetbuddy/Elements/main_button.dart';
+import 'package:budgetbuddy/Elements/message_to_user.dart';
+import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
+import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _isLoading = false;
         });
         MessageToUser.showMessage(context, "Login successful!");
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/loading');
       });
     }
   }
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Text("Don't have an account?"),
                                 TextButton(
                                   onPressed:
-                                      () => Navigator.pushNamed(
+                                      () => Navigator.pushReplacementNamed(
                                         context,
                                         '/signup',
                                       ),
