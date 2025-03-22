@@ -1,18 +1,32 @@
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
-import 'package:budgetbuddy/pojos/firebase_user_data.dart';
+import 'package:budgetbuddy/pojos/budget.dart';
+import 'package:budgetbuddy/pojos/expenses.dart';
+import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DataEvent {
   //gets the data as it was last fetched from firestore
-  static FirestoreUserData? getFirebaseUserData(BuildContext context) {
+  static AllUserData? getFirebaseUserData(BuildContext context) {
     return context.read<DataCubit>().getFirebaseUserData();
   }
 
   //Loads the user data fresh from firestore
-  static Future<FirestoreUserData?> fetchFirebaseUserData(
+  static Future<AllUserData?> fetchFirebaseUserData(
     BuildContext context,
   ) async {
     return await context.read<DataCubit>().fetchFirebaseUserData();
+  }
+
+  static Future<bool> addBudget(BuildContext context, Budget budget) async {
+    return context.read<DataCubit>().addBudget(budget);
+  }
+
+  static Future<bool> addExpense(
+    BuildContext context,
+    String budgetId,
+    Expense expense,
+  ) async {
+    return context.read<DataCubit>().addExpense(budgetId, expense);
   }
 }
