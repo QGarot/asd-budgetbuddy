@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:budgetbuddy/AppData/app_colors.dart';
-import 'package:budgetbuddy/AppData/app_data.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';
-import 'package:budgetbuddy/pojos/budget.dart';
-import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -25,32 +22,32 @@ class LoadingScreenState extends State<LoadingScreen> {
     await Future.delayed(Duration(seconds: 1));
 
     //Get user data
-    UserData.firestoreUserData = await DataEvent.fetchFirebaseUserData(context);
+    await DataEvent.fetchFirebaseUserData(context);
 
     //Add a budget to test the app
-    await DataEvent.addBudget(
-      context,
-      Budget(
-        id: "BudgetID",
-        name: "IkeaBudget",
-        category: "Möbelhaus",
-        alertThreshold: 0.8,
-        totalAmount: 500,
-      ),
-    );
+    // await DataEvent.addBudget(
+    //   context,
+    //   Budget(
+    //     id: "BudgetID2",
+    //     name: "Ups",
+    //     category: "Yup",
+    //     alertThreshold: 0.8,
+    //     totalAmount: 500,
+    //   ),
+    // );
 
     //Add an expense to test the app
-    await DataEvent.addExpense(
-      context,
-      "BudgetID",
-      Expense(
-        id: "ExpenseID",
-        merchant: "Ikea",
-        amount: 100.99,
-        date: DateTime.now(),
-        notes: "Ich gehe gerne zu Ikea",
-      ),
-    );
+    // await DataEvent.addExpense(
+    //   context,
+    //   "BudgetID",
+    //   Expense(
+    //     id: "ExpenseID3",
+    //     merchant: "Ikea3",
+    //     amount: 100.99,
+    //     date: DateTime.now(),
+    //     notes: "Ich gehe gerne zu Ikea 3",
+    //   ),
+    // );
 
     if (mounted) {
       Navigator.pushReplacementNamed(context, '/home');

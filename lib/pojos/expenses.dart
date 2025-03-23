@@ -17,6 +17,22 @@ class Expense {
   }) : id = id ?? IdGenerator.generateRandomUniqueId(),
        notes = notes ?? '';
 
+  Expense copyWith({
+    String? id,
+    String? merchant,
+    double? amount,
+    DateTime? date,
+    String? notes,
+  }) {
+    return Expense(
+      id: id ?? this.id,
+      merchant: merchant ?? this.merchant,
+      amount: amount ?? this.amount,
+      date: date ?? this.date,
+      notes: notes ?? this.notes,
+    );
+  }
+
   factory Expense.fromFirestore(Map<String, dynamic> data) {
     return Expense(
       id: data['id'] ?? 0,

@@ -61,7 +61,7 @@ class DataCubit extends Cubit<AllUserData?> {
       }
       _userData = AllUserData.fromFirestore(userData, budgets);
       emit(_userData);
-      return AllUserData.fromFirestore(userData, budgets);
+      return _userData;
     } catch (e) {
       print("Error fetching user data: $e");
       return null;
@@ -93,7 +93,8 @@ class DataCubit extends Cubit<AllUserData?> {
   bool _addBudgetOnLocalCopy(Budget budget) {
     if (_userData == null) return false;
 
-    _userData?.budgets.add(budget);
+    final updatedBudgets = List<Budget>.from(_userData!.budgets)..add(budget);
+    _userData = _userData!.copyWith(budgets: updatedBudgets);
     emit(_userData);
     return true;
   }
@@ -131,8 +132,18 @@ class DataCubit extends Cubit<AllUserData?> {
 
     if (budget == null) return false;
 
-    budget.spentAmount += expense.amount;
-    budget.expenses.add(expense);
+    List<Budget> updatedBudgets =
+        _userData!.budgets.map((b) {
+          if (b.id == budgetId) {
+            return b.copyWith(
+              spentAmount: b.spentAmount + expense.amount,
+              expenses: [...b.expenses, expense.copyWith()],
+            );
+          }
+          return b;
+        }).toList();
+
+    _userData = _userData?.copyWith(budgets: updatedBudgets);
 
     emit(_userData);
     return true;

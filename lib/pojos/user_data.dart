@@ -14,6 +14,20 @@ class AllUserData {
     required this.budgets,
   });
 
+  AllUserData copyWith({
+    String? email,
+    String? username,
+    DateTime? createdAt,
+    List<Budget>? budgets,
+  }) {
+    return AllUserData(
+      email: email ?? this.email,
+      username: username ?? this.username,
+      createdAt: createdAt ?? this.createdAt,
+      budgets: budgets ?? this.budgets.map((b) => b.copyWith()).toList(),
+    );
+  }
+
   // Factory constructor to convert Firestore data to an instance of FirebaseUserData
   factory AllUserData.fromFirestore(
     Map<String, dynamic> data,

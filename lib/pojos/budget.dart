@@ -22,6 +22,26 @@ class Budget {
        spentAmount = spentAmount ?? 0,
        expenses = expenses ?? [];
 
+  Budget copyWith({
+    String? id,
+    String? name,
+    String? category,
+    double? alertThreshold,
+    double? totalAmount,
+    double? spentAmount,
+    List<Expense>? expenses,
+  }) {
+    return Budget(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      alertThreshold: alertThreshold ?? this.alertThreshold,
+      totalAmount: totalAmount ?? this.totalAmount,
+      spentAmount: spentAmount ?? this.spentAmount,
+      expenses: expenses ?? this.expenses.map((e) => e.copyWith()).toList(),
+    );
+  }
+
   factory Budget.fromFirestore(
     Map<String, dynamic> data,
     List<Expense> expenses,
