@@ -13,20 +13,32 @@ class AuthCubit extends Cubit<AuthUserData?> {
   }
 
   Future<void> _checkUser() async {
-    final user = _auth.currentUser;
-    if (user != null) {
-      _userAuth = AuthUserData(uid: user.uid, email: user.email);
-
-      emit(_userAuth);
-    }
+  final user = _auth.currentUser;
+  if (user != null) {
+    await _updateUser(user);
   }
+}
 
-  void _updateUser(User? user) {
-    if (user != null) {
-      _userAuth = AuthUserData(uid: user.uid, email: user.email);
-      emit(_userAuth);
+  Future<void> _updateUser(User? user) async {
+  if (user != null) {
+    String? username;
+
+    try {
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      username = doc.data()?['username'];
+    } catch (_) {
+      username = null;
     }
+
+    _userAuth = AuthUserData(
+      uid: user.uid,
+      email: user.email,
+      username: username,
+    );
+
+    emit(_userAuth);
   }
+}
 
   Future<void> signUp(UserRegistrationInfo credentials) async {
     try {
@@ -46,7 +58,7 @@ class AuthCubit extends Cubit<AuthUserData?> {
         });
       }
 
-      _updateUser(user);
+      await _updateUser(user);
     } catch (e) {
       print("Sign Up Error: $e");
     }
@@ -59,7 +71,7 @@ class AuthCubit extends Cubit<AuthUserData?> {
             email: userLoginInfo.email,
             password: userLoginInfo.password,
           );
-      _updateUser(userCredential.user);
+      await _updateUser(userCredential.user);
     } catch (e) {
       print("Login Error: $e");
     }

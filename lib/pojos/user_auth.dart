@@ -1,7 +1,8 @@
 class AuthUserData {
   final String? uid;
   final String? email;
-  AuthUserData({this.uid, this.email});
+  final String? username;
+  AuthUserData({this.uid, this.email, this.username});
 }
 
 class UserRegistrationInfo {
