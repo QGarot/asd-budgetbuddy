@@ -1,7 +1,7 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
+import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
-import 'package:budgetbuddy/bloc/Auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +17,7 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = context.watch<AuthCubit>().state;
+    final userData = context.watch<DataCubit>().state;
 
     return Container(
       width: 240,
@@ -73,7 +73,7 @@ class _SidebarState extends State<Sidebar> {
 
           const Spacer(),
 
-          if (authUser != null)
+          if (userData != null)
             Padding(
               padding: const EdgeInsets.all(16),
               child: MouseRegion(
@@ -81,9 +81,10 @@ class _SidebarState extends State<Sidebar> {
                 onExit: (_) => setState(() => _isUserHovered = false),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: _isUserHovered
-                        ? AppColors.primaryFaint
-                        : Colors.transparent,
+                    color:
+                        _isUserHovered
+                            ? AppColors.primaryFaint
+                            : Colors.transparent,
                     borderRadius: UIConstants.borderRadius,
                   ),
                   padding: const EdgeInsets.all(16),
@@ -100,12 +101,14 @@ class _SidebarState extends State<Sidebar> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              authUser.username ?? 'Guest',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              userData.username ?? 'Guest',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              authUser.email ?? '',
+                              userData.email ?? '',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[600],
@@ -149,11 +152,10 @@ class _SidebarItemState extends State<_SidebarItem> {
     final current = context.watch<SidebarCubit>().state;
     final isSelected = widget.page == current;
 
-    final bgColor = isSelected
-        ? AppColors.primaryColor
-        : (_isHovered
-            ? AppColors.primaryFaint
-            : Colors.transparent);
+    final bgColor =
+        isSelected
+            ? AppColors.primaryColor
+            : (_isHovered ? AppColors.primaryFaint : Colors.transparent);
 
     final textColor = isSelected ? Colors.white : Colors.black;
 
