@@ -1,4 +1,4 @@
-import 'package:budgetbuddy/pojos/counter.dart';
+import 'package:budgetbuddy/pojos/Counter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CounterCubit extends Cubit<Counter> {
