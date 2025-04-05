@@ -101,14 +101,14 @@ class _SidebarState extends State<Sidebar> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userData.username ?? 'Guest',
+                              userData.username,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              userData.email ?? '',
+                              userData.email,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[600],

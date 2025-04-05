@@ -24,20 +24,10 @@ class AuthCubit extends Cubit<AuthUserData?> {
 
   Future<void> _updateUser(User? user) async {
     if (user != null) {
-      //String? username;
-
-      // try {
-      //   final doc = await _firestore.collection('users').doc(user.uid).get();
-      //   username = doc.data()?['username'];
-      // } catch (_) {
-      //   username = null;
-      // }
-
+     
       _userAuth = AuthUserData(
         uid: user.uid,
         email: user.email,
-        //username: username,
-        username: "Please use DataEvent for this",
       );
 
       emit(_userAuth);
