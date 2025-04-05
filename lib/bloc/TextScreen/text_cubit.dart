@@ -1,4 +1,4 @@
-import 'package:budgetbuddy/pojos/text.dart';
+import 'package:budgetbuddy/pojos/Text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TextCubit extends Cubit<Message> {
