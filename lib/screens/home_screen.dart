@@ -1,5 +1,6 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
+import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/elements/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -31,8 +32,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(64, 48, 0, 0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(64, 48, 0, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -55,6 +56,14 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       // Place Additional widgets here
+                      ElevatedButton(
+                        onPressed: () {
+                          //Logout from firebase
+                          AuthEvent.signOut(context);
+                          Navigator.pushReplacementNamed(context, "/login");
+                        },
+                        child: Text("Logout"),
+                      ),
                     ],
                   ),
                 ),
