@@ -3,7 +3,7 @@ import 'package:budgetbuddy/bloc/CounterScreen/counter_cubit.dart';
 import 'package:budgetbuddy/bloc/CounterScreen/counter_event.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
-import 'package:budgetbuddy/pojos/counter.dart';
+import 'package:budgetbuddy/pojos/Counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
