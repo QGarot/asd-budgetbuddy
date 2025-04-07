@@ -32,7 +32,7 @@ class _SidebarState extends State<Sidebar> {
                 final current = cubit.state;
                 cubit.selectPage(SidebarPage.dashboard);
                 if (current == SidebarPage.dashboard) {
-                  // Optional: trigger refresh logic here
+                  // Optional: trigger refresh logic  here
                 }
               },
               child: Text(
