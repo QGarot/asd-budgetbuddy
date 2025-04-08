@@ -6,20 +6,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DataCubit extends Cubit<AllUserData?> {
-  final FirebaseAuth _auth;
-  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AllUserData? _userData;
 
-  DataCubit({FirebaseAuth? auth, FirebaseFirestore? firestore})
-    : _auth = auth ?? FirebaseAuth.instance,
-      _firestore = firestore ?? FirebaseFirestore.instance,
-      super(null) {
-  if (_auth.currentUser != null) {
-    fetchFirebaseUserData();
+  DataCubit() : super(null) {
+    if (_auth.currentUser != null) {
+      fetchFirebaseUserData();
+    }
   }
-}
-
-  DataCubit.testable(this._auth, this._firestore) : super(null);
 
   Future<AllUserData?> fetchFirebaseUserData() async {
     try {

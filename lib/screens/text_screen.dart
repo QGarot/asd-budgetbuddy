@@ -1,7 +1,8 @@
-/*import 'package:budgetbuddy/bloc/TextScreen/text_cubit.dart';
+import 'package:budgetbuddy/bloc/TextScreen/text_cubit.dart';
 import 'package:budgetbuddy/pojos/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class MessageDisplay extends StatelessWidget {
   const MessageDisplay({super.key});
 
@@ -42,4 +43,3 @@ class TextScreen extends StatelessWidget {
     );
   }
 }
-*/
