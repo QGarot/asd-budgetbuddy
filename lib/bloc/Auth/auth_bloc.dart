@@ -4,26 +4,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthCubit extends Cubit<AuthUserData?> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
   AuthUserData? _userAuth;
 
-  AuthCubit() : super(null) {
+  AuthCubit({FirebaseAuth? auth, FirebaseFirestore? firestore})
+      : _auth = auth ?? FirebaseAuth.instance,
+        _firestore = firestore ?? FirebaseFirestore.instance,
+        super(null) {
     _checkUser();
   }
 
   Future<void> _checkUser() async {
     final user = _auth.currentUser;
     if (user != null) {
-      _userAuth = AuthUserData(uid: user.uid, email: user.email);
-
-      emit(_userAuth);
+      await _updateUser(user);
     }
   }
 
-  void _updateUser(User? user) {
+  Future<void> _updateUser(User? user) async {
     if (user != null) {
-      _userAuth = AuthUserData(uid: user.uid, email: user.email);
+     
+      _userAuth = AuthUserData(
+        uid: user.uid,
+        email: user.email,
+      );
+
       emit(_userAuth);
     }
   }
@@ -46,7 +52,7 @@ class AuthCubit extends Cubit<AuthUserData?> {
         });
       }
 
-      _updateUser(user);
+      await _updateUser(user);
     } catch (e) {
       print("Sign Up Error: $e");
     }
@@ -59,7 +65,7 @@ class AuthCubit extends Cubit<AuthUserData?> {
             email: userLoginInfo.email,
             password: userLoginInfo.password,
           );
-      _updateUser(userCredential.user);
+      await _updateUser(userCredential.user);
     } catch (e) {
       print("Login Error: $e");
     }
