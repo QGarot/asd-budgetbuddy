@@ -1,7 +1,7 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
-import 'package:budgetbuddy/elements/sidebar.dart';
+import 'package:budgetbuddy/Elements/sidebar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {

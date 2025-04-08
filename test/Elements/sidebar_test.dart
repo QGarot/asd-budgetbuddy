@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/elements/sidebar.dart';
+import 'package:budgetbuddy/Elements/sidebar.dart';
 import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
@@ -10,16 +10,20 @@ import '../mockito/mock_classes.mocks.dart';
 import 'package:mockito/mockito.dart';
 
 void main() {
-  testWidgets('Sidebar updates cubit and visually indicates selected item', (WidgetTester tester) async {
+  testWidgets('Sidebar updates cubit and visually indicates selected item', (
+    WidgetTester tester,
+  ) async {
     final cubit = SidebarCubit();
 
     final mockDataCubit = MockDataCubit();
-    when(mockDataCubit.state).thenReturn(AllUserData(
-      username: 'TestUser',
-      email: 'test@example.com',
-      createdAt: DateTime(2024, 1, 1),
-      budgets: [],
-    ));
+    when(mockDataCubit.state).thenReturn(
+      AllUserData(
+        username: 'TestUser',
+        email: 'test@example.com',
+        createdAt: DateTime(2024, 1, 1),
+        budgets: [],
+      ),
+    );
     when(mockDataCubit.stream).thenAnswer((_) => const Stream.empty());
 
     await tester.pumpWidget(
@@ -30,11 +34,7 @@ void main() {
               BlocProvider<DataCubit>.value(value: mockDataCubit),
               BlocProvider<SidebarCubit>.value(value: cubit),
             ],
-            child: const Row(
-              children: [
-                Sidebar(),
-              ],
-            ),
+            child: const Row(children: [Sidebar()]),
           ),
         ),
       ),
