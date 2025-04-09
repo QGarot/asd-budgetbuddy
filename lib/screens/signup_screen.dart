@@ -1,6 +1,6 @@
-import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/main_button.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
+import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +21,7 @@ class SignupScreenState extends State<SignupScreen> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
 
       await AuthEvent.signUp(
         context,
@@ -36,17 +34,13 @@ class SignupScreenState extends State<SignupScreen> {
 
       if (!AuthEvent.isLoggedIn(context)) {
         MessageToUser.showMessage(context, "Account creation failed!");
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
         return;
       }
 
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (!mounted) return;
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
         MessageToUser.showMessage(context, "Account created successfully!");
         Navigator.pushReplacementNamed(context, '/loading');
       });
@@ -57,137 +51,92 @@ class SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SizedBox(
-          width: 380,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            elevation: 5,
+        child: StandardDialogBox(
+          title: "Create Account",
+          subtitle: "Enter your details to create a new account",
+          icon: Icons.person,
+          maxWidth: 360,
+          content: Form(
+            key: _formKey,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
-                    ),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: "Username",
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
                   ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.person, size: 50, color: Colors.white),
-                      SizedBox(height: 10),
-                      Text(
-                        "Create Account",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Enter your details to create a new account",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ],
-                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Username is required";
+                    }
+                    return null;
+                  },
                 ),
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                            labelText: "Username",
-                            prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Username is required";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            labelText: "Email",
-                            prefixIcon: Icon(Icons.email),
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Email is required";
-                            } else if (!RegExp(
-                              r"\S+@\S+\.\S+",
-                            ).hasMatch(value)) {
-                              return "Email is invalid";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            prefixIcon: Icon(Icons.lock),
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Password is required";
-                            } else if (value.length < 8) {
-                              return "Password must be at least 8 characters";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        MainButton(
-                          text: "Sign up",
-                          onPressed: () async {
-                            if (!_isLoading) {
-                              await _submitForm();
-                            }
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Already have an account?"),
-                            TextButton(
-                              onPressed:
-                                  () => Navigator.pushReplacementNamed(
-                                    context,
-                                    '/login',
-                                  ),
-                              child: Text(
-                                "Login",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: "Email",
+                    prefixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Email is required";
+                    } else if (!RegExp(r"\S+@\S+\.\S+").hasMatch(value)) {
+                      return "Email is invalid";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: "Password",
+                    prefixIcon: Icon(Icons.lock),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Password is required";
+                    } else if (value.length < 8) {
+                      return "Password must be at least 8 characters";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                MainButton(
+                  text: "Sign up",
+                  onPressed: () async {
+                    if (!_isLoading) {
+                      await _submitForm();
+                    }
+                  },
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account?"),
+                    TextButton(
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/login'),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          actions: const [],
         ),
       ),
     );
