@@ -66,13 +66,13 @@ class StandardDialogBox extends StatelessWidget {
               ),
             ),
 
-            // Body content with extra top margin
+            // Body
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
               child: content,
             ),
 
-            // Actions with tight bottom margin
+            // Actions
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Row(
@@ -86,7 +86,6 @@ class StandardDialogBox extends StatelessWidget {
     );
   }
 
-  /// Shared form field for all dialog boxes
   static Widget buildStandardFormField({
     required TextEditingController controller,
     required String label,
@@ -118,6 +117,156 @@ class StandardDialogBox extends StatelessWidget {
       key: formKey,
       autovalidateMode: AutovalidateMode.disabled,
       child: child,
+    );
+  }
+
+  static Widget buildDropdownField<T>({
+    required T? selectedValue,
+    required List<T> items,
+    required ValueChanged<T?> onChanged,
+    required String Function(T) itemLabel,
+    IconData? Function(T)? itemIcon,
+    double itemHeight = 48,
+    double menuWidth = 200,
+    String? label,
+  }) {
+    return Builder(
+      builder: (ctx) {
+        final GlobalKey fieldKey = GlobalKey();
+
+        return GestureDetector(
+          onTap: () async {
+            final RenderBox renderBox =
+                fieldKey.currentContext!.findRenderObject() as RenderBox;
+            final Offset offset = renderBox.localToGlobal(Offset.zero);
+            final Rect position = offset & renderBox.size;
+
+            final selected = await showMenu<T>(
+              context: ctx, // <- fix is here
+              position: RelativeRect.fromLTRB(
+                position.left,
+                position.bottom + 4,
+                position.left + menuWidth,
+                0,
+              ),
+              items:
+                  items.map((item) {
+                    return PopupMenuItem<T>(
+                      value: item,
+                      height: itemHeight,
+                      child: Row(
+                        children: [
+                          if (itemIcon != null && itemIcon(item) != null)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Icon(itemIcon(item), size: 18),
+                            ),
+                          Text(itemLabel(item)),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+              color: Colors.white,
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: UIConstants.borderRadius,
+              ),
+            );
+
+            if (selected != null) {
+              onChanged(selected);
+            }
+          },
+          child: InputDecorator(
+            key: fieldKey,
+            decoration: InputDecoration(
+              labelText: label,
+              border: const OutlineInputBorder(),
+              suffixIcon: const Icon(Icons.arrow_drop_down),
+              isDense: true,
+            ),
+            child: Text(
+              selectedValue != null ? itemLabel(selectedValue as T) : '',
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static Widget buildStandardDropdown<T>({
+    required BuildContext context,
+    required String label,
+    required T? selectedValue,
+    required List<T> items,
+    required ValueChanged<T?> onChanged,
+    required String Function(T) itemLabel,
+    IconData? Function(T)? itemIcon,
+    double itemHeight = 48,
+    double menuWidth = 200,
+  }) {
+    final GlobalKey fieldKey = GlobalKey();
+
+    return Builder(
+      builder:
+          (ctx) => GestureDetector(
+            onTap: () async {
+              final RenderBox renderBox =
+                  fieldKey.currentContext!.findRenderObject() as RenderBox;
+              final Offset offset = renderBox.localToGlobal(Offset.zero);
+              final Rect position = offset & renderBox.size;
+
+              final selected = await showMenu<T>(
+                context: context,
+                position: RelativeRect.fromLTRB(
+                  position.left,
+                  position.bottom + 4,
+                  position.left + menuWidth,
+                  0,
+                ),
+                items:
+                    items.map((item) {
+                      return PopupMenuItem<T>(
+                        value: item,
+                        height: itemHeight,
+                        child: Row(
+                          children: [
+                            if (itemIcon != null && itemIcon(item) != null)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Icon(itemIcon(item), size: 18),
+                              ),
+                            Text(itemLabel(item)),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                color: Colors.white,
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: UIConstants.borderRadius,
+                ),
+              );
+
+              if (selected != null) {
+                onChanged(selected);
+              }
+            },
+            child: InputDecorator(
+              key: fieldKey,
+              decoration: InputDecoration(
+                labelText: label,
+                border: const OutlineInputBorder(),
+                suffixIcon: const Icon(Icons.arrow_drop_down),
+                isDense: true,
+              ),
+              child: Text(
+                selectedValue != null ? itemLabel(selectedValue) : '',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
     );
   }
 }

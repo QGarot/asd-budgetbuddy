@@ -99,7 +99,10 @@ class _SidebarState extends State<Sidebar> {
                 borderRadius: UIConstants.borderRadius,
                 child: Container(
                   width: 200,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: UIConstants.borderRadius,
@@ -121,7 +124,8 @@ class _SidebarState extends State<Sidebar> {
           borderRadius: UIConstants.borderRadius,
           child: Container(
             decoration: BoxDecoration(
-              color: _showUserMenu ? AppColors.primaryFaint : Colors.transparent,
+              color:
+                  _showUserMenu ? AppColors.primaryFaint : Colors.transparent,
               borderRadius: UIConstants.borderRadius,
             ),
             padding: const EdgeInsets.all(16),
@@ -151,7 +155,9 @@ class _SidebarState extends State<Sidebar> {
                   ),
                 ),
                 Icon(
-                  _showUserMenu ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                  _showUserMenu
+                      ? Icons.keyboard_arrow_down
+                      : Icons.keyboard_arrow_up,
                   color: AppColors.primaryColor,
                 ),
               ],
@@ -186,9 +192,10 @@ class _SidebarItemState extends State<_SidebarItem> {
     final current = context.watch<SidebarCubit>().state;
     final isSelected = widget.page == current;
 
-    final bgColor = isSelected
-        ? AppColors.primaryColor
-        : (_isHovered ? AppColors.primaryFaint : Colors.transparent);
+    final bgColor =
+        isSelected
+            ? AppColors.primaryColor
+            : (_isHovered ? AppColors.primaryFaint : Colors.transparent);
 
     final textColor = isSelected ? Colors.white : Colors.black;
 

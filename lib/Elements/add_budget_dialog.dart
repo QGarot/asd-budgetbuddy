@@ -1,6 +1,5 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
-import 'package:budgetbuddy/Elements/standard_dropdown.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +71,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
                 if (text == null || text.isEmpty) {
                   return null;
                 }
-                final parsed = double.tryParse(text);
+                final parsed = double.tryParse(text.replaceAll(',', '.'));
                 if (parsed == null || parsed <= 0) {
                   return "Please enter a valid amount";
                 }
@@ -83,7 +82,8 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
             Row(
               children: [
                 Expanded(
-                  child: StandardDropdownField<String>(
+                  child: StandardDialogBox.buildStandardDropdown<String>(
+                    context: context,
                     label: 'Category',
                     selectedValue: _selectedCategory,
                     items: _categories,
@@ -94,7 +94,8 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: StandardDropdownField<String>(
+                  child: StandardDialogBox.buildStandardDropdown<String>(
+                    context: context,
                     label: 'Period',
                     selectedValue: _selectedPeriod,
                     items: _periods,
@@ -199,7 +200,8 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
 
     if (_nameController.text.trim().isEmpty ||
         _amountController.text.trim().isEmpty ||
-        _selectedCategory == null || _selectedPeriod == null) {
+        _selectedCategory == null ||
+        _selectedPeriod == null) {
       setState(() {
         _errorMessage = "Please fill in all fields.";
       });
