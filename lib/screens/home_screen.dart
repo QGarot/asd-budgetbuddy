@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                     64,
                     120,
                     0,
-                  ), // Increased L/R padding
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,6 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
 
-                      // Shadowed and padded Create Budget button
                       Container(
                         decoration: BoxDecoration(
                           boxShadow: UIConstants.standardShadow,
