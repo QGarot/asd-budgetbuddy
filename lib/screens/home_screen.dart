@@ -1,6 +1,6 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
-import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
+import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
 import 'package:budgetbuddy/Elements/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -33,42 +33,76 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(64, 48, 0, 0),
-                  child: Column(
+                  padding: const EdgeInsets.fromLTRB(
+                    120,
+                    64,
+                    120,
+                    0,
+                  ), // Increased L/R padding
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Budget Dashboard",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black87,
-                          letterSpacing: -0.5,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Budget Dashboard",
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black87,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            "Manage and track your spending",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF9E9E9E),
+                              fontWeight: FontWeight.w400,
+                              height: 1.1,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Manage and track your spending",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF9E9E9E),
-                          fontWeight: FontWeight.w400,
-                          height: 1.1,
+
+                      // Shadowed and padded Create Budget button
+                      Container(
+                        decoration: BoxDecoration(
+                          boxShadow: UIConstants.standardShadow,
+                          borderRadius: BorderRadius.circular(24),
                         ),
-                      ),
-                      // Place Additional widgets here
-                      ElevatedButton(
-                        onPressed: () {
-                          //Logout from firebase
-                          AuthEvent.signOut(context);
-                          Navigator.pushReplacementNamed(context, "/login");
-                        },
-                        child: Text("Logout"),
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => const AddBudgetDialog(),
+                            );
+                          },
+                          icon: const Icon(Icons.add, size: 18),
+                          label: const Text("Create Budget"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 14,
+                            ),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 const Expanded(child: SizedBox()),
-                // Logic for changing screens here
               ],
             ),
           ),
