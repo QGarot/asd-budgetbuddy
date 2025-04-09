@@ -60,7 +60,7 @@ class StandardDialogBox extends StatelessWidget {
                   Text(
                     subtitle,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70),
+                    style: const TextStyle(color: Colors.white70),
                   ),
                 ],
               ),
@@ -83,6 +83,41 @@ class StandardDialogBox extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  /// Shared form field for all dialog boxes
+  static Widget buildStandardFormField({
+    required TextEditingController controller,
+    required String label,
+    String? hint,
+    bool obscureText = false,
+    String? Function(String?)? validator,
+    TextInputType? keyboardType,
+    Widget? prefixIcon,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: prefixIcon,
+        border: const OutlineInputBorder(),
+      ),
+    );
+  }
+
+  static Widget buildStandardForm({
+    required GlobalKey<FormState> formKey,
+    required Widget child,
+  }) {
+    return Form(
+      key: formKey,
+      autovalidateMode: AutovalidateMode.disabled,
+      child: child,
     );
   }
 }

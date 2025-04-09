@@ -14,6 +14,7 @@ class AddBudgetDialog extends StatefulWidget {
 }
 
 class _AddBudgetDialogState extends State<AddBudgetDialog> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
@@ -22,10 +23,18 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
   double _alertThreshold = 0.8;
 
   String? _errorMessage;
-  bool _amountIsInvalid = false;
 
-  final List<String> _categories = ['Groceries', 'Travel', 'Entertainment', 'Bills'];
-  final List<String> _periods = ['Monthly', 'Weekly', 'Yearly'];
+  final List<String> _categories = [
+    'Groceries',
+    'Rent',
+    'Utilities',
+    'Entertainment',
+    'Travel',
+    'Dining',
+    'Shopping',
+    'Other',
+  ];
+  final List<String> _periods = ['Weekly', 'Biweekly', 'Monthly'];
 
   @override
   Widget build(BuildContext context) {
@@ -33,98 +42,116 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
       title: "Create New Budget",
       subtitle: "Set up a new budget to track your spending.",
       icon: Icons.add_chart,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              labelText: 'Budget Name',
-              hintText: 'e.g., Groceries',
-              border: const OutlineInputBorder(),
-              errorText: _errorMessage != null && _nameController.text.trim().isEmpty ? '' : null,
+      content: StandardDialogBox.buildStandardForm(
+        formKey: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StandardDialogBox.buildStandardFormField(
+              controller: _nameController,
+              label: 'Budget Name',
+              hint: 'e.g., Groceries',
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return null;
+                }
+                return null;
+              },
             ),
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _amountController,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(
-              labelText: 'Amount',
-              prefixText: '\$ ',
-              border: const OutlineInputBorder(),
-              errorText: _amountIsInvalid ? 'Enter a valid amount' : null,
+            const SizedBox(height: 16),
+            StandardDialogBox.buildStandardFormField(
+              controller: _amountController,
+              label: 'Amount',
+              hint: "0,00€",
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              validator: (value) {
+                final text = value?.trim();
+                if (text == null || text.isEmpty) {
+                  return null;
+                }
+                final parsed = double.tryParse(text);
+                if (parsed == null || parsed <= 0) {
+                  return "Please enter a valid amount";
+                }
+                return null;
+              },
             ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: StandardDropdownField<String>(
-                  label: 'Category',
-                  selectedValue: _selectedCategory,
-                  items: _categories,
-                  onChanged: (value) => setState(() => _selectedCategory = value),
-                  itemLabel: (item) => item,
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: StandardDropdownField<String>(
+                    label: 'Category',
+                    selectedValue: _selectedCategory,
+                    items: _categories,
+                    onChanged:
+                        (value) => setState(() => _selectedCategory = value),
+                    itemLabel: (item) => item,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: StandardDropdownField<String>(
+                    label: 'Period',
+                    selectedValue: _selectedPeriod,
+                    items: _periods,
+                    onChanged:
+                        (value) => setState(() => _selectedPeriod = value),
+                    itemLabel: (item) => item,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Alert Threshold: ${(100 * _alertThreshold).toInt()}%',
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 8,
+                trackShape: const RoundedRectSliderTrackShape(),
+                activeTrackColor: AppColors.yellowColor,
+                inactiveTrackColor: AppColors.yellowColorFaint,
+                thumbColor: Colors.transparent,
+                overlayColor: Colors.transparent,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 0),
+                tickMarkShape: const RoundSliderTickMarkShape(
+                  tickMarkRadius: 0,
+                ),
+                showValueIndicator: ShowValueIndicator.never,
+              ),
+              child: Slider(
+                value: _alertThreshold,
+                onChanged: (value) => setState(() => _alertThreshold = value),
+                min: 0.0,
+                max: 1.0,
+                divisions: 20,
+              ),
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text("0%"), Text("100%")],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              "You'll receive an alert when your spending reaches this percentage of your budget",
+              style: TextStyle(color: Colors.grey[600], fontSize: 13),
+            ),
+            if (_errorMessage != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: StandardDropdownField<String>(
-                  label: 'Period',
-                  selectedValue: _selectedPeriod,
-                  items: _periods,
-                  onChanged: (value) => setState(() => _selectedPeriod = value),
-                  itemLabel: (item) => item,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'Alert Threshold: ${(100 * _alertThreshold).toInt()}%',
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          ),
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              trackHeight: 8,
-              trackShape: const RoundedRectSliderTrackShape(),
-              activeTrackColor: AppColors.yellowColor,
-              inactiveTrackColor: AppColors.yellowColorFaint,
-              thumbColor: Colors.transparent,
-              overlayColor: Colors.transparent,
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0),
-              overlayShape: const RoundSliderOverlayShape(overlayRadius: 0),
-              tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0),
-              showValueIndicator: ShowValueIndicator.never,
-            ),
-            child: Slider(
-              value: _alertThreshold,
-              onChanged: (value) => setState(() => _alertThreshold = value),
-              min: 0.0,
-              max: 1.0,
-              divisions: 20,
-            ),
-          ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text("0%"), Text("100%")],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "You'll receive an alert when your spending reaches this percentage of your budget",
-            style: TextStyle(color: Colors.grey[600], fontSize: 13),
-          ),
-          if (_errorMessage != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
       actions: [
         Padding(
@@ -158,34 +185,33 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
   }
 
   void _createBudget() {
-    final name = _nameController.text.trim();
-    final amountText = _amountController.text.trim();
-    final amount = double.tryParse(amountText);
+    final form = _formKey.currentState;
+    final rawAmountText = _amountController.text.trim().replaceAll(',', '.');
+    final parsed = double.tryParse(rawAmountText);
+    final amount =
+        parsed != null ? double.parse(parsed.toStringAsFixed(2)) : null;
 
     setState(() {
       _errorMessage = null;
-      _amountIsInvalid = false;
     });
 
-    if (name.isEmpty || amountText.isEmpty || _selectedCategory == null) {
+    if (form == null || !form.validate()) return;
+
+    if (_nameController.text.trim().isEmpty ||
+        _amountController.text.trim().isEmpty ||
+        _selectedCategory == null || _selectedPeriod == null) {
       setState(() {
         _errorMessage = "Please fill in all fields.";
       });
       return;
     }
 
-    if (amount == null || amount <= 0) {
-      setState(() {
-        _amountIsInvalid = true;
-      });
-      return;
-    }
-
     final budget = Budget(
-      name: name,
+      name: _nameController.text.trim(),
       category: _selectedCategory!,
+      resetPeriod: _selectedPeriod!,
       alertThreshold: _alertThreshold,
-      totalAmount: amount,
+      totalAmount: amount!,
     );
 
     final dataCubit = context.read<DataCubit>();

@@ -51,6 +51,7 @@ class CounterScreen extends StatelessWidget {
                     category: "Yup",
                     alertThreshold: 0.8,
                     totalAmount: 500,
+                    resetPeriod: "No way",
                   ),
                 );
                 counter++;

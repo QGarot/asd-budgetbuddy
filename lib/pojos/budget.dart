@@ -5,6 +5,7 @@ class Budget {
   String id;
   String name;
   String category;
+  String resetPeriod;
   double alertThreshold;
   double totalAmount;
   double spentAmount = 0;
@@ -16,6 +17,7 @@ class Budget {
     List<Expense>? expenses,
     required this.name,
     required this.category,
+    required this.resetPeriod,
     required this.alertThreshold,
     required this.totalAmount,
   }) : id = id ?? IdGenerator.generateRandomUniqueId(),
@@ -26,6 +28,7 @@ class Budget {
     String? id,
     String? name,
     String? category,
+    String? resetPeriod,
     double? alertThreshold,
     double? totalAmount,
     double? spentAmount,
@@ -35,6 +38,7 @@ class Budget {
       id: id ?? this.id,
       name: name ?? this.name,
       category: category ?? this.category,
+      resetPeriod: resetPeriod ?? this.resetPeriod,
       alertThreshold: alertThreshold ?? this.alertThreshold,
       totalAmount: totalAmount ?? this.totalAmount,
       spentAmount: spentAmount ?? this.spentAmount,
@@ -50,6 +54,7 @@ class Budget {
       id: data['id'] ?? 0,
       name: data['name'] ?? '',
       category: data['category'] ?? '',
+      resetPeriod: data['resetPeriod'] ?? '',
       alertThreshold: (data['alertThreshold'] as num).toDouble(),
       totalAmount: (data['totalAmount'] as num).toDouble(),
       spentAmount: (data['spentAmount'] as num).toDouble(),
@@ -62,6 +67,7 @@ class Budget {
       'id': id,
       'name': name,
       'category': category,
+      'resetPeriod': resetPeriod,
       'alertThreshold': alertThreshold,
       'totalAmount': totalAmount,
       'spentAmount': spentAmount,

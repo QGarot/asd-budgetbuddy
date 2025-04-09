@@ -56,17 +56,14 @@ class SignupScreenState extends State<SignupScreen> {
           subtitle: "Enter your details to create a new account",
           icon: Icons.person,
           maxWidth: 360,
-          content: Form(
-            key: _formKey,
+          content: StandardDialogBox.buildStandardForm(
+            formKey: _formKey,
             child: Column(
               children: [
-                TextFormField(
+                StandardDialogBox.buildStandardFormField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: "Username",
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                  ),
+                  label: "Username",
+                  prefixIcon: const Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "Username is required";
@@ -75,13 +72,10 @@ class SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                StandardDialogBox.buildStandardFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
-                  ),
+                  label: "Email",
+                  prefixIcon: const Icon(Icons.email),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "Email is required";
@@ -92,14 +86,11 @@ class SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                StandardDialogBox.buildStandardFormField(
                   controller: _passwordController,
+                  label: "Password",
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                  ),
+                  prefixIcon: const Icon(Icons.lock),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Password is required";
@@ -124,8 +115,9 @@ class SignupScreenState extends State<SignupScreen> {
                   children: [
                     const Text("Already have an account?"),
                     TextButton(
-                      onPressed: () =>
-                          Navigator.pushReplacementNamed(context, '/login'),
+                      onPressed:
+                          () =>
+                              Navigator.pushReplacementNamed(context, '/login'),
                       child: const Text(
                         "Login",
                         style: TextStyle(fontWeight: FontWeight.bold),

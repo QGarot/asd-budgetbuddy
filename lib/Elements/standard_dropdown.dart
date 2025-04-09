@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 
 class StandardDropdownField<T> extends StatelessWidget {
-  final String label;
+  final String? label;
   final T? selectedValue;
   final List<T> items;
   final ValueChanged<T?> onChanged;
@@ -76,6 +76,7 @@ class StandardDropdownField<T> extends StatelessWidget {
               labelText: label,
               border: const OutlineInputBorder(),
               suffixIcon: const Icon(Icons.arrow_drop_down),
+              isDense: true,
             ),
             child: Text(
               selectedValue != null ? itemLabel(selectedValue as T) : '',

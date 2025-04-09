@@ -1,5 +1,3 @@
-
-// import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/main_button.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
@@ -64,17 +62,15 @@ class LoginScreenState extends State<LoginScreen> {
           subtitle: "Enter your details to access your account",
           icon: Icons.person,
           maxWidth: 360,
-          content: Form(
-            key: _formKey,
+          content: StandardDialogBox.buildStandardForm(
+            formKey: _formKey,
             child: Column(
               children: [
-                TextFormField(
+                StandardDialogBox.buildStandardFormField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                  ),
+                  label: "Email",
+                  hint: "example@email.com",
+                  prefixIcon: const Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "Email is required";
@@ -85,14 +81,11 @@ class LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                StandardDialogBox.buildStandardFormField(
                   controller: _passwordController,
+                  label: "Password",
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                  ),
+                  prefixIcon: const Icon(Icons.lock),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Password is required";
@@ -124,10 +117,11 @@ class LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text("Don't have an account?"),
                     TextButton(
-                      onPressed: () => Navigator.pushReplacementNamed(
-                        context,
-                        '/signup',
-                      ),
+                      onPressed:
+                          () => Navigator.pushReplacementNamed(
+                            context,
+                            '/signup',
+                          ),
                       child: const Text(
                         "Create Account",
                         style: TextStyle(fontWeight: FontWeight.bold),
