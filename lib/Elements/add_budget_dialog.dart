@@ -1,9 +1,9 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
-import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/bloc/Data/data_event.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddBudgetDialog extends StatefulWidget {
   const AddBudgetDialog({super.key});
@@ -21,7 +21,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
   String? _selectedPeriod;
   double _alertThreshold = 0.8;
 
-  String? _errorMessage;
+  String? _errorMessage = " ";
 
   final List<String> _categories = [
     'Groceries',
@@ -58,7 +58,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             StandardDialogBox.buildStandardFormField(
               controller: _amountController,
               label: 'Amount',
@@ -78,7 +78,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 13),
             Row(
               children: [
                 Expanded(
@@ -106,7 +106,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             Text(
               'Alert Threshold: ${(100 * _alertThreshold).toInt()}%',
               style: const TextStyle(fontWeight: FontWeight.w500),
@@ -138,19 +138,19 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [Text("0%"), Text("100%")],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 13),
             Text(
               "You'll receive an alert when your spending reaches this percentage of your budget",
               style: TextStyle(color: Colors.grey[600], fontSize: 13),
             ),
-            if (_errorMessage != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(
-                  _errorMessage!,
-                  style: const TextStyle(color: Colors.red),
-                ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(
+                _errorMessage!,
+                style: const TextStyle(color: Colors.red),
               ),
+            ),
           ],
         ),
       ),
@@ -193,7 +193,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
         parsed != null ? double.parse(parsed.toStringAsFixed(2)) : null;
 
     setState(() {
-      _errorMessage = null;
+      _errorMessage = " ";
     });
 
     if (form == null || !form.validate()) return;
@@ -216,15 +216,21 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
       totalAmount: amount!,
     );
 
-    final dataCubit = context.read<DataCubit>();
-    dataCubit.addBudget(budget).then((success) {
-      if (success) {
-        Navigator.of(context).pop();
-      } else {
-        setState(() {
-          _errorMessage = "Failed to add budget.";
+    DataEvent.addBudget(context, budget)
+        .then((success) {
+          if (success) {
+            MessageToUser.showMessage(context, "Budget added successfully!");
+            Navigator.of(context).pop();
+          } else {
+            setState(() {
+              _errorMessage = "Failed to add budget.";
+            });
+          }
+        })
+        .catchError((error) {
+          setState(() {
+            _errorMessage = "Failed to add budget.";
+          });
         });
-      }
-    });
   }
 }

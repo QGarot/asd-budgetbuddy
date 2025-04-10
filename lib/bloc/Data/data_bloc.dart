@@ -14,10 +14,10 @@ class DataCubit extends Cubit<AllUserData?> {
     : _auth = auth ?? FirebaseAuth.instance,
       _firestore = firestore ?? FirebaseFirestore.instance,
       super(null) {
-  if (_auth.currentUser != null) {
-    fetchFirebaseUserData();
+    if (_auth.currentUser != null) {
+      fetchFirebaseUserData();
+    }
   }
-}
 
   DataCubit.testable(this._auth, this._firestore) : super(null);
 
@@ -83,7 +83,8 @@ class DataCubit extends Cubit<AllUserData?> {
           .doc(userId)
           .collection('budgets')
           .doc(budget.id)
-          .set(budget.toFirestore());
+          .set(budget.toFirestore())
+          .timeout(Duration(seconds: 5));
 
       _addBudgetOnLocalCopy(budget);
 

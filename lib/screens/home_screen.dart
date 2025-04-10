@@ -33,12 +33,7 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    120,
-                    64,
-                    120,
-                    0,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(120, 64, 120, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                           onPressed: () {
                             showDialog(
                               context: context,
-                              builder: (context) => const AddBudgetDialog(),
+                              builder: (dialogContext) => AddBudgetDialog(),
                             );
                           },
                           icon: const Icon(Icons.add, size: 18),
