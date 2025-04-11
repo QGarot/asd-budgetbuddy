@@ -32,38 +32,48 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(120, 64, 120, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
+                Stack(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 24,
+                      ),
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Budget Dashboard",
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black87,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            "Manage and track your spending",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF9E9E9E),
-                              fontWeight: FontWeight.w400,
-                              height: 1.1,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Budget Dashboard",
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.black87,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                "Manage and track your spending",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF9E9E9E),
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.1,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-
-                      Container(
+                    ),
+                    Positioned(
+                      right: 24,
+                      top: 28,
+                      child: Container(
                         decoration: BoxDecoration(
                           boxShadow: UIConstants.standardShadow,
                           borderRadius: BorderRadius.circular(24),
@@ -93,9 +103,10 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+
                 const Expanded(child: SizedBox()),
               ],
             ),
