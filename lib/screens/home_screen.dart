@@ -1,6 +1,6 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
-import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
+import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
 import 'package:budgetbuddy/Elements/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -32,43 +32,82 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(64, 48, 0, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Budget Dashboard",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black87,
-                          letterSpacing: -0.5,
+                Stack(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 24,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Budget Dashboard",
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.black87,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                "Manage and track your spending",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF9E9E9E),
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 24,
+                      top: 28,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: UIConstants.standardShadow,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (dialogContext) => AddBudgetDialog(),
+                            );
+                          },
+                          icon: const Icon(Icons.add, size: 18),
+                          label: const Text("Create Budget"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 14,
+                            ),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
-                      Text(
-                        "Manage and track your spending",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF9E9E9E),
-                          fontWeight: FontWeight.w400,
-                          height: 1.1,
-                        ),
-                      ),
-                      // Place Additional widgets here
-                      ElevatedButton(
-                        onPressed: () {
-                          //Logout from firebase
-                          AuthEvent.signOut(context);
-                          Navigator.pushReplacementNamed(context, "/login");
-                        },
-                        child: Text("Logout"),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+
                 const Expanded(child: SizedBox()),
-                // Logic for changing screens here
               ],
             ),
           ),
