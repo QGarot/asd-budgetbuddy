@@ -154,6 +154,147 @@ class DataCubit extends Cubit<AllUserData?> {
     return true;
   }
 
+  Future<bool> updateBudget(
+    String budgetId, {
+    String? name,
+    String? category,
+    double? alertThreshold
+  }) async {
+    try {
+      if (name != null && name.trim().isEmpty) {
+        throw Exception("Budget name cannot be empty");
+      }
+      
+      if (category != null && category.trim().isEmpty) {
+        throw Exception("Category cannot be empty");
+      }
+      
+      if (alertThreshold != null && alertThreshold < 0) {
+        throw Exception("Alert threshold must be greater than zero");
+      }
+      
+      String? userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception("User not logged in");
+
+      // Find the existing budget in local state
+      Budget? existingBudget = _userData?.budgets.firstWhere(
+        (budget) => budget.id == budgetId,
+        orElse: () => throw Exception("Budget not found $budgetId"),
+      );
+
+      if (existingBudget == null) {
+        throw Exception("Budget with id $budgetId not found");
+      }
+
+      // Important -> Create a map of only the fields to be updated
+      Map<String, dynamic> updateData = {};
+      if (name != null) updateData['name'] = name;
+      if (category != null) updateData['category'] = category;
+      if (alertThreshold != null) updateData['alertThreshold'] = alertThreshold;
+
+      // Don't do anything if no updates were provided
+      if (updateData.isEmpty) return true;
+
+      // Update the budget Firestore
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('budgets')
+          .doc(budgetId)
+          .update(updateData);
+
+      _updateBudgetOnLocalCopy(budgetId, updateData);
+
+      print("Budget updated with ID: $budgetId");
+      return true;
+    } catch (e) {
+      print("Error updating budget: $e");
+      return false;
+    }
+  }
+
+  bool _updateBudgetOnLocalCopy(String budgetId, Map<String, dynamic> updateData) {
+    if (_userData == null) return false;
+
+    final updatedBudgets = _userData!.budgets.map((budget) {
+      if (budget.id == budgetId) {
+        return budget.copyWith(
+          name: updateData['name'] as String? ?? budget.name,
+          category: updateData['category'] as String? ?? budget.category,
+          alertThreshold: updateData['alertThreshold'] as double? ?? budget.alertThreshold,
+        );
+      }
+      return budget;
+    }).toList();
+    
+    _userData = _userData!.copyWith(budgets: updatedBudgets);
+    emit(_userData);
+    return true;
+  }
+
+  Future<bool> deleteBudget(String budgetId) async {
+    try {
+      String? userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception("User not logged in");
+
+      // Check if budget exists
+      Budget? budgetToDelete = _userData?.budgets.firstWhere(
+        (budget) => budget.id == budgetId,
+        orElse: () => throw Exception("Budget not found $budgetId"),
+      );
+
+      if (budgetToDelete == null) {
+        throw Exception("Budget not found");
+      }
+
+      // First, delete all expenses associated with this budget
+      QuerySnapshot expensesSnapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('budgets')
+          .doc(budgetId)
+          .collection('expenses')
+          .get();
+      
+      // Use a batch to delete all expenses first
+      WriteBatch batch = _firestore.batch();
+      for (var doc in expensesSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+      
+      // Add the budget document deletion to the batch
+      batch.delete(_firestore
+          .collection('users')
+          .doc(userId)
+          .collection('budgets')
+          .doc(budgetId));
+      
+      // Commit the batch
+      await batch.commit();
+
+      // Update local state
+      _deleteBudgetFromLocalCopy(budgetId);
+
+      print("Budget deleted with ID: $budgetId");
+      return true;
+    } catch (e) {
+      print("Error deleting budget: $e");
+      return false;
+    }
+  }
+
+  bool _deleteBudgetFromLocalCopy(String budgetId) {
+    if (_userData == null) return false;
+
+    final updatedBudgets = _userData!.budgets.where((budget) => 
+      budget.id != budgetId
+    ).toList();
+    
+    _userData = _userData!.copyWith(budgets: updatedBudgets);
+    emit(_userData);
+    return true;
+  }
+
   AllUserData? getFirebaseUserData() {
     return _userData;
   }
