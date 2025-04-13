@@ -1,6 +1,6 @@
-import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/main_button.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
+import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +20,6 @@ class LoginScreenState extends State<LoginScreen> {
   String? _error;
 
   Future<void> _submitForm() async {
-    //guard check
-
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -44,7 +42,7 @@ class LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (!mounted) return;
         setState(() {
           _isLoading = false;
@@ -59,144 +57,82 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SizedBox(
-          width: 400,
-          child: Card(
-            margin: EdgeInsets.all(20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            elevation: 5,
+        child: StandardDialogBox(
+          title: "Sign In",
+          subtitle: "Enter your details to access your account",
+          icon: Icons.person,
+          maxWidth: 360,
+          content: StandardDialogBox.buildStandardForm(
+            formKey: _formKey,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
+                StandardDialogBox.buildStandardFormField(
+                  controller: _usernameController,
+                  label: "Email",
+                  hint: "example@email.com",
+                  prefixIcon: const Icon(Icons.person),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Email is required";
+                    } else if (!RegExp(r"\S+@\S+\.\S+").hasMatch(value)) {
+                      return "Email is invalid";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                StandardDialogBox.buildStandardFormField(
+                  controller: _passwordController,
+                  label: "Password",
+                  obscureText: true,
+                  prefixIcon: const Icon(Icons.lock),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Password is required";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                if (_error != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Text(
+                      _error!,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.person, size: 50, color: Colors.white),
-                      SizedBox(height: 10),
-                      Text(
-                        "Sign In",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Enter your details to access your account",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 10),
+                MainButton(
+                  text: "Sign in",
+                  onPressed: () async {
+                    if (!_isLoading) {
+                      await _submitForm();
+                    }
+                  },
                 ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return "Email is required";
-                                } else if (!RegExp(
-                                  r"\S+@\S+\.\S+",
-                                ).hasMatch(value)) {
-                                  return "Email is invalid";
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: "Password",
-                                prefixIcon: Icon(Icons.lock),
-                                border: OutlineInputBorder(),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Password is required";
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            if (_error != null)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                ),
-                                child: Text(
-                                  _error!,
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            SizedBox(height: 20),
-                            MainButton(
-                              text: "Sign in",
-                              onPressed: () async {
-                                if (!_isLoading) {
-                                  await _submitForm();
-                                }
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Don't have an account?"),
-                                TextButton(
-                                  onPressed:
-                                      () => Navigator.pushReplacementNamed(
-                                        context,
-                                        '/signup',
-                                      ),
-                                  child: Text(
-                                    "Create Account",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account?"),
+                    TextButton(
+                      onPressed:
+                          () => Navigator.pushReplacementNamed(
+                            context,
+                            '/signup',
+                          ),
+                      child: const Text(
+                        "Create Account",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          actions: const [],
         ),
       ),
     );
