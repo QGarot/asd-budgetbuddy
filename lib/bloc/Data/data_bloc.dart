@@ -163,7 +163,9 @@ class DataCubit extends Cubit<AllUserData?> {
     String budgetId, {
     String? name,
     String? category,
-    double? alertThreshold
+    double? alertThreshold,
+    String? resetPeriod,
+    double? totalAmount
   }) async {
     try {
       if (name != null && name.trim().isEmpty) {
@@ -176,6 +178,10 @@ class DataCubit extends Cubit<AllUserData?> {
       
       if (alertThreshold != null && alertThreshold < 0) {
         throw Exception("Alert threshold must be greater than zero");
+      }
+
+      if (totalAmount != null && totalAmount < 0) {
+        throw Exception("Total amount must be greater than zero");
       }
       
       String? userId = _auth.currentUser?.uid;
@@ -196,6 +202,8 @@ class DataCubit extends Cubit<AllUserData?> {
       if (name != null) updateData['name'] = name;
       if (category != null) updateData['category'] = category;
       if (alertThreshold != null) updateData['alertThreshold'] = alertThreshold;
+      if (resetPeriod != null) updateData['resetPeriod'] = resetPeriod;
+      if (totalAmount != null) updateData['totalAmount'] = totalAmount;
 
       // Don't do anything if no updates were provided
       if (updateData.isEmpty) return true;
@@ -227,6 +235,9 @@ class DataCubit extends Cubit<AllUserData?> {
           name: updateData['name'] as String? ?? budget.name,
           category: updateData['category'] as String? ?? budget.category,
           alertThreshold: updateData['alertThreshold'] as double? ?? budget.alertThreshold,
+          resetPeriod: updateData['resetPeriod'] as String? ?? budget.resetPeriod,
+          totalAmount: updateData['totalAmount'] as double? ?? budget.totalAmount,
+
         );
       }
       return budget;
