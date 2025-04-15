@@ -172,6 +172,7 @@ class _BudgetTabViewState extends State<BudgetTabView> {
                                             onToggle:
                                                 () =>
                                                     _toggleCollapse(tab, b.id),
+                                            budget: b,
                                           ),
                                         );
                                       }).toList(),
