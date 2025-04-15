@@ -16,6 +16,23 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.of(context).size.width < 700) {
+      return const Scaffold(
+        backgroundColor: AppColors.primaryColor,
+        body: Center(
+          child: Text(
+            'BudgetBuddy requires a larger screen width',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final double maxHeightTabView =
