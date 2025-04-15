@@ -1305,6 +1305,7 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
 /// A class which mocks [DocumentReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockDocumentReference<T extends Object?> extends _i1.Mock
     implements _i6.DocumentReference<T> {
   MockDocumentReference() {
@@ -1440,6 +1441,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [CollectionReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockCollectionReference<T extends Object?> extends _i1.Mock
     implements _i6.CollectionReference<T> {
   MockCollectionReference() {
@@ -2086,6 +2088,21 @@ class MockDataCubit extends _i1.Mock implements _i13.DataCubit {
           as _i7.Future<bool>);
 
   @override
+  void listenToBudgetChanges() => super.noSuchMethod(
+    Invocation.method(#listenToBudgetChanges, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<void> close() =>
+      (super.noSuchMethod(
+            Invocation.method(#close, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
   void emit(_i14.AllUserData? state) => super.noSuchMethod(
     Invocation.method(#emit, [state]),
     returnValueForMissingStub: null,
@@ -2108,13 +2125,4 @@ class MockDataCubit extends _i1.Mock implements _i13.DataCubit {
     Invocation.method(#onError, [error, stackTrace]),
     returnValueForMissingStub: null,
   );
-
-  @override
-  _i7.Future<void> close() =>
-      (super.noSuchMethod(
-            Invocation.method(#close, []),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
-          )
-          as _i7.Future<void>);
 }

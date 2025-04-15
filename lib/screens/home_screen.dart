@@ -18,9 +18,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double sidebarWidth = MediaQuery.of(context).size.width * LayoutConstants.sidebarWidthProcent;
-        final double contentMaxWidth = MediaQuery.of(context).size.width * LayoutConstants.contentMaxWidthProcent;
-        final double maxHeightTabView = MediaQuery.of(context).size.height * LayoutConstants.tabViewHeightProcent;
+        final double maxHeightTabView =
+            MediaQuery.of(context).size.height *
+            LayoutConstants.tabViewHeightProcent;
 
         return Scaffold(
           backgroundColor: Colors.grey[200],
@@ -29,7 +29,9 @@ class HomeScreen extends StatelessWidget {
               const Material(elevation: 8, child: Sidebar()),
 
               Padding(
-                padding: EdgeInsets.only(left: sidebarWidth),
+                padding: EdgeInsets.only(
+                  left: LayoutConstants.getSidebarWidth(context),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -51,7 +53,11 @@ class HomeScreen extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Center(
                           child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: contentMaxWidth),
+                            constraints: BoxConstraints(
+                              maxWidth: LayoutConstants.getContentMaxWidth(
+                                context,
+                              ),
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -65,7 +71,9 @@ class HomeScreen extends StatelessWidget {
                                 // 🔹 Summary Cards
                                 BlocBuilder<DataCubit, AllUserData?>(
                                   builder: (context, userData) {
-                                    final summary = BudgetSummary.fromBudgets(userData?.budgets ?? []);
+                                    final summary = BudgetSummary.fromBudgets(
+                                      userData?.budgets ?? [],
+                                    );
                                     return SummaryCards(summary: summary);
                                   },
                                 ),

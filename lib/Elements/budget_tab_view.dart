@@ -35,14 +35,20 @@ class _BudgetTabViewState extends State<BudgetTabView> {
   void _toggleExpandAllGlobally() {
     setState(() {
       _allExpanded = !_allExpanded;
-      final budgets = context.read<DataCubit>().getFirebaseUserData()?.budgets ?? [];
+      final budgets =
+          context.read<DataCubit>().getFirebaseUserData()?.budgets ?? [];
       for (final tab in _tabs) {
         if (_allExpanded) {
           _collapsedIdsPerTab[tab]?.clear();
         } else {
-          final filtered = tab == "All"
-              ? budgets
-              : budgets.where((b) => b.resetPeriod.toLowerCase() == tab.toLowerCase()).toList();
+          final filtered =
+              tab == "All"
+                  ? budgets
+                  : budgets
+                      .where(
+                        (b) => b.resetPeriod.toLowerCase() == tab.toLowerCase(),
+                      )
+                      .toList();
           _collapsedIdsPerTab[tab] = filtered.map((b) => b.id).toSet();
         }
       }
@@ -67,21 +73,28 @@ class _BudgetTabViewState extends State<BudgetTabView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Your Budgets", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text(
+                    "Your Budgets",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   Row(
                     children: [
-                      const Icon(Icons.filter_list, color: AppColors.primaryColor),
+                      const Icon(
+                        Icons.filter_list,
+                        color: AppColors.primaryColor,
+                      ),
                       const SizedBox(width: 8),
                       const Icon(Icons.sort, color: AppColors.primaryColor),
                       const SizedBox(width: 8),
                       Builder(
-                        builder: (tabContext) => ExpandAllButton(
-                          allExpanded: _allExpanded,
-                          onToggle: _toggleExpandAllGlobally,
-                        ),
+                        builder:
+                            (tabContext) => ExpandAllButton(
+                              allExpanded: _allExpanded,
+                              onToggle: _toggleExpandAllGlobally,
+                            ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -96,55 +109,79 @@ class _BudgetTabViewState extends State<BudgetTabView> {
             const SizedBox(height: 16),
             Flexible(
               child: TabBarView(
-                children: _tabs.map((tab) {
-                  return BlocBuilder<DataCubit, AllUserData?>(
-                    builder: (context, userData) {
-                      final List<Budget> budgets = userData?.budgets ?? [];
-                      final filtered = tab == "All"
-                          ? budgets
-                          : budgets.where((b) => b.resetPeriod.toLowerCase() == tab.toLowerCase()).toList();
+                children:
+                    _tabs.map((tab) {
+                      return BlocBuilder<DataCubit, AllUserData?>(
+                        builder: (context, userData) {
+                          final List<Budget> budgets = userData?.budgets ?? [];
+                          final filtered =
+                              tab == "All"
+                                  ? budgets
+                                  : budgets
+                                      .where(
+                                        (b) =>
+                                            b.resetPeriod.toLowerCase() ==
+                                            tab.toLowerCase(),
+                                      )
+                                      .toList();
 
-                      final ScrollController controller = ScrollController();
+                          final ScrollController controller =
+                              ScrollController();
 
-                      return ClipRect(
-                        child: Scrollbar(
-                          controller: controller,
-                          thumbVisibility: true,
-                          child: SingleChildScrollView(
-                            controller: controller,
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Wrap(
-                              spacing: LayoutConstants.spacing,
-                              runSpacing: 16,
-                              alignment: WrapAlignment.start,
-                              children: filtered.map((b) {
-                                final color = _getColorByCategory(b.category);
-                                final icon = CategoryIcons.getIcon(b.category);
-                                final isWarning = b.spentAmount >= (b.totalAmount * b.alertThreshold);
-                                final isCollapsed = _collapsedIdsPerTab[tab]?.contains(b.id) ?? false;
+                          return ClipRect(
+                            child: Scrollbar(
+                              controller: controller,
+                              thumbVisibility: true,
+                              child: SingleChildScrollView(
+                                controller: controller,
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Wrap(
+                                  spacing: LayoutConstants.spacing,
+                                  runSpacing: 16,
+                                  alignment: WrapAlignment.start,
+                                  children:
+                                      filtered.map((b) {
+                                        final color = _getColorByCategory(
+                                          b.category,
+                                        );
+                                        final icon = CategoryIcons.getIcon(
+                                          b.category,
+                                        );
+                                        final isWarning =
+                                            b.spentAmount >=
+                                            (b.totalAmount * b.alertThreshold);
+                                        final isCollapsed =
+                                            _collapsedIdsPerTab[tab]?.contains(
+                                              b.id,
+                                            ) ??
+                                            false;
 
-                                return SizedBox(
-                                  width: MediaQuery.of(context).size.width * LayoutConstants.cardWidthProcent,
-                                  child: BudgetCard(
-                                    title: b.name,
-                                    spent: b.spentAmount,
-                                    limit: b.totalAmount,
-                                    color: color,
-                                    warning: isWarning,
-                                    period: b.resetPeriod,
-                                    icon: icon,
-                                    isCollapsed: isCollapsed,
-                                    onToggle: () => _toggleCollapse(tab, b.id),
-                                  ),
-                                );
-                              }).toList(),
+                                        return SizedBox(
+                                          width: LayoutConstants.getCardWidth(
+                                            context,
+                                          ),
+                                          child: BudgetCard(
+                                            title: b.name,
+                                            spent: b.spentAmount,
+                                            limit: b.totalAmount,
+                                            color: color,
+                                            warning: isWarning,
+                                            period: b.resetPeriod,
+                                            icon: icon,
+                                            isCollapsed: isCollapsed,
+                                            onToggle:
+                                                () =>
+                                                    _toggleCollapse(tab, b.id),
+                                          ),
+                                        );
+                                      }).toList(),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
-                    },
-                  );
-                }).toList(),
+                    }).toList(),
               ),
             ),
           ],

@@ -22,7 +22,7 @@ class _SidebarState extends State<Sidebar> {
     final userData = context.watch<DataCubit>().state;
 
     return Container(
-      width: MediaQuery.of(context).size.width * LayoutConstants.sidebarWidthProcent,
+      width: LayoutConstants.getSidebarWidth(context),
       color: Colors.white,
       child: Column(
         children: [
