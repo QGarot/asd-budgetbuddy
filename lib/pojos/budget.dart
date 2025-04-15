@@ -1,5 +1,6 @@
 import 'package:budgetbuddy/bloc/Data/id_generator.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
+import 'package:flutter/material.dart';
 
 class Budget {
   String id;
@@ -10,19 +11,21 @@ class Budget {
   double totalAmount;
   double spentAmount = 0;
   List<Expense> expenses;
+  IconData? icon; // optional icon field
 
   Budget({
     String? id,
     double? spentAmount,
     List<Expense>? expenses,
+    this.icon,
     required this.name,
     required this.category,
     required this.resetPeriod,
     required this.alertThreshold,
     required this.totalAmount,
-  }) : id = id ?? IdGenerator.generateRandomUniqueId(),
-       spentAmount = spentAmount ?? 0,
-       expenses = expenses ?? [];
+  })  : id = id ?? IdGenerator.generateRandomUniqueId(),
+        spentAmount = spentAmount ?? 0,
+        expenses = expenses ?? [];
 
   Budget copyWith({
     String? id,
@@ -33,6 +36,7 @@ class Budget {
     double? totalAmount,
     double? spentAmount,
     List<Expense>? expenses,
+    IconData? icon,
   }) {
     return Budget(
       id: id ?? this.id,
@@ -43,6 +47,7 @@ class Budget {
       totalAmount: totalAmount ?? this.totalAmount,
       spentAmount: spentAmount ?? this.spentAmount,
       expenses: expenses ?? this.expenses.map((e) => e.copyWith()).toList(),
+      icon: icon ?? this.icon,
     );
   }
 
@@ -59,6 +64,7 @@ class Budget {
       totalAmount: (data['totalAmount'] as num).toDouble(),
       spentAmount: (data['spentAmount'] as num).toDouble(),
       expenses: expenses,
+      // icon will be assigned dynamically in UI using category
     );
   }
 
@@ -71,7 +77,7 @@ class Budget {
       'alertThreshold': alertThreshold,
       'totalAmount': totalAmount,
       'spentAmount': spentAmount,
-      //'expenses': expenses.map((e) => e.toFirestore()).toList(),
+      // 'icon' is not stored in Firestore
     };
   }
 }

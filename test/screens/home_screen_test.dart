@@ -11,8 +11,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mockito/mock_classes.mocks.dart';
 
-// Currently skipped !
-
 void main() {
   testWidgets(
     'HomeScreen renders dashboard title and subtitle',
@@ -66,7 +64,6 @@ void main() {
       expect(find.text('Dashboard'), findsOneWidget);
       expect(find.text('Settings'), findsOneWidget);
     },
-
-    //skip: true,
+    //skip: true
   );
 }

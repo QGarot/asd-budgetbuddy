@@ -5,6 +5,7 @@ import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:budgetbuddy/AppData/layout_constants.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
@@ -21,7 +22,7 @@ class _SidebarState extends State<Sidebar> {
     final userData = context.watch<DataCubit>().state;
 
     return Container(
-      width: 240,
+      width: LayoutConstants.getSidebarWidth(context),
       color: Colors.white,
       child: Column(
         children: [

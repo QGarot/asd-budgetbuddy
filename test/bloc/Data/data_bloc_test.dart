@@ -19,6 +19,7 @@ void main() {
     late MockCollectionReference<Map<String, dynamic>> mockExpensesCol;
     late MockQuerySnapshot<Map<String, dynamic>> mockExpensesQuery;
     late MockQueryDocumentSnapshot<Map<String, dynamic>> mockExpenseDoc;
+    late MockQuerySnapshot<Map<String, dynamic>> mockSnapshotForStream;
 
     setUp(() {
       mockAuth = MockFirebaseAuth();
@@ -33,6 +34,7 @@ void main() {
       mockExpensesCol = MockCollectionReference();
       mockExpensesQuery = MockQuerySnapshot();
       mockExpenseDoc = MockQueryDocumentSnapshot();
+      mockSnapshotForStream = MockQuerySnapshot();
     });
 
     test(
@@ -65,6 +67,15 @@ void main() {
           'totalAmount': 1000,
           'spentAmount': 0,
         });
+
+        // Stub snapshots for listenToBudgetChanges
+        when(
+          mockBudgetsCol.snapshots(
+            includeMetadataChanges: anyNamed('includeMetadataChanges'),
+            source: anyNamed('source'),
+          ),
+        ).thenAnswer((_) => Stream.value(mockSnapshotForStream));
+        when(mockSnapshotForStream.docs).thenReturn([mockBudgetDoc]);
 
         // Mock expenses collection
         when(mockBudgetDoc.reference).thenReturn(mockUserDocRef);
