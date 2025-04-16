@@ -46,9 +46,7 @@ void main() {
       MaterialApp(
         home: BlocProvider<DataCubit>.value(
           value: mockDataCubit,
-          child: const Scaffold(
-            body: BudgetListWidget(),
-          ),
+          child: const Scaffold(body: BudgetListWidget()),
         ),
       ),
     );
@@ -60,9 +58,9 @@ void main() {
     expect(find.text('Groceries'), findsOneWidget);
 
     // Check if amounts are rendered correctly
-    expect(find.textContaining('Total: \$1000.00'), findsOneWidget);
-    expect(find.textContaining('Spent: \$800.00'), findsOneWidget);
-    expect(find.textContaining('Total: \$200.00'), findsOneWidget);
-    expect(find.textContaining('Spent: \$150.00'), findsOneWidget);
+    expect(find.textContaining('Total: €1000.00'), findsOneWidget);
+    expect(find.textContaining('Spent: €800.00'), findsOneWidget);
+    expect(find.textContaining('Total: €200.00'), findsOneWidget);
+    expect(find.textContaining('Spent: €150.00'), findsOneWidget);
   });
 }
