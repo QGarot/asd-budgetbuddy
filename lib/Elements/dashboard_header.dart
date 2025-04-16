@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
+import 'package:budgetbuddy/AppData/app_text_styles.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({super.key});
@@ -18,24 +19,11 @@ class DashboardHeader extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Budget Dashboard",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black87,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
+                  Text("Budget Dashboard", style: AppTextStyles.dashboardTitle),
                   SizedBox(height: 4),
                   Text(
                     "Manage and track your spending",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF9E9E9E),
-                      fontWeight: FontWeight.w400,
-                      height: 1.1,
-                    ),
+                    style: AppTextStyles.dashboardSubtitle,
                   ),
                 ],
               ),
@@ -65,7 +53,10 @@ class DashboardHeader extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
                 textStyle: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

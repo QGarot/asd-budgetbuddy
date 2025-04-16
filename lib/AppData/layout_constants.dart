@@ -42,4 +42,10 @@ class LayoutConstants {
       return MediaQuery.of(context).size.width * cardWidthProcent;
     }
   }
+
+  //Sized Boxes Numbers mean Pixel
+  static const double spaceOverDashboard = 16;
+  static const double spacebetweenDashboardBudgetOverview = 24;
+  static const double spacebetweenBudgetOverviewTabView = 24;
+  static const double spaceAfterTabview = 40;
 }

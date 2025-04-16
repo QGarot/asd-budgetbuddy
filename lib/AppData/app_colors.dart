@@ -7,9 +7,6 @@ class AppColors {
   static const Color yellowColorFaint = Color(0xFFFFE082);
   static const Color dangerColor = Colors.redAccent;
 
-
-
-
   // Category-specific colors
   static const Color totalBudgetBar = Colors.deepPurpleAccent;
   static const Color groceries = Colors.green;
@@ -20,4 +17,7 @@ class AppColors {
   static const Color utilities = Colors.indigo;
   static const Color shopping = Colors.pinkAccent;
   static const Color other = Colors.blueGrey;
+
+  // Place Specific Colors
+  static const Color backgroundColorHomescreen = Color(0xFFEEEEEE);
 }

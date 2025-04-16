@@ -43,63 +43,61 @@ class BudgetCard extends StatelessWidget {
   void _showDeleteConfirmation(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Confirm Deletion',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          'Are you sure you want to delete "$title" budget? This action can not be undone.',
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-          ),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: Colors.deepPurple,
-                fontWeight: FontWeight.w500,
-              ),
+      builder:
+          (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            title: const Text(
+              'Confirm Deletion',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(4),
+            content: Text(
+              'Are you sure you want to delete "$title" budget? This action can not be undone.',
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
-            child: TextButton(
-              onPressed: () {
-                context.read<DataCubit>().deleteBudget(budget.id);
-                Navigator.pop(context);
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-              ),
-              child: const Text(
-                'Delete',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    context.read<DataCubit>().deleteBudget(budget.id);
+                    Navigator.pop(context);
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'Delete',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            actionsPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
             ),
           ),
-        ],
-        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
     );
   }
 
@@ -137,10 +135,7 @@ class BudgetCard extends StatelessWidget {
                 ),
               ),
               PopupMenuButton<String>(
-                icon: const Icon(
-                  Icons.arrow_drop_down,
-                  size: 24,
-                ),
+                icon: const Icon(Icons.arrow_drop_down, size: 24),
                 color: Colors.white,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -153,28 +148,29 @@ class BudgetCard extends StatelessWidget {
                     _showDeleteConfirmation(context);
                   }
                 },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
-                    value: 'edit',
-                    child: Row(
-                      children: [
-                        Icon(Icons.edit),
-                        SizedBox(width: 8),
-                        Text('Edit'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete, color: Colors.red),
-                        SizedBox(width: 8),
-                        Text('Delete', style: TextStyle(color: Colors.red)),
-                      ],
-                    ),
-                  ),
-                ],
+                itemBuilder:
+                    (BuildContext context) => <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit),
+                            SizedBox(width: 8),
+                            Text('Edit'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, color: Colors.red),
+                            SizedBox(width: 8),
+                            Text('Delete', style: TextStyle(color: Colors.red)),
+                          ],
+                        ),
+                      ),
+                    ],
               ),
             ],
           ),
@@ -188,7 +184,7 @@ class BudgetCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "\$${spent.toStringAsFixed(2)} of \$${limit.toStringAsFixed(2)}",
+                "€${spent.toStringAsFixed(2)} of €${limit.toStringAsFixed(2)}",
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               Text("${(percent * 100).round()}%"),
@@ -210,20 +206,29 @@ class BudgetCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "\$${remaining.toStringAsFixed(2)} remaining",
+                  "€${remaining.toStringAsFixed(2)} remaining",
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
                 if (warning)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: AppColors.dangerColor.withAlpha((255 * 0.1).toInt()),
+                      color: AppColors.dangerColor.withAlpha(
+                        (255 * 0.1).toInt(),
+                      ),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.warning, size: 16, color: AppColors.dangerColor),
+                        Icon(
+                          Icons.warning,
+                          size: 16,
+                          color: AppColors.dangerColor,
+                        ),
                         SizedBox(width: 4),
                         Text(
                           "Approaching limit",
@@ -294,7 +299,9 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
     super.initState();
     // Imp -> Initialize controllers with existing budget data
     _nameController = TextEditingController(text: widget.budget.name);
-    _amountController = TextEditingController(text: widget.budget.totalAmount.toString());
+    _amountController = TextEditingController(
+      text: widget.budget.totalAmount.toString(),
+    );
     _selectedCategory = widget.budget.category;
     _selectedPeriod = widget.budget.resetPeriod;
     _alertThreshold = widget.budget.alertThreshold;
@@ -392,7 +399,9 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
                   inactiveTrackColor: AppColors.yellowColorFaint,
                   thumbColor: Colors.transparent,
                   overlayColor: Colors.transparent,
-                  thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0),
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 0,
+                  ),
                   overlayShape: const RoundSliderOverlayShape(overlayRadius: 0),
                   tickMarkShape: const RoundSliderTickMarkShape(
                     tickMarkRadius: 0,
@@ -460,7 +469,7 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
 
   void _updateBudget() {
     final form = _formKey.currentState;
-    
+
     setState(() {
       _errorMessage = " ";
     });
@@ -478,7 +487,7 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
     // Parse the amount
     final rawAmountText = _amountController.text.trim().replaceAll(',', '.');
     final parsedAmount = double.tryParse(rawAmountText);
-    
+
     if (parsedAmount == null || parsedAmount <= 0) {
       setState(() {
         _errorMessage = "Please enter a valid amount.";
@@ -488,26 +497,29 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
 
     // Update the budget using DataCubit with ALL the updated parameters
     final DataCubit dataCubit = context.read<DataCubit>();
-    dataCubit.updateBudget(
-      widget.budget.id,
-      name: _nameController.text.trim(),
-      category: _selectedCategory,
-      alertThreshold: _alertThreshold,
-      resetPeriod: _selectedPeriod,
-      totalAmount: parsedAmount,
-    ).then((success) {
-      if (success) {
-        MessageToUser.showMessage(context, "Budget updated successfully!");
-        Navigator.of(context).pop();
-      } else {
-        setState(() {
-          _errorMessage = "Failed to update budget.";
+    dataCubit
+        .updateBudget(
+          widget.budget.id,
+          name: _nameController.text.trim(),
+          category: _selectedCategory,
+          alertThreshold: _alertThreshold,
+          resetPeriod: _selectedPeriod,
+          totalAmount: parsedAmount,
+        )
+        .then((success) {
+          if (success) {
+            MessageToUser.showMessage(context, "Budget updated successfully!");
+            Navigator.of(context).pop();
+          } else {
+            setState(() {
+              _errorMessage = "Failed to update budget.";
+            });
+          }
+        })
+        .catchError((error) {
+          setState(() {
+            _errorMessage = "An error occurred: $error";
+          });
         });
-      }
-    }).catchError((error) {
-      setState(() {
-        _errorMessage = "An error occurred: $error";
-      });
-    });
   }
 }

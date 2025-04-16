@@ -32,8 +32,8 @@ class BudgetListWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Category: ${budget.category}'),
-                      Text('Total: \$${budget.totalAmount.toStringAsFixed(2)}'),
-                      Text('Spent: \$${budget.spentAmount.toStringAsFixed(2)}'),
+                      Text('Total: €${budget.totalAmount.toStringAsFixed(2)}'),
+                      Text('Spent: €${budget.spentAmount.toStringAsFixed(2)}'),
                     ],
                   ),
                 ),

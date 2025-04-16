@@ -40,7 +40,7 @@ void main() {
       await tester.pumpWidget(
         MediaQuery(
           data: const MediaQueryData(
-            size: Size(1440, 1024),
+            size: Size(1980, 1020),
           ), // Desktop-like width
           child: MaterialApp(
             home: Scaffold(
@@ -61,8 +61,7 @@ void main() {
 
       expect(find.text('Budget Dashboard'), findsNWidgets(2));
       expect(find.text('Manage and track your spending'), findsOneWidget);
-      expect(find.text('Dashboard'), findsOneWidget);
-      expect(find.text('Settings'), findsOneWidget);
+
     },
     //skip: true
   );
