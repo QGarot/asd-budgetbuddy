@@ -4,11 +4,14 @@ import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:async';
 
 class DataCubit extends Cubit<AllUserData?> {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   AllUserData? _userData;
+
+  StreamSubscription? _budgetSubscription;
 
   DataCubit({FirebaseAuth? auth, FirebaseFirestore? firestore})
     : _auth = auth ?? FirebaseAuth.instance,
@@ -16,6 +19,7 @@ class DataCubit extends Cubit<AllUserData?> {
       super(null) {
     if (_auth.currentUser != null) {
       fetchFirebaseUserData();
+      listenToBudgetChanges();
     }
   }
 
@@ -158,4 +162,52 @@ class DataCubit extends Cubit<AllUserData?> {
   AllUserData? getFirebaseUserData() {
     return _userData;
   }
+
+  // This Function is here to always have real time user Budget Info
+  void listenToBudgetChanges() {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) return;
+
+    _budgetSubscription?.cancel(); // avoid multiple listeners
+
+    _budgetSubscription = _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('budgets')
+        .snapshots()
+        .listen((snapshot) async {
+      try {
+        final List<Budget> budgets = [];
+
+        for (final doc in snapshot.docs) {
+          final data = doc.data();
+          final expensesSnapshot =
+              await doc.reference.collection('expenses').get();
+
+          final expenses = expensesSnapshot.docs.map((e) {
+            return Expense.fromFirestore(e.data());
+          }).toList();
+
+          budgets.add(Budget.fromFirestore(data, expenses));
+        }
+
+        final userDoc = await _firestore.collection('users').doc(userId).get();
+        final userData = userDoc.data();
+
+        if (userData != null) {
+          _userData = AllUserData.fromFirestore(userData, budgets);
+          emit(_userData);
+        }
+      } catch (e) {
+        print("Error in real-time budget stream: $e");
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _budgetSubscription?.cancel();
+    return super.close();
+  }
+
 }
