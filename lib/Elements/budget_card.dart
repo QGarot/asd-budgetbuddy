@@ -78,7 +78,7 @@ class BudgetCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "\$${spent.toStringAsFixed(2)} of \$${limit.toStringAsFixed(2)}",
+                "€${spent.toStringAsFixed(2)} of €${limit.toStringAsFixed(2)}",
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               Text("${(percent * 100).round()}%"),
@@ -100,20 +100,29 @@ class BudgetCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "\$${remaining.toStringAsFixed(2)} remaining",
+                  "€${remaining.toStringAsFixed(2)} remaining",
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
                 if (warning)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: AppColors.dangerColor.withAlpha((255 * 0.1).toInt()),
+                      color: AppColors.dangerColor.withAlpha(
+                        (255 * 0.1).toInt(),
+                      ),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       children: const [
-                        Icon(Icons.warning, size: 16, color: AppColors.dangerColor),
+                        Icon(
+                          Icons.warning,
+                          size: 16,
+                          color: AppColors.dangerColor,
+                        ),
                         SizedBox(width: 4),
                         Text(
                           "Approaching limit",
