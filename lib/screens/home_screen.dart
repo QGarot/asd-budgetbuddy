@@ -1,6 +1,7 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 
 import 'package:budgetbuddy/AppData/ui_constants.dart';
+import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
 import 'package:budgetbuddy/Elements/sidebar.dart';
 
 import 'package:flutter/material.dart';
@@ -15,9 +16,12 @@ import 'package:budgetbuddy/AppData/layout_constants.dart';
 
 import 'package:budgetbuddy/Elements/header_bar.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  final String title = "Budget Dashboard";
+  final String subtitle = "Manage and track your spending";
+  final String buttonText = "Create Budget";
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +46,37 @@ class HomeScreen extends StatelessWidget {
                       child: Center(
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxWidth: LayoutConstants.getContentMaxWidth(context),
+                            maxWidth: LayoutConstants.getContentMaxWidth(
+                              context,
+                            ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              const SizedBox(height: LayoutConstants.spaceOverDashboard),
+                              const SizedBox(
+                                height: LayoutConstants.spaceOverDashboard,
+                              ),
 
                               // 🔹 Dashboard Header
-                              const DashboardHeader(),
+                              DashboardHeader(
+                                title: title,
+                                subtitle: subtitle,
+                                buttonText: buttonText,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder:
+                                        (dialogContext) =>
+                                            const AddBudgetDialog(),
+                                  );
+                                },
+                              ),
 
-                              const SizedBox(height: LayoutConstants.spacebetweenDashboardBudgetOverview),
+                              const SizedBox(
+                                height:
+                                    LayoutConstants
+                                        .spacebetweenDashboardBudgetOverview,
+                              ),
 
                               // 🔹 Summary Cards
                               BlocBuilder<DataCubit, AllUserData?>(
@@ -64,7 +88,11 @@ class HomeScreen extends StatelessWidget {
                                 },
                               ),
 
-                              const SizedBox(height: LayoutConstants.spacebetweenBudgetOverviewTabView),
+                              const SizedBox(
+                                height:
+                                    LayoutConstants
+                                        .spacebetweenBudgetOverviewTabView,
+                              ),
 
                               // 🔹 Budgets Tab View
                               SizedBox(
@@ -72,7 +100,9 @@ class HomeScreen extends StatelessWidget {
                                 child: const BudgetTabView(),
                               ),
 
-                              const SizedBox(height: LayoutConstants.spaceAfterTabview),
+                              const SizedBox(
+                                height: LayoutConstants.spaceAfterTabview,
+                              ),
                             ],
                           ),
                         ),

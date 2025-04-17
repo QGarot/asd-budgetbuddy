@@ -20,6 +20,7 @@ void main() {
               warning: false,
               period: 'Monthly',
               icon: Icons.shopping_cart,
+              idOfBudget: '1',
               isCollapsed: false,
               onToggle: () {
                 toggled = true;

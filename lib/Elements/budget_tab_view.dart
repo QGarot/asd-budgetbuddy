@@ -169,6 +169,7 @@ class _BudgetTabViewState extends State<BudgetTabView> {
                                             period: b.resetPeriod,
                                             icon: icon,
                                             isCollapsed: isCollapsed,
+                                            idOfBudget: b.id,
                                             onToggle:
                                                 () =>
                                                     _toggleCollapse(tab, b.id),

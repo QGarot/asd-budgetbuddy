@@ -1,12 +1,20 @@
+import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
+import 'package:budgetbuddy/screens/expense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/AppData/app_text_styles.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HeaderBar extends StatelessWidget {
   final String title;
+  final bool showReturnButton;
 
-  const HeaderBar({super.key, required this.title});
+  const HeaderBar({
+    super.key,
+    required this.title,
+    this.showReturnButton = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +25,22 @@ class HeaderBar extends StatelessWidget {
         boxShadow: UIConstants.standardShadow,
       ),
       padding: const EdgeInsets.all(12),
-      child: Text(
-        title,
-        style: AppTextStyles.headerBarTitle,
+      child: Row(
+        children: [
+          if (showReturnButton)
+            IconButton(
+              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+              constraints: const BoxConstraints(),
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.white,
+              onPressed: () {
+                CurrentBudget.budgetId = "";
+                final cubit = context.read<SidebarCubit>();
+                cubit.selectPage(SidebarPage.dashboard);
+              },
+            ),
+          Text(title, style: AppTextStyles.headerBarTitle),
+        ],
       ),
     );
   }

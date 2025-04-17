@@ -2,7 +2,9 @@ import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
+import 'package:budgetbuddy/screens/expense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,7 @@ class BudgetCard extends StatelessWidget {
   final bool isCollapsed;
   final VoidCallback onToggle;
   final Budget budget;
+  final String idOfBudget;
 
   const BudgetCard({
     super.key,
@@ -30,6 +33,7 @@ class BudgetCard extends StatelessWidget {
     required this.isCollapsed,
     required this.onToggle,
     required this.budget,
+    required this.idOfBudget,
   });
 
   void _navigateToEditScreen(BuildContext context) {
@@ -247,7 +251,11 @@ class BudgetCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  CurrentBudget.budgetId = idOfBudget;
+                  final cubit = context.read<SidebarCubit>();
+                  cubit.selectPage(SidebarPage.showExpense);
+                },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   foregroundColor: AppColors.primaryColor,

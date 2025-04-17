@@ -1,3 +1,4 @@
+import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/main_button.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
@@ -42,20 +43,19 @@ class LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      Future.delayed(const Duration(seconds: 1), () {
-        if (!mounted) return;
-        setState(() {
-          _isLoading = false;
-        });
-        MessageToUser.showMessage(context, "Login successful!");
-        Navigator.pushReplacementNamed(context, '/loading');
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
       });
+
+      Navigator.pushReplacementNamed(context, '/loading');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.neutralBackground,
       body: Center(
         child: StandardDialogBox(
           title: "Sign In",
