@@ -6,6 +6,7 @@ class AppColors {
   static const Color yellowColor = Color(0xFFFFAB00);
   static const Color yellowColorFaint = Color(0xFFFFE082);
   static const Color dangerColor = Colors.redAccent;
+  static const Color neutralBackground = Colors.white;
 
   // Category-specific colors
   static const Color totalBudgetBar = Colors.deepPurpleAccent;

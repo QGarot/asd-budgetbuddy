@@ -1,4 +1,5 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:budgetbuddy/screens/expense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
@@ -48,6 +49,8 @@ class MainScreen extends StatelessWidget {
                     return const SettingsScreen();
                   case SidebarPage.help:
                     return const HelpScreen();
+                  case SidebarPage.showExpense:
+                    return const ExpenseScreen();
                 }
               },
             ),

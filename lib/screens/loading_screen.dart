@@ -24,31 +24,6 @@ class LoadingScreenState extends State<LoadingScreen> {
     //Get user data
     await DataEvent.fetchFirebaseUserData(context);
 
-    //Add a budget to test the app
-    // await DataEvent.addBudget(
-    //   context,
-    //   Budget(
-    //     id: "BudgetID2",
-    //     name: "Ups",
-    //     category: "Yup",
-    //     alertThreshold: 0.8,
-    //     totalAmount: 500,
-    //   ),
-    // );
-
-    //Add an expense to test the app
-    // await DataEvent.addExpense(
-    //   context,
-    //   "BudgetID",
-    //   Expense(
-    //     id: "ExpenseID3",
-    //     merchant: "Ikea3",
-    //     amount: 100.99,
-    //     date: DateTime.now(),
-    //     notes: "Ich gehe gerne zu Ikea 3",
-    //   ),
-    // );
-
     if (mounted) {
       Navigator.pushReplacementNamed(context, '/home');
     }

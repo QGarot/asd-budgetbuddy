@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
-import 'package:budgetbuddy/AppData/app_text_styles.dart';
 
 class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({super.key});
+  const DashboardHeader({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.buttonText,
+    required this.onPressed,
+  });
+
+  final String title;
+  final String subtitle;
+  final String buttonText;
+  //onpressed of button
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +26,28 @@ class DashboardHeader extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Budget Dashboard", style: AppTextStyles.dashboardTitle),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black87,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
                   SizedBox(height: 4),
                   Text(
-                    "Manage and track your spending",
-                    style: AppTextStyles.dashboardSubtitle,
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF9E9E9E),
+                      fontWeight: FontWeight.w400,
+                      height: 1.1,
+                    ),
                   ),
                 ],
               ),
@@ -39,14 +63,9 @@ class DashboardHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
             ),
             child: ElevatedButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) => const AddBudgetDialog(),
-                );
-              },
+              onPressed: onPressed,
               icon: const Icon(Icons.add, size: 18),
-              label: const Text("Create Budget"),
+              label: Text(buttonText),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 foregroundColor: Colors.white,

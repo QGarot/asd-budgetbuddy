@@ -3,6 +3,7 @@ import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
+import 'package:budgetbuddy/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:budgetbuddy/AppData/layout_constants.dart';
@@ -91,9 +92,14 @@ class _SidebarState extends State<Sidebar> {
               child: InkWell(
                 onTap: () async {
                   await AuthEvent.signOut(context);
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/login',
+                  Navigator.of(context).pushAndRemoveUntil(
+                    PageRouteBuilder(
+                      pageBuilder:
+                          (context, animation1, animation2) =>
+                              const LoginScreen(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
                     (route) => false,
                   );
                 },
