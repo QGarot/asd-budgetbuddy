@@ -56,10 +56,12 @@ class SummaryCards extends StatelessWidget {
           children: [
             Text(title, style: AppTextStyles.cardLabel),
             const SizedBox(height: 8),
+
             Text(
               "€${amount.toStringAsFixed(2)}",
               style: AppTextStyles.cardValue,
             ),
+
             const SizedBox(height: 8),
             LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),

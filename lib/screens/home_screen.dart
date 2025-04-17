@@ -1,4 +1,8 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
+
+import 'package:budgetbuddy/AppData/ui_constants.dart';
+import 'package:budgetbuddy/Elements/sidebar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
@@ -8,7 +12,9 @@ import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:budgetbuddy/Elements/budget_tab_view.dart';
 import 'package:budgetbuddy/Elements/dashboard_header.dart';
 import 'package:budgetbuddy/AppData/layout_constants.dart';
+
 import 'package:budgetbuddy/Elements/header_bar.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

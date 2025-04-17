@@ -17,5 +17,7 @@ import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
   QueryDocumentSnapshot<Map<String, dynamic>>,
   AuthCubit,
   DataCubit,
+  WriteBatch,
+  Stream<QuerySnapshot<Map<String, dynamic>>>,
 ])
 void main() {}

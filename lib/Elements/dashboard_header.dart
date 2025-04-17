@@ -19,10 +19,7 @@ class DashboardHeader extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Budget Dashboard",
-                    style: AppTextStyles.dashboardTitle,
-                  ),
+                  Text("Budget Dashboard", style: AppTextStyles.dashboardTitle),
                   SizedBox(height: 4),
                   Text(
                     "Manage and track your spending",
@@ -56,7 +53,10 @@ class DashboardHeader extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
                 textStyle: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

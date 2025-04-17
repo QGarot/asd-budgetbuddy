@@ -1,5 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:budgetbuddy/Elements/message_to_user.dart';
+import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
+import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/pojos/budget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BudgetCard extends StatelessWidget {
   final String title;
@@ -11,6 +16,7 @@ class BudgetCard extends StatelessWidget {
   final IconData icon;
   final bool isCollapsed;
   final VoidCallback onToggle;
+  final Budget budget;
 
   const BudgetCard({
     super.key,
@@ -23,7 +29,77 @@ class BudgetCard extends StatelessWidget {
     required this.icon,
     required this.isCollapsed,
     required this.onToggle,
+    required this.budget,
   });
+
+  void _navigateToEditScreen(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => EditBudgetDialog(budget: budget),
+      barrierDismissible: false,
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            title: const Text(
+              'Confirm Deletion',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            content: Text(
+              'Are you sure you want to delete "$title" budget? This action can not be undone.',
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    context.read<DataCubit>().deleteBudget(budget.id);
+                    Navigator.pop(context);
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'Delete',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            actionsPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+          ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +134,49 @@ class BudgetCard extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                icon: Icon(
-                  key: const Key('toggle_button'),
-                  isCollapsed ? Icons.expand_more : Icons.expand_less,
-                  size: 18,
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.arrow_drop_down, size: 24),
+                color: Colors.white,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                onPressed: onToggle,
+                onSelected: (value) {
+                  if (value == 'edit') {
+                    _navigateToEditScreen(context);
+                  } else if (value == 'delete') {
+                    _showDeleteConfirmation(context);
+                  }
+                },
+                itemBuilder:
+                    (BuildContext context) => <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit),
+                            SizedBox(width: 8),
+                            Text('Edit'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, color: Colors.red),
+                            SizedBox(width: 8),
+                            Text('Delete', style: TextStyle(color: Colors.red)),
+                          ],
+                        ),
+                      ),
+                    ],
               ),
             ],
           ),
           const SizedBox(height: 4),
           if (!isCollapsed)
-            Text(period, style: TextStyle(color: Colors.black54)),
+            Text(period, style: const TextStyle(color: Colors.black54)),
           const SizedBox(height: 16),
 
           // Always visible: bar + label
@@ -116,8 +222,8 @@ class BudgetCard extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.warning,
                           size: 16,
@@ -153,5 +259,267 @@ class BudgetCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class EditBudgetDialog extends StatefulWidget {
+  final Budget budget;
+
+  const EditBudgetDialog({super.key, required this.budget});
+
+  @override
+  State<EditBudgetDialog> createState() => _EditBudgetDialogState();
+}
+
+class _EditBudgetDialogState extends State<EditBudgetDialog> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _nameController;
+  late TextEditingController _amountController;
+
+  late String _selectedCategory;
+  late String _selectedPeriod;
+  late double _alertThreshold;
+
+  String? _errorMessage = " ";
+
+  final List<String> _categories = [
+    'Groceries',
+    'Rent',
+    'Utilities',
+    'Entertainment',
+    'Travel',
+    'Dining',
+    'Shopping',
+    'Other',
+  ];
+  final List<String> _periods = ['Weekly', 'Biweekly', 'Monthly'];
+
+  @override
+  void initState() {
+    super.initState();
+    // Imp -> Initialize controllers with existing budget data
+    _nameController = TextEditingController(text: widget.budget.name);
+    _amountController = TextEditingController(
+      text: widget.budget.totalAmount.toString(),
+    );
+    _selectedCategory = widget.budget.category;
+    _selectedPeriod = widget.budget.resetPeriod;
+    _alertThreshold = widget.budget.alertThreshold;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StandardDialogBox(
+      title: "Edit Budget",
+      subtitle: "Update your budget details below.",
+      icon: Icons.edit,
+      content: SingleChildScrollView(
+        child: StandardDialogBox.buildStandardForm(
+          formKey: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StandardDialogBox.buildStandardFormField(
+                controller: _nameController,
+                label: 'Budget Name',
+                hint: 'e.g., Groceries',
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return null;
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              StandardDialogBox.buildStandardFormField(
+                controller: _amountController,
+                label: 'Amount',
+                hint: "0,00€",
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                validator: (value) {
+                  final text = value?.trim();
+                  if (text == null || text.isEmpty) {
+                    return null;
+                  }
+                  final parsed = double.tryParse(text.replaceAll(',', '.'));
+                  if (parsed == null || parsed <= 0) {
+                    return "Please enter a valid amount";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 13),
+              Row(
+                children: [
+                  Expanded(
+                    child: StandardDialogBox.buildStandardDropdown<String>(
+                      context: context,
+                      label: 'Category',
+                      selectedValue: _selectedCategory,
+                      items: _categories,
+                      onChanged:
+                          (value) => setState(() => _selectedCategory = value!),
+                      itemLabel: (item) => item,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: StandardDialogBox.buildStandardDropdown<String>(
+                      context: context,
+                      label: 'Period',
+                      selectedValue: _selectedPeriod,
+                      items: _periods,
+                      onChanged:
+                          (value) => setState(() => _selectedPeriod = value!),
+                      itemLabel: (item) => item,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Alert Threshold: ${(100 * _alertThreshold).toInt()}%',
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  trackHeight: 8,
+                  trackShape: const RoundedRectSliderTrackShape(),
+                  activeTrackColor: AppColors.yellowColor,
+                  inactiveTrackColor: AppColors.yellowColorFaint,
+                  thumbColor: Colors.transparent,
+                  overlayColor: Colors.transparent,
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 0,
+                  ),
+                  overlayShape: const RoundSliderOverlayShape(overlayRadius: 0),
+                  tickMarkShape: const RoundSliderTickMarkShape(
+                    tickMarkRadius: 0,
+                  ),
+                  showValueIndicator: ShowValueIndicator.never,
+                ),
+                child: Slider(
+                  value: _alertThreshold,
+                  onChanged: (value) => setState(() => _alertThreshold = value),
+                  min: 0.0,
+                  max: 1.0,
+                  divisions: 20,
+                ),
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text("0%"), Text("100%")],
+              ),
+              const SizedBox(height: 13),
+              Text(
+                "You'll receive an alert when your spending reaches this percentage of your budget",
+                style: TextStyle(color: Colors.grey[600], fontSize: 13),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10, top: 8),
+          child: TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+            ),
+            child: const Text('Cancel'),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 12, bottom: 10, top: 8),
+          child: ElevatedButton(
+            onPressed: _updateBudget,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 4,
+            ),
+            child: const Text('Save Changes'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _updateBudget() {
+    final form = _formKey.currentState;
+
+    setState(() {
+      _errorMessage = " ";
+    });
+
+    if (form == null || !form.validate()) return;
+
+    if (_nameController.text.trim().isEmpty ||
+        _amountController.text.trim().isEmpty) {
+      setState(() {
+        _errorMessage = "Please fill in the missing fields.";
+      });
+      return;
+    }
+
+    // Parse the amount
+    final rawAmountText = _amountController.text.trim().replaceAll(',', '.');
+    final parsedAmount = double.tryParse(rawAmountText);
+
+    if (parsedAmount == null || parsedAmount <= 0) {
+      setState(() {
+        _errorMessage = "Please enter a valid amount.";
+      });
+      return;
+    }
+
+    // Update the budget using DataCubit with ALL the updated parameters
+    final DataCubit dataCubit = context.read<DataCubit>();
+    dataCubit
+        .updateBudget(
+          widget.budget.id,
+          name: _nameController.text.trim(),
+          category: _selectedCategory,
+          alertThreshold: _alertThreshold,
+          resetPeriod: _selectedPeriod,
+          totalAmount: parsedAmount,
+        )
+        .then((success) {
+          if (success) {
+            MessageToUser.showMessage(context, "Budget updated successfully!");
+            Navigator.of(context).pop();
+          } else {
+            setState(() {
+              _errorMessage = "Failed to update budget.";
+            });
+          }
+        })
+        .catchError((error) {
+          setState(() {
+            _errorMessage = "An error occurred: $error";
+          });
+        });
   }
 }
