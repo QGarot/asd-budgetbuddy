@@ -5,7 +5,7 @@ class Expense {
   String id;
   String merchant;
   double amount;
-  DateTime date;
+  DateTime createdAt;
   String notes;
 
   Expense({
@@ -13,7 +13,7 @@ class Expense {
     String? notes,
     required this.merchant,
     required this.amount,
-    required this.date,
+    required this.createdAt,
   }) : id = id ?? IdGenerator.generateRandomUniqueId(),
        notes = notes ?? '';
 
@@ -21,14 +21,14 @@ class Expense {
     String? id,
     String? merchant,
     double? amount,
-    DateTime? date,
+    DateTime? createdAt,
     String? notes,
   }) {
     return Expense(
       id: id ?? this.id,
       merchant: merchant ?? this.merchant,
       amount: amount ?? this.amount,
-      date: date ?? this.date,
+      createdAt: createdAt ?? this.createdAt,
       notes: notes ?? this.notes,
     );
   }
@@ -38,7 +38,7 @@ class Expense {
       id: data['id'] ?? 0,
       merchant: data['merchant'] ?? '',
       amount: (data['amount'] as num).toDouble(),
-      date: (data['date'] as Timestamp).toDate(),
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
       notes: data['notes'] ?? '',
     );
   }
@@ -48,7 +48,7 @@ class Expense {
       'id': id,
       'merchant': merchant,
       'amount': amount,
-      'date': date,
+      'createdAt': createdAt,
       'notes': notes,
     };
   }

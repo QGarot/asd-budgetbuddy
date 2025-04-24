@@ -11,6 +11,7 @@ class LayoutConstants {
   static const double spacing = 16;
 
   static const double minSidebarWidth = 200.0;
+  static const double maxSidebarWidth = 300.0;
   static const double minContentWidth = 500.0;
   static const double minCardWidth = 200.0;
 
@@ -19,6 +20,10 @@ class LayoutConstants {
     if (MediaQuery.of(context).size.width * sidebarWidthProcent <
         minSidebarWidth) {
       return minSidebarWidth;
+    }
+    if (MediaQuery.of(context).size.width * sidebarWidthProcent >
+        maxSidebarWidth) {
+      return maxSidebarWidth;
     } else {
       return MediaQuery.of(context).size.width * sidebarWidthProcent;
     }

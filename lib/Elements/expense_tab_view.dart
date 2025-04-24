@@ -98,7 +98,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
     if (tab == 'RECENT') {
       // Sort by most recent date
       final sorted = List<Expense>.from(allExpenses)
-        ..sort((a, b) => b.date.compareTo(a.date));
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       return sorted;
     } else if (tab == 'HIGHEST') {
       // Sort by highest amount
@@ -170,7 +170,7 @@ class ExpenseListItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "${_formatDate(expense.date)} • ${expense.notes}",
+                  "${_formatDate(expense.createdAt)} • ${expense.notes}",
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
               ],

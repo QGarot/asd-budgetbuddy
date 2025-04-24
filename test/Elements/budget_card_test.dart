@@ -28,6 +28,7 @@ void main() {
               budget: Budget(
                 name: "name",
                 category: "Groceries",
+                createdAt: DateTime(2025, 4, 10),
                 resetPeriod: "Monthly",
                 alertThreshold: 0.8,
                 totalAmount: 200,
