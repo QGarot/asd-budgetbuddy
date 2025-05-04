@@ -183,32 +183,44 @@ class ExpenseListItem extends StatelessWidget {
           SizedBox(width: 16),
           Row(
             children: [
-              IconButton(
-                icon: Icon(Icons.receipt_outlined, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Receipt",
+                child: IconButton(
+                  icon: Icon(Icons.receipt, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
               SizedBox(width: 8),
-              IconButton(
-                icon: Icon(Icons.check_circle_outline, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Notes",
+                child: IconButton(
+                  icon: Icon(Icons.notes_rounded, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
               SizedBox(width: 8),
-              IconButton(
-                icon: Icon(Icons.edit_outlined, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Edit",
+                child: IconButton(
+                  icon: Icon(Icons.edit, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
               SizedBox(width: 8),
-              IconButton(
-                icon: Icon(Icons.delete_outline, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Delete",
+                child: IconButton(
+                  icon: Icon(Icons.delete, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
             ],
           ),
