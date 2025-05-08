@@ -21,12 +21,40 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
 
   @override
   Widget build(BuildContext context) {
-    Budget? budget = DataEvent.getFirebaseUserData(
-      context,
-    )?.budgets.firstWhere((budget) => budget.id == widget.budgetId);
+    final userData = DataEvent.getFirebaseUserData(context);
+    if (userData == null || userData.budgets.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            "No budgets found",
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          ),
+        ),
+      );
+    }
 
-    if (budget == null) {
-      throw Exception("Budget not found for the given id: ${widget.budgetId}");
+    Budget? budget;
+    try {
+      budget = userData.budgets.firstWhere((b) => b.id == widget.budgetId);
+    } catch (e) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            "Budget not found for the given id: ${widget.budgetId}",
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          ),
+        ),
+      );
     }
 
     return DefaultTabController(
@@ -60,14 +88,34 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                     _tabs.map((tab) {
                       return BlocBuilder<DataCubit, AllUserData?>(
                         builder: (context, userData) {
+                          if (userData == null) return Container();
+
+                          Budget currentBudget;
+                          try {
+                            currentBudget = userData.budgets.firstWhere(
+                              (b) => b.id == widget.budgetId,
+                            );
+                          } catch (e) {
+                            if (budget == null) {
+                              return Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Center(
+                                  child: Text(
+                                    "Budget not found",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            currentBudget = budget;
+                          }
+
                           final List<Expense> expenses = _getExpensesByTab(
                             tab,
-                            userData?.budgets
-                                    .firstWhere(
-                                      (budget) => budget.id == widget.budgetId,
-                                    )
-                                    .expenses ??
-                                [],
+                            currentBudget.expenses,
                           );
 
                           return ListView.separated(
@@ -79,7 +127,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                               final expense = expenses[index];
                               return ExpenseListItem(
                                 expense: expense,
-                                category: budget.category,
+                                category: currentBudget.category,
                               );
                             },
                           );
@@ -98,7 +146,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
     if (tab == 'RECENT') {
       // Sort by most recent date
       final sorted = List<Expense>.from(allExpenses)
-        ..sort((a, b) => b.date.compareTo(a.date));
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       return sorted;
     } else if (tab == 'HIGHEST') {
       // Sort by highest amount
@@ -132,12 +180,16 @@ class ExpenseListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      expense.merchant,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Text(
+                        expense.merchant,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(width: 8),
@@ -170,7 +222,7 @@ class ExpenseListItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "${_formatDate(expense.date)} • ${expense.notes}",
+                  "${_formatDate(expense.createdAt)} • ${expense.notes}",
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
               ],
@@ -183,32 +235,44 @@ class ExpenseListItem extends StatelessWidget {
           SizedBox(width: 16),
           Row(
             children: [
-              IconButton(
-                icon: Icon(Icons.receipt_outlined, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Receipt",
+                child: IconButton(
+                  icon: Icon(Icons.receipt, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
               SizedBox(width: 8),
-              IconButton(
-                icon: Icon(Icons.check_circle_outline, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Notes",
+                child: IconButton(
+                  icon: Icon(Icons.notes_rounded, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
               SizedBox(width: 8),
-              IconButton(
-                icon: Icon(Icons.edit_outlined, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Edit",
+                child: IconButton(
+                  icon: Icon(Icons.edit, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
               SizedBox(width: 8),
-              IconButton(
-                icon: Icon(Icons.delete_outline, color: Colors.grey),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+              Tooltip(
+                message: "Delete",
+                child: IconButton(
+                  icon: Icon(Icons.delete, color: Colors.grey),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
               ),
             ],
           ),

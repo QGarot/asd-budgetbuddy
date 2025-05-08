@@ -17,6 +17,7 @@ void main() {
       Budget(
         name: 'Rent',
         category: 'Housing',
+        createdAt: DateTime(2025, 4, 10),
         resetPeriod: 'Monthly',
         alertThreshold: 0.8,
         totalAmount: 1000,
@@ -25,6 +26,7 @@ void main() {
       Budget(
         name: 'Groceries',
         category: 'Food',
+        createdAt: DateTime(2025, 4, 10),
         resetPeriod: 'Weekly',
         alertThreshold: 0.6,
         totalAmount: 200,
