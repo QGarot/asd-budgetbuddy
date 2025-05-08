@@ -13,7 +13,7 @@ class LayoutConstants {
   static const double minSidebarWidth = 200.0;
   static const double maxSidebarWidth = 300.0;
   static const double minContentWidth = 500.0;
-  static const double minCardWidth = 200.0;
+  static const double minCardWidth = 220.0;
 
   //Sidebar
   static double getSidebarWidth(BuildContext context) {

@@ -17,7 +17,14 @@ class BudgetSummary {
   // Factory constructor to create a BudgetSummary from a list of Budget objects
   factory BudgetSummary.fromBudgets(List<Budget> budgets) {
     final total = budgets.fold(0.0, (sum, b) => sum + b.totalAmount);
-    final spent = budgets.fold(0.0, (sum, b) => sum + b.spentAmount);
+    // Calculate spent amount by summing up all expenses in each budget
+    final spent = budgets.fold(0.0, (sum, budget) {
+      return sum +
+          budget.expenses.fold(
+            0.0,
+            (expenseSum, expense) => expenseSum + expense.amount,
+          );
+    });
     return BudgetSummary(
       totalBudget: total,
       totalSpent: spent,

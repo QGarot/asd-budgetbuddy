@@ -187,10 +187,14 @@ class BudgetCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "€${spent.toStringAsFixed(2)} of €${limit.toStringAsFixed(2)}",
-                style: const TextStyle(fontWeight: FontWeight.w600),
+              Flexible(
+                child: Text(
+                  "€${spent.toStringAsFixed(2)} of €${limit.toStringAsFixed(2)}",
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              const SizedBox(width: 4),
               Text("${(percent * 100).round()}%"),
             ],
           ),
@@ -207,13 +211,14 @@ class BudgetCard extends StatelessWidget {
 
           if (!isCollapsed) ...[
             const SizedBox(height: 12),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "€${remaining.toStringAsFixed(2)} remaining",
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                const Spacer(),
+                const SizedBox(height: 8),
                 if (warning)
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -227,6 +232,7 @@ class BudgetCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           Icons.warning,

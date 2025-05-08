@@ -1,9 +1,6 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 
-import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
-import 'package:budgetbuddy/Elements/sidebar.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:budgetbuddy/bloc/Data/summary_helper.dart';

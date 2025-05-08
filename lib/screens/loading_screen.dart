@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';
+import 'package:budgetbuddy/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -25,7 +26,15 @@ class LoadingScreenState extends State<LoadingScreen> {
     await DataEvent.fetchFirebaseUserData(context);
 
     if (mounted) {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          settings: RouteSettings(name: '/main'),
+          pageBuilder: (_, __, ___) => const MainScreen(),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
     }
   }
 
