@@ -21,12 +21,40 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
 
   @override
   Widget build(BuildContext context) {
-    Budget? budget = DataEvent.getFirebaseUserData(
-      context,
-    )?.budgets.firstWhere((budget) => budget.id == widget.budgetId);
+    final userData = DataEvent.getFirebaseUserData(context);
+    if (userData == null || userData.budgets.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            "No budgets found",
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          ),
+        ),
+      );
+    }
 
-    if (budget == null) {
-      throw Exception("Budget not found for the given id: ${widget.budgetId}");
+    Budget? budget;
+    try {
+      budget = userData.budgets.firstWhere((b) => b.id == widget.budgetId);
+    } catch (e) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            "Budget not found for the given id: ${widget.budgetId}",
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          ),
+        ),
+      );
     }
 
     return DefaultTabController(
@@ -60,14 +88,34 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                     _tabs.map((tab) {
                       return BlocBuilder<DataCubit, AllUserData?>(
                         builder: (context, userData) {
+                          if (userData == null) return Container();
+
+                          Budget currentBudget;
+                          try {
+                            currentBudget = userData.budgets.firstWhere(
+                              (b) => b.id == widget.budgetId,
+                            );
+                          } catch (e) {
+                            if (budget == null) {
+                              return Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Center(
+                                  child: Text(
+                                    "Budget not found",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            currentBudget = budget;
+                          }
+
                           final List<Expense> expenses = _getExpensesByTab(
                             tab,
-                            userData?.budgets
-                                    .firstWhere(
-                                      (budget) => budget.id == widget.budgetId,
-                                    )
-                                    .expenses ??
-                                [],
+                            currentBudget.expenses,
                           );
 
                           return ListView.separated(
@@ -79,7 +127,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                               final expense = expenses[index];
                               return ExpenseListItem(
                                 expense: expense,
-                                category: budget.category,
+                                category: currentBudget.category,
                               );
                             },
                           );
@@ -132,12 +180,16 @@ class ExpenseListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      expense.merchant,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Text(
+                        expense.merchant,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(width: 8),

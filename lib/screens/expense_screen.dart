@@ -26,9 +26,14 @@ class ExpenseScreen extends StatelessWidget {
       builder: (context, constraints) {
         //Get budget
         final userData = DataEvent.getFirebaseUserData(context);
-        Budget? budget = userData?.budgets.firstWhere(
-          (budget) => budget.id == CurrentBudget.budgetId,
-        );
+        Budget? budget;
+        try {
+          budget = userData?.budgets.firstWhere(
+            (budget) => budget.id == CurrentBudget.budgetId,
+          );
+        } catch (e) {
+          budget = null;
+        }
 
         if (budget == null) {
           return const Center(
