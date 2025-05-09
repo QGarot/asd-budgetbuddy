@@ -147,8 +147,13 @@ class _BudgetTabViewState extends State<BudgetTabView> {
                                         final icon = CategoryIcons.getIcon(
                                           b.category,
                                         );
+                                        final calculatedSpent = b.expenses.fold(
+                                          0.0,
+                                          (sum, expense) =>
+                                              sum + expense.amount,
+                                        );
                                         final isWarning =
-                                            b.spentAmount >=
+                                            calculatedSpent >=
                                             (b.totalAmount * b.alertThreshold);
                                         final isCollapsed =
                                             _collapsedIdsPerTab[tab]?.contains(
@@ -162,7 +167,7 @@ class _BudgetTabViewState extends State<BudgetTabView> {
                                           ),
                                           child: BudgetCard(
                                             title: b.name,
-                                            spent: b.spentAmount,
+                                            spent: calculatedSpent,
                                             limit: b.totalAmount,
                                             color: color,
                                             warning: isWarning,

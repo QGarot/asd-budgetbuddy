@@ -7,7 +7,7 @@ void main() {
   testWidgets(
     'BudgetCard displays title, amount and icon and triggers onToggle',
     (tester) async {
-      bool toggled = false;
+      //bool toggled = false;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -23,7 +23,7 @@ void main() {
               idOfBudget: '1',
               isCollapsed: false,
               onToggle: () {
-                toggled = true;
+                //toggled = true;
               },
               budget: Budget(
                 name: "name",
