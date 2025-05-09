@@ -212,6 +212,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
     final budget = Budget(
       name: _nameController.text.trim(),
       category: _selectedCategory!,
+      createdAt: DateTime.now(),
       resetPeriod: _selectedPeriod!,
       alertThreshold: _alertThreshold,
       totalAmount: amount!,

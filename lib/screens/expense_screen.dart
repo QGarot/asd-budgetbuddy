@@ -1,21 +1,13 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
-import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
+import 'package:budgetbuddy/AppData/layout_constants.dart';
+import 'package:budgetbuddy/Elements/dashboard_header.dart';
 import 'package:budgetbuddy/Elements/expense_tab_view.dart';
+import 'package:budgetbuddy/Elements/header_bar.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
-import 'package:budgetbuddy/Elements/summary_cards.dart';
-import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
-import 'package:budgetbuddy/pojos/user_data.dart';
-import 'package:budgetbuddy/Elements/budget_tab_view.dart';
-import 'package:budgetbuddy/Elements/dashboard_header.dart';
-import 'package:budgetbuddy/AppData/layout_constants.dart';
-
-import 'package:budgetbuddy/Elements/header_bar.dart';
 
 class CurrentBudget {
   static String budgetId = "";
@@ -34,9 +26,14 @@ class ExpenseScreen extends StatelessWidget {
       builder: (context, constraints) {
         //Get budget
         final userData = DataEvent.getFirebaseUserData(context);
-        Budget? budget = userData?.budgets.firstWhere(
-          (budget) => budget.id == CurrentBudget.budgetId,
-        );
+        Budget? budget;
+        try {
+          budget = userData?.budgets.firstWhere(
+            (budget) => budget.id == CurrentBudget.budgetId,
+          );
+        } catch (e) {
+          budget = null;
+        }
 
         if (budget == null) {
           return const Center(
@@ -86,7 +83,7 @@ class ExpenseScreen extends StatelessWidget {
                                     Expense(
                                       merchant: "Ikea",
                                       amount: 199.99,
-                                      date: DateTime.now(),
+                                      createdAt: DateTime.now(),
                                       notes: "New Mattress",
                                     ),
                                   );
