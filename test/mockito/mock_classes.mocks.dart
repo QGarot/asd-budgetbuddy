@@ -149,12 +149,6 @@ class _FakeAggregateQuery_19 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeStreamSubscription_20<T1> extends _i1.SmartFake
-    implements _i7.StreamSubscription<T1> {
-  _FakeStreamSubscription_20(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [FirebaseAuth].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -1311,6 +1305,7 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
 /// A class which mocks [DocumentReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockDocumentReference<T extends Object?> extends _i1.Mock
     implements _i6.DocumentReference<T> {
   MockDocumentReference() {
@@ -1446,6 +1441,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [CollectionReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockCollectionReference<T extends Object?> extends _i1.Mock
     implements _i6.CollectionReference<T> {
   MockCollectionReference() {
@@ -2068,6 +2064,15 @@ class MockDataCubit extends _i1.Mock implements _i13.DataCubit {
           as bool);
 
   @override
+  _i7.Future<void> close() =>
+      (super.noSuchMethod(
+            Invocation.method(#close, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
   _i7.Future<_i14.AllUserData?> fetchFirebaseUserData() =>
       (super.noSuchMethod(
             Invocation.method(#fetchFirebaseUserData, []),
@@ -2079,14 +2084,6 @@ class MockDataCubit extends _i1.Mock implements _i13.DataCubit {
   _i7.Future<bool> addBudget(_i15.Budget? budget) =>
       (super.noSuchMethod(
             Invocation.method(#addBudget, [budget]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
-
-  @override
-  _i7.Future<bool> addExpense(String? budgetId, _i16.Expense? expense) =>
-      (super.noSuchMethod(
-            Invocation.method(#addExpense, [budgetId, expense]),
             returnValue: _i7.Future<bool>.value(false),
           )
           as _i7.Future<bool>);
@@ -2131,13 +2128,37 @@ class MockDataCubit extends _i1.Mock implements _i13.DataCubit {
   );
 
   @override
-  _i7.Future<void> close() =>
+  _i7.Future<bool> addExpense(String? budgetId, _i16.Expense? expense) =>
       (super.noSuchMethod(
-            Invocation.method(#close, []),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
+            Invocation.method(#addExpense, [budgetId, expense]),
+            returnValue: _i7.Future<bool>.value(false),
           )
-          as _i7.Future<void>);
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> updateExpense(
+    String? budgetId,
+    _i16.Expense? updatedExpense,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateExpense, [budgetId, updatedExpense]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> deleteExpense(String? budgetId, String? expenseId) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteExpense, [budgetId, expenseId]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  void listenToExpenseChanges(String? budgetId) => super.noSuchMethod(
+    Invocation.method(#listenToExpenseChanges, [budgetId]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void emit(_i14.AllUserData? state) => super.noSuchMethod(
@@ -2205,434 +2226,4 @@ class MockWriteBatch extends _i1.Mock implements _i6.WriteBatch {
     Invocation.method(#update, [document, data]),
     returnValueForMissingStub: null,
   );
-}
-
-/// A class which mocks [Stream].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockStream<T> extends _i1.Mock implements _i7.Stream<T> {
-  MockStream() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  bool get isBroadcast =>
-      (super.noSuchMethod(Invocation.getter(#isBroadcast), returnValue: false)
-          as bool);
-
-  @override
-  _i7.Future<int> get length =>
-      (super.noSuchMethod(
-            Invocation.getter(#length),
-            returnValue: _i7.Future<int>.value(0),
-          )
-          as _i7.Future<int>);
-
-  @override
-  _i7.Future<bool> get isEmpty =>
-      (super.noSuchMethod(
-            Invocation.getter(#isEmpty),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
-
-  @override
-  _i7.Future<T> get first =>
-      (super.noSuchMethod(
-            Invocation.getter(#first),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(this, Invocation.getter(#first)),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(this, Invocation.getter(#first)),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Future<T> get last =>
-      (super.noSuchMethod(
-            Invocation.getter(#last),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(this, Invocation.getter(#last)),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(this, Invocation.getter(#last)),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Future<T> get single =>
-      (super.noSuchMethod(
-            Invocation.getter(#single),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(this, Invocation.getter(#single)),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(this, Invocation.getter(#single)),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Stream<T> asBroadcastStream({
-    void Function(_i7.StreamSubscription<T>)? onListen,
-    void Function(_i7.StreamSubscription<T>)? onCancel,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#asBroadcastStream, [], {
-              #onListen: onListen,
-              #onCancel: onCancel,
-            }),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.StreamSubscription<T> listen(
-    void Function(T)? onData, {
-    Function? onError,
-    void Function()? onDone,
-    bool? cancelOnError,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #listen,
-              [onData],
-              {
-                #onError: onError,
-                #onDone: onDone,
-                #cancelOnError: cancelOnError,
-              },
-            ),
-            returnValue: _FakeStreamSubscription_20<T>(
-              this,
-              Invocation.method(
-                #listen,
-                [onData],
-                {
-                  #onError: onError,
-                  #onDone: onDone,
-                  #cancelOnError: cancelOnError,
-                },
-              ),
-            ),
-          )
-          as _i7.StreamSubscription<T>);
-
-  @override
-  _i7.Stream<T> where(bool Function(T)? test) =>
-      (super.noSuchMethod(
-            Invocation.method(#where, [test]),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Stream<S> map<S>(S Function(T)? convert) =>
-      (super.noSuchMethod(
-            Invocation.method(#map, [convert]),
-            returnValue: _i7.Stream<S>.empty(),
-          )
-          as _i7.Stream<S>);
-
-  @override
-  _i7.Stream<E> asyncMap<E>(_i7.FutureOr<E> Function(T)? convert) =>
-      (super.noSuchMethod(
-            Invocation.method(#asyncMap, [convert]),
-            returnValue: _i7.Stream<E>.empty(),
-          )
-          as _i7.Stream<E>);
-
-  @override
-  _i7.Stream<E> asyncExpand<E>(_i7.Stream<E>? Function(T)? convert) =>
-      (super.noSuchMethod(
-            Invocation.method(#asyncExpand, [convert]),
-            returnValue: _i7.Stream<E>.empty(),
-          )
-          as _i7.Stream<E>);
-
-  @override
-  _i7.Stream<T> handleError(
-    Function? onError, {
-    bool Function(dynamic)? test,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#handleError, [onError], {#test: test}),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Stream<S> expand<S>(Iterable<S> Function(T)? convert) =>
-      (super.noSuchMethod(
-            Invocation.method(#expand, [convert]),
-            returnValue: _i7.Stream<S>.empty(),
-          )
-          as _i7.Stream<S>);
-
-  @override
-  _i7.Future<dynamic> pipe(_i7.StreamConsumer<T>? streamConsumer) =>
-      (super.noSuchMethod(
-            Invocation.method(#pipe, [streamConsumer]),
-            returnValue: _i7.Future<dynamic>.value(),
-          )
-          as _i7.Future<dynamic>);
-
-  @override
-  _i7.Stream<S> transform<S>(_i7.StreamTransformer<T, S>? streamTransformer) =>
-      (super.noSuchMethod(
-            Invocation.method(#transform, [streamTransformer]),
-            returnValue: _i7.Stream<S>.empty(),
-          )
-          as _i7.Stream<S>);
-
-  @override
-  _i7.Future<T> reduce(T Function(T, T)? combine) =>
-      (super.noSuchMethod(
-            Invocation.method(#reduce, [combine]),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#reduce, [combine]),
-                  ),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(this, Invocation.method(#reduce, [combine])),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Future<S> fold<S>(S? initialValue, S Function(S, T)? combine) =>
-      (super.noSuchMethod(
-            Invocation.method(#fold, [initialValue, combine]),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<S>(
-                    this,
-                    Invocation.method(#fold, [initialValue, combine]),
-                  ),
-                  (S v) => _i7.Future<S>.value(v),
-                ) ??
-                _FakeFuture_11<S>(
-                  this,
-                  Invocation.method(#fold, [initialValue, combine]),
-                ),
-          )
-          as _i7.Future<S>);
-
-  @override
-  _i7.Future<String> join([String? separator = '']) =>
-      (super.noSuchMethod(
-            Invocation.method(#join, [separator]),
-            returnValue: _i7.Future<String>.value(
-              _i8.dummyValue<String>(
-                this,
-                Invocation.method(#join, [separator]),
-              ),
-            ),
-          )
-          as _i7.Future<String>);
-
-  @override
-  _i7.Future<bool> contains(Object? needle) =>
-      (super.noSuchMethod(
-            Invocation.method(#contains, [needle]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
-
-  @override
-  _i7.Future<void> forEach(void Function(T)? action) =>
-      (super.noSuchMethod(
-            Invocation.method(#forEach, [action]),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
-          )
-          as _i7.Future<void>);
-
-  @override
-  _i7.Future<bool> every(bool Function(T)? test) =>
-      (super.noSuchMethod(
-            Invocation.method(#every, [test]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
-
-  @override
-  _i7.Future<bool> any(bool Function(T)? test) =>
-      (super.noSuchMethod(
-            Invocation.method(#any, [test]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
-
-  @override
-  _i7.Stream<R> cast<R>() =>
-      (super.noSuchMethod(
-            Invocation.method(#cast, []),
-            returnValue: _i7.Stream<R>.empty(),
-          )
-          as _i7.Stream<R>);
-
-  @override
-  _i7.Future<List<T>> toList() =>
-      (super.noSuchMethod(
-            Invocation.method(#toList, []),
-            returnValue: _i7.Future<List<T>>.value(<T>[]),
-          )
-          as _i7.Future<List<T>>);
-
-  @override
-  _i7.Future<Set<T>> toSet() =>
-      (super.noSuchMethod(
-            Invocation.method(#toSet, []),
-            returnValue: _i7.Future<Set<T>>.value(<T>{}),
-          )
-          as _i7.Future<Set<T>>);
-
-  @override
-  _i7.Future<E> drain<E>([E? futureValue]) =>
-      (super.noSuchMethod(
-            Invocation.method(#drain, [futureValue]),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<E>(
-                    this,
-                    Invocation.method(#drain, [futureValue]),
-                  ),
-                  (E v) => _i7.Future<E>.value(v),
-                ) ??
-                _FakeFuture_11<E>(
-                  this,
-                  Invocation.method(#drain, [futureValue]),
-                ),
-          )
-          as _i7.Future<E>);
-
-  @override
-  _i7.Stream<T> take(int? count) =>
-      (super.noSuchMethod(
-            Invocation.method(#take, [count]),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Stream<T> takeWhile(bool Function(T)? test) =>
-      (super.noSuchMethod(
-            Invocation.method(#takeWhile, [test]),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Stream<T> skip(int? count) =>
-      (super.noSuchMethod(
-            Invocation.method(#skip, [count]),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Stream<T> skipWhile(bool Function(T)? test) =>
-      (super.noSuchMethod(
-            Invocation.method(#skipWhile, [test]),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Stream<T> distinct([bool Function(T, T)? equals]) =>
-      (super.noSuchMethod(
-            Invocation.method(#distinct, [equals]),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
-
-  @override
-  _i7.Future<T> firstWhere(bool Function(T)? test, {T Function()? orElse}) =>
-      (super.noSuchMethod(
-            Invocation.method(#firstWhere, [test], {#orElse: orElse}),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#firstWhere, [test], {#orElse: orElse}),
-                  ),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(
-                  this,
-                  Invocation.method(#firstWhere, [test], {#orElse: orElse}),
-                ),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Future<T> lastWhere(bool Function(T)? test, {T Function()? orElse}) =>
-      (super.noSuchMethod(
-            Invocation.method(#lastWhere, [test], {#orElse: orElse}),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#lastWhere, [test], {#orElse: orElse}),
-                  ),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(
-                  this,
-                  Invocation.method(#lastWhere, [test], {#orElse: orElse}),
-                ),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Future<T> singleWhere(bool Function(T)? test, {T Function()? orElse}) =>
-      (super.noSuchMethod(
-            Invocation.method(#singleWhere, [test], {#orElse: orElse}),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#singleWhere, [test], {#orElse: orElse}),
-                  ),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(
-                  this,
-                  Invocation.method(#singleWhere, [test], {#orElse: orElse}),
-                ),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Future<T> elementAt(int? index) =>
-      (super.noSuchMethod(
-            Invocation.method(#elementAt, [index]),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#elementAt, [index]),
-                  ),
-                  (T v) => _i7.Future<T>.value(v),
-                ) ??
-                _FakeFuture_11<T>(this, Invocation.method(#elementAt, [index])),
-          )
-          as _i7.Future<T>);
-
-  @override
-  _i7.Stream<T> timeout(
-    Duration? timeLimit, {
-    void Function(_i7.EventSink<T>)? onTimeout,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#timeout, [timeLimit], {#onTimeout: onTimeout}),
-            returnValue: _i7.Stream<T>.empty(),
-          )
-          as _i7.Stream<T>);
 }
