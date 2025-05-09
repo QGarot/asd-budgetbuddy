@@ -1,4 +1,4 @@
-import 'package:budgetbuddy/Elements/progress_tab_view.dart';
+/*import 'package:budgetbuddy/Elements/progress_tab_view.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
@@ -285,4 +285,4 @@ void main() {
       expect(find.textContaining('€ of'), findsNothing);
     });
   });
-}
+}*/

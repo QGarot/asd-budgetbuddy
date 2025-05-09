@@ -1,6 +1,4 @@
 import 'package:budgetbuddy/AppData/category_icons.dart';
-import 'package:budgetbuddy/bloc/Data/data_event.dart';
-import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
@@ -21,124 +19,65 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
 
   @override
   Widget build(BuildContext context) {
-    final userData = DataEvent.getFirebaseUserData(context);
-    if (userData == null || userData.budgets.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Center(
-          child: Text(
-            "No budgets found",
-            style: TextStyle(color: Colors.red, fontSize: 16),
-          ),
-        ),
-      );
-    }
+    return BlocBuilder<DataCubit, AllUserData?>(
+      builder: (context, userData) {
+        if (userData == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    Budget? budget;
-    try {
-      budget = userData.budgets.firstWhere((b) => b.id == widget.budgetId);
-    } catch (e) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Center(
-          child: Text(
-            "Budget not found for the given id: ${widget.budgetId}",
-            style: TextStyle(color: Colors.red, fontSize: 16),
-          ),
-        ),
-      );
-    }
+        final budget = userData.budgets
+            .firstWhere((b) => b.id == widget.budgetId);
 
-    return DefaultTabController(
-      length: _tabs.length,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 0, 20),
-              child: Text(
-                "Expenses",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+        return DefaultTabController(
+          length: _tabs.length,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
             ),
-            TabBar(
-              isScrollable: true,
-              labelColor: Colors.deepPurple,
-              unselectedLabelColor: Colors.black45,
-              indicatorColor: Colors.deepPurpleAccent,
-              tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
-            ),
-            Expanded(
-              child: TabBarView(
-                children:
-                    _tabs.map((tab) {
-                      return BlocBuilder<DataCubit, AllUserData?>(
-                        builder: (context, userData) {
-                          if (userData == null) return Container();
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
+                  child: Text(
+                    "Expenses",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TabBar(
+                  isScrollable: true,
+                  labelColor: Colors.deepPurple,
+                  unselectedLabelColor: Colors.black45,
+                  indicatorColor: Colors.deepPurpleAccent,
+                  tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: _tabs.map((tab) {
+                      final expenses = _getExpensesByTab(tab, budget.expenses);
 
-                          Budget currentBudget;
-                          try {
-                            currentBudget = userData.budgets.firstWhere(
-                              (b) => b.id == widget.budgetId,
-                            );
-                          } catch (e) {
-                            if (budget == null) {
-                              return Container(
-                                padding: const EdgeInsets.all(16),
-                                child: Center(
-                                  child: Text(
-                                    "Budget not found",
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                            currentBudget = budget;
-                          }
-
-                          final List<Expense> expenses = _getExpensesByTab(
-                            tab,
-                            currentBudget.expenses,
-                          );
-
-                          return ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemCount: expenses.length,
-                            separatorBuilder:
-                                (context, index) => Divider(height: 1),
-                            itemBuilder: (context, index) {
-                              final expense = expenses[index];
-                              return ExpenseListItem(
-                                expense: expense,
-                                category: currentBudget.category,
-                              );
-                            },
+                      return ListView.separated(
+                        padding: EdgeInsets.zero,
+                        itemCount: expenses.length,
+                        separatorBuilder: (_, __) => const Divider(height: 1),
+                        itemBuilder: (context, index) {
+                          final expense = expenses[index];
+                          return ExpenseListItem(
+                            expense: expense,
+                            category: budget.category,
                           );
                         },
                       );
                     }).toList(),
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

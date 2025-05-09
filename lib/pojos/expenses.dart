@@ -7,6 +7,8 @@ class Expense {
   double amount;
   DateTime createdAt;
   String notes;
+  String category;
+  String paymentMethod;
 
   Expense({
     String? id,
@@ -14,8 +16,10 @@ class Expense {
     required this.merchant,
     required this.amount,
     required this.createdAt,
-  }) : id = id ?? IdGenerator.generateRandomUniqueId(),
-       notes = notes ?? '';
+    required this.category,
+    required this.paymentMethod,
+  })  : id = id ?? IdGenerator.generateRandomUniqueId(),
+        notes = notes ?? '';
 
   Expense copyWith({
     String? id,
@@ -23,6 +27,8 @@ class Expense {
     double? amount,
     DateTime? createdAt,
     String? notes,
+    String? category,
+    String? paymentMethod,
   }) {
     return Expense(
       id: id ?? this.id,
@@ -30,16 +36,20 @@ class Expense {
       amount: amount ?? this.amount,
       createdAt: createdAt ?? this.createdAt,
       notes: notes ?? this.notes,
+      category: category ?? this.category,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
     );
   }
 
   factory Expense.fromFirestore(Map<String, dynamic> data) {
     return Expense(
-      id: data['id'] ?? 0,
+      id: data['id'] ?? '',
       merchant: data['merchant'] ?? '',
-      amount: (data['amount'] as num).toDouble(),
+      amount: (data['amount'] ?? 0).toDouble(),
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       notes: data['notes'] ?? '',
+      category: data['category'] ?? '',
+      paymentMethod: data['paymentMethod'] ?? '',
     );
   }
 
@@ -50,6 +60,8 @@ class Expense {
       'amount': amount,
       'createdAt': createdAt,
       'notes': notes,
+      'category': category,
+      'paymentMethod': paymentMethod,
     };
   }
 }
