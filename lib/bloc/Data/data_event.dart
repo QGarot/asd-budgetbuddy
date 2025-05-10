@@ -22,14 +22,6 @@ class DataEvent {
     return context.read<DataCubit>().addBudget(budget);
   }
 
-  static Future<bool> addExpense(
-    BuildContext context,
-    String budgetId,
-    Expense expense,
-  ) async {
-    return context.read<DataCubit>().addExpense(budgetId, expense);
-  }
-
   static Future<bool> updateBudget(
     BuildContext context,
     String budgetId, {
@@ -45,11 +37,33 @@ class DataEvent {
     );
   }
 
-  // Add this to your DataEvent class
   static Future<bool> deleteBudget(
     BuildContext context,
     String budgetId,
   ) async {
     return context.read<DataCubit>().deleteBudget(budgetId);
   }
+
+  // Expense now ---------------------------------------
+
+  static Future<bool> addExpense(BuildContext context, String budgetId, Expense expense) async {
+    return context.read<DataCubit>().addExpense(budgetId, expense);
+  }
+
+  static Future<bool> updateExpense(
+  BuildContext context,
+  String budgetId,
+  Expense updatedExpense,
+) async {
+  return context.read<DataCubit>().updateExpense(budgetId, updatedExpense);
+}
+
+static Future<bool> deleteExpense(
+  BuildContext context,
+  String budgetId,
+  String expenseId,
+) async {
+  return context.read<DataCubit>().deleteExpense(budgetId, expenseId);
+}
+
 }
