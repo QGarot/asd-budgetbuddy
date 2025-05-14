@@ -103,7 +103,7 @@ class DataCubit extends Cubit<AllUserData?> {
           .set(budget.toFirestore())
           .timeout(Duration(seconds: 5));
 
-      _addBudgetOnLocalCopy(budget);
+      //_addBudgetOnLocalCopy(budget);
 
       print("Budget added with ID: ${budget.id}");
       return true;
@@ -128,17 +128,17 @@ class DataCubit extends Cubit<AllUserData?> {
     String? category,
     double? alertThreshold,
     String? resetPeriod,
-    double? totalAmount
+    double? totalAmount,
   }) async {
     try {
       if (name != null && name.trim().isEmpty) {
         throw Exception("Budget name cannot be empty");
       }
-      
+
       if (category != null && category.trim().isEmpty) {
         throw Exception("Category cannot be empty");
       }
-      
+
       if (alertThreshold != null && alertThreshold < 0) {
         throw Exception("Alert threshold must be greater than zero");
       }
@@ -146,7 +146,7 @@ class DataCubit extends Cubit<AllUserData?> {
       if (totalAmount != null && totalAmount < 0) {
         throw Exception("Total amount must be greater than zero");
       }
-      
+
       String? userId = _auth.currentUser?.uid;
       if (userId == null) throw Exception("User not logged in");
 
@@ -189,23 +189,30 @@ class DataCubit extends Cubit<AllUserData?> {
     }
   }
 
-  bool _updateBudgetOnLocalCopy(String budgetId, Map<String, dynamic> updateData) {
+  bool _updateBudgetOnLocalCopy(
+    String budgetId,
+    Map<String, dynamic> updateData,
+  ) {
     if (_userData == null) return false;
 
-    final updatedBudgets = _userData!.budgets.map((budget) {
-      if (budget.id == budgetId) {
-        return budget.copyWith(
-          name: updateData['name'] as String? ?? budget.name,
-          category: updateData['category'] as String? ?? budget.category,
-          alertThreshold: updateData['alertThreshold'] as double? ?? budget.alertThreshold,
-          resetPeriod: updateData['resetPeriod'] as String? ?? budget.resetPeriod,
-          totalAmount: updateData['totalAmount'] as double? ?? budget.totalAmount,
+    final updatedBudgets =
+        _userData!.budgets.map((budget) {
+          if (budget.id == budgetId) {
+            return budget.copyWith(
+              name: updateData['name'] as String? ?? budget.name,
+              category: updateData['category'] as String? ?? budget.category,
+              alertThreshold:
+                  updateData['alertThreshold'] as double? ??
+                  budget.alertThreshold,
+              resetPeriod:
+                  updateData['resetPeriod'] as String? ?? budget.resetPeriod,
+              totalAmount:
+                  updateData['totalAmount'] as double? ?? budget.totalAmount,
+            );
+          }
+          return budget;
+        }).toList();
 
-        );
-      }
-      return budget;
-    }).toList();
-    
     _userData = _userData!.copyWith(budgets: updatedBudgets);
     emit(_userData);
     return true;
@@ -227,27 +234,30 @@ class DataCubit extends Cubit<AllUserData?> {
       }
 
       // First, delete all expenses associated with this budget
-      QuerySnapshot expensesSnapshot = await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('budgets')
-          .doc(budgetId)
-          .collection('expenses')
-          .get();
-      
+      QuerySnapshot expensesSnapshot =
+          await _firestore
+              .collection('users')
+              .doc(userId)
+              .collection('budgets')
+              .doc(budgetId)
+              .collection('expenses')
+              .get();
+
       // Use a batch to delete all expenses first
       WriteBatch batch = _firestore.batch();
       for (var doc in expensesSnapshot.docs) {
         batch.delete(doc.reference);
       }
-      
+
       // Add the budget document deletion to the batch
-      batch.delete(_firestore
-          .collection('users')
-          .doc(userId)
-          .collection('budgets')
-          .doc(budgetId));
-      
+      batch.delete(
+        _firestore
+            .collection('users')
+            .doc(userId)
+            .collection('budgets')
+            .doc(budgetId),
+      );
+
       // Commit the batch
       await batch.commit();
 
@@ -265,10 +275,9 @@ class DataCubit extends Cubit<AllUserData?> {
   bool _deleteBudgetFromLocalCopy(String budgetId) {
     if (_userData == null) return false;
 
-    final updatedBudgets = _userData!.budgets.where((budget) => 
-      budget.id != budgetId
-    ).toList();
-    
+    final updatedBudgets =
+        _userData!.budgets.where((budget) => budget.id != budgetId).toList();
+
     _userData = _userData!.copyWith(budgets: updatedBudgets);
     emit(_userData);
     return true;
@@ -286,73 +295,76 @@ class DataCubit extends Cubit<AllUserData?> {
         .collection('budgets')
         .snapshots()
         .listen((snapshot) async {
-      try {
-        final List<Budget> budgets = [];
+          try {
+            final List<Budget> budgets = [];
 
-        for (final doc in snapshot.docs) {
-          final data = doc.data();
-          final expensesSnapshot =
-              await doc.reference.collection('expenses').get();
+            for (final doc in snapshot.docs) {
+              final data = doc.data();
+              final expensesSnapshot =
+                  await doc.reference.collection('expenses').get();
 
-          final expenses = expensesSnapshot.docs.map((e) {
-            return Expense.fromFirestore(e.data());
-          }).toList();
+              final expenses =
+                  expensesSnapshot.docs.map((e) {
+                    return Expense.fromFirestore(e.data());
+                  }).toList();
 
-          budgets.add(Budget.fromFirestore(data, expenses));
-        }
+              budgets.add(Budget.fromFirestore(data, expenses));
+            }
 
-        final userDoc = await _firestore.collection('users').doc(userId).get();
-        final userData = userDoc.data();
+            final userDoc =
+                await _firestore.collection('users').doc(userId).get();
+            final userData = userDoc.data();
 
-        if (userData != null) {
-          _userData = AllUserData.fromFirestore(userData, budgets);
-          emit(_userData);
-        }
-      } catch (e) {
-        print("Error in real-time budget stream: $e");
-      }
-    });
+            if (userData != null) {
+              _userData = AllUserData.fromFirestore(userData, budgets);
+              emit(_userData);
+            }
+          } catch (e) {
+            print("Error in real-time budget stream: $e");
+          }
+        });
   }
 
-// Expense now ---------------------------------------
+  // Expense now ---------------------------------------
 
-Future<bool> addExpense(String budgetId, Expense expense) async {
-  try {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) throw Exception("User not logged in");
+  Future<bool> addExpense(String budgetId, Expense expense) async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception("User not logged in");
 
-    final expenseRef = _firestore
-        .collection('users')
-        .doc(userId)
-        .collection('budgets')
-        .doc(budgetId)
-        .collection('expenses')
-        .doc(expense.id);
+      final expenseRef = _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('budgets')
+          .doc(budgetId)
+          .collection('expenses')
+          .doc(expense.id);
 
-    await expenseRef.set(expense.toFirestore());
+      await expenseRef.set(expense.toFirestore());
 
-    _addExpenseOnLocalCopy(budgetId, expense);
+      //_addExpenseOnLocalCopy(budgetId, expense);
 
-    print("Expense added with ID: ${expense.id}");
-    return true;
-  } catch (e) {
-    print("Error adding expense: $e");
-    return false;
+      print("Expense added with ID: ${expense.id}");
+      return true;
+    } catch (e) {
+      print("Error adding expense: $e");
+      return false;
+    }
   }
-}
 
   bool _addExpenseOnLocalCopy(String budgetId, Expense expense) {
     if (_userData == null) return false;
 
-    final updatedBudgets = _userData!.budgets.map((b) {
-      if (b.id == budgetId) {
-        return b.copyWith(
-          expenses: [...b.expenses, expense],
-          spentAmount: b.spentAmount + expense.amount,
-        );
-      }
-      return b;
-    }).toList();
+    final updatedBudgets =
+        _userData!.budgets.map((b) {
+          if (b.id == budgetId) {
+            return b.copyWith(
+              expenses: [...b.expenses, expense],
+              spentAmount: b.spentAmount + expense.amount,
+            );
+          }
+          return b;
+        }).toList();
 
     _userData = _userData!.copyWith(budgets: updatedBudgets);
     emit(_userData);
@@ -365,7 +377,9 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
       if (userId == null) throw Exception("User not logged in");
 
       final budget = _userData?.budgets.firstWhere((b) => b.id == budgetId);
-      final existingExpense = budget?.expenses.firstWhere((e) => e.id == updatedExpense.id);
+      final existingExpense = budget?.expenses.firstWhere(
+        (e) => e.id == updatedExpense.id,
+      );
 
       if (existingExpense == null) throw Exception("Expense not found");
 
@@ -379,7 +393,7 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
 
       await expenseRef.update(updatedExpense.toFirestore());
 
-      _updateExpenseOnLocalCopy(budgetId, updatedExpense);
+      //_updateExpenseOnLocalCopy(budgetId, updatedExpense);
 
       print("Expense updated with ID: ${updatedExpense.id}");
       return true;
@@ -392,18 +406,26 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
   bool _updateExpenseOnLocalCopy(String budgetId, Expense updatedExpense) {
     if (_userData == null) return false;
 
-    final updatedBudgets = _userData!.budgets.map((b) {
-      if (b.id == budgetId) {
-        final newExpenses = b.expenses.map((e) {
-          return e.id == updatedExpense.id ? updatedExpense : e;
+    final updatedBudgets =
+        _userData!.budgets.map((b) {
+          if (b.id == budgetId) {
+            final newExpenses =
+                b.expenses.map((e) {
+                  return e.id == updatedExpense.id ? updatedExpense : e;
+                }).toList();
+
+            final newSpentAmount = newExpenses.fold<double>(
+              0,
+              (sum, e) => sum + e.amount,
+            );
+
+            return b.copyWith(
+              expenses: newExpenses,
+              spentAmount: newSpentAmount,
+            );
+          }
+          return b;
         }).toList();
-
-        final newSpentAmount = newExpenses.fold<double>(0, (sum, e) => sum + e.amount);
-
-        return b.copyWith(expenses: newExpenses, spentAmount: newSpentAmount);
-      }
-      return b;
-    }).toList();
 
     _userData = _userData!.copyWith(budgets: updatedBudgets);
     emit(_userData);
@@ -416,7 +438,9 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
       if (userId == null) throw Exception("User not logged in");
 
       final budget = _userData?.budgets.firstWhere((b) => b.id == budgetId);
-      final expenseToDelete = budget?.expenses.firstWhere((e) => e.id == expenseId);
+      final expenseToDelete = budget?.expenses.firstWhere(
+        (e) => e.id == expenseId,
+      );
 
       if (expenseToDelete == null) throw Exception("Expense not found");
 
@@ -429,7 +453,7 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
           .doc(expenseId)
           .delete();
 
-      _deleteExpenseFromLocalCopy(budgetId, expenseId);
+      //_deleteExpenseFromLocalCopy(budgetId, expenseId);
 
       print("Expense deleted with ID: $expenseId");
       return true;
@@ -438,23 +462,31 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
       return false;
     }
   }
-  
+
   bool _deleteExpenseFromLocalCopy(String budgetId, String expenseId) {
-  if (_userData == null) return false;
+    if (_userData == null) return false;
 
-  final updatedBudgets = _userData!.budgets.map((b) {
-    if (b.id == budgetId) {
-      final newExpenses = b.expenses.where((e) => e.id != expenseId).toList();
-      final newSpentAmount = newExpenses.fold<double>(0, (sum, e) => sum + e.amount);
-      return b.copyWith(expenses: newExpenses, spentAmount: newSpentAmount);
-    }
-    return b;
-  }).toList();
+    final updatedBudgets =
+        _userData!.budgets.map((b) {
+          if (b.id == budgetId) {
+            final newExpenses =
+                b.expenses.where((e) => e.id != expenseId).toList();
+            final newSpentAmount = newExpenses.fold<double>(
+              0,
+              (sum, e) => sum + e.amount,
+            );
+            return b.copyWith(
+              expenses: newExpenses,
+              spentAmount: newSpentAmount,
+            );
+          }
+          return b;
+        }).toList();
 
-  _userData = _userData!.copyWith(budgets: updatedBudgets);
-  emit(_userData);
-  return true;
-}
+    _userData = _userData!.copyWith(budgets: updatedBudgets);
+    emit(_userData);
+    return true;
+  }
 
   void listenToExpenseChanges(String budgetId) {
     final userId = _auth.currentUser?.uid;
@@ -473,48 +505,54 @@ Future<bool> addExpense(String budgetId, Expense expense) async {
         .collection('expenses')
         .snapshots()
         .listen((snapshot) async {
-      try {
-        final newExpenses = snapshot.docs.map((e) {
-          return Expense.fromFirestore(e.data());
-        }).toList();
+          try {
+            final newExpenses =
+                snapshot.docs.map((e) {
+                  return Expense.fromFirestore(e.data());
+                }).toList();
 
-        final newSpent = newExpenses.fold<double>(0, (sum, e) => sum + e.amount);
-
-        final updatedBudgets = _userData!.budgets.map((b) {
-          if (b.id == budgetId) {
-            return b.copyWith(
-              expenses: newExpenses,
-              spentAmount: newSpent,
+            final newSpent = newExpenses.fold<double>(
+              0,
+              (sum, e) => sum + e.amount,
             );
+
+            final updatedBudgets =
+                _userData!.budgets.map((b) {
+                  if (b.id == budgetId) {
+                    return b.copyWith(
+                      expenses: newExpenses,
+                      spentAmount: newSpent,
+                    );
+                  }
+                  return b;
+                }).toList();
+
+            _userData = _userData!.copyWith(budgets: updatedBudgets);
+            emit(_userData);
+
+            // 🔄 Check current stored spentAmount
+            final budgetDoc =
+                await _firestore
+                    .collection('users')
+                    .doc(userId)
+                    .collection('budgets')
+                    .doc(budgetId)
+                    .get();
+
+            final currentSpent =
+                (budgetDoc.data()?['spentAmount'] ?? 0).toDouble();
+
+            if ((currentSpent - newSpent).abs() > 0.01) {
+              await _firestore
+                  .collection('users')
+                  .doc(userId)
+                  .collection('budgets')
+                  .doc(budgetId)
+                  .update({'spentAmount': newSpent});
+            }
+          } catch (e) {
+            print("Error in real-time expense stream: $e");
           }
-          return b;
-        }).toList();
-
-        _userData = _userData!.copyWith(budgets: updatedBudgets);
-        emit(_userData);
-
-        // 🔄 Check current stored spentAmount
-        final budgetDoc = await _firestore
-            .collection('users')
-            .doc(userId)
-            .collection('budgets')
-            .doc(budgetId)
-            .get();
-
-        final currentSpent = (budgetDoc.data()?['spentAmount'] ?? 0).toDouble();
-
-        if ((currentSpent - newSpent).abs() > 0.01) {
-          await _firestore
-              .collection('users')
-              .doc(userId)
-              .collection('budgets')
-              .doc(budgetId)
-              .update({'spentAmount': newSpent});
-        }
-      } catch (e) {
-        print("Error in real-time expense stream: $e");
-      }
-    });
+        });
   }
-
 }
