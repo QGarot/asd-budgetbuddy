@@ -1,0 +1,10 @@
+{
+    "@@locale": "ar",
+    "appTitle": "Budget Buddy",
+    "languageSaved": "تم حفظ اللغة",
+    "saveLanguagePreference": "حفظ اللغة",
+    "settingsTitle": "الإعدادات",
+    "settingsSubtitle": "إدارة إعدادات الميزانية الخاصة بك",
+    "languageLabel": "اللغة",
+    "languageSubtitle": "اختر لغتك المفضلة"
+}

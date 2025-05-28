@@ -1,0 +1,10 @@
+{
+  "@@locale": "de",
+  "appTitle": "Budget Buddy",
+  "languageSaved": "Sprache gespeichert",
+  "saveLanguagePreference": "Sprache speichern",
+  "settingsTitle": "Einstellungen",
+  "settingsSubtitle": "Verwalte deine Budgeteinstellungen",
+  "languageLabel": "Sprache",
+  "languageSubtitle": "Wähle deine bevorzugte Sprache"
+}

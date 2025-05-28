@@ -8,6 +8,7 @@ import 'package:budgetbuddy/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:budgetbuddy/bloc/Locale/locale_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ void main() async {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => DataCubit()),
         BlocProvider(create: (context) => SidebarCubit()),
+        BlocProvider(create: (_) => LocaleCubit()),
       ],
       child: App(),
     ),
