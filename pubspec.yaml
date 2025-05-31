@@ -40,6 +40,7 @@ dependencies:
   firebase_auth: ^5.5.1
   cloud_firestore: ^5.6.5
   uuid: ^4.5.1
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:

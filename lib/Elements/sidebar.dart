@@ -55,6 +55,11 @@ class _SidebarState extends State<Sidebar> {
             label: "Progress",
             page: SidebarPage.progress,
           ),
+          const _SidebarItem(
+            icon: Icons.pie_chart,
+            label: "Statistics",
+            page: SidebarPage.statistics,
+          ),
           const SizedBox(height: 12),
           Divider(color: Colors.grey[400], thickness: 1),
           const SizedBox(height: 12),

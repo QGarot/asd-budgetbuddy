@@ -5,7 +5,7 @@ class LayoutConstants {
   //static const double mainHeightProcent = 0.65;
   static const double sidebarWidthProcent = 0.2;
   static const double contentMaxWidthProcent = 0.75;
-  static const double tabViewHeightProcent = 0.58;
+  static const double tabViewHeightProcent = 0.65;
   static const double cardWidthProcent = 0.2;
   static const double cardWidthSpacingProcent = 0.015;
   static const double spacing = 16;

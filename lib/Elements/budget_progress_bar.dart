@@ -12,6 +12,11 @@ class BudgetProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate progress, handling the case when totalBudget is 0
+    final progress = summary.totalBudget > 0 
+        ? (summary.totalSpent / summary.totalBudget).clamp(0.0, 1.0)
+        : 0.0;
+        
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       padding: const EdgeInsets.all(16.0),
@@ -41,7 +46,9 @@ class BudgetProgressBar extends StatelessWidget {
                 ),
               ),
               Text(
-                '${(summary.totalSpent / summary.totalBudget * 100).toStringAsFixed(1)}%',
+                summary.totalBudget > 0 
+                    ? '${(progress * 100).toStringAsFixed(1)}%'
+                    : '0.0%',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -53,6 +60,7 @@ class BudgetProgressBar extends StatelessWidget {
           const SizedBox(height: 8),
           Container(
             height: 12,
+            width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(6),
@@ -61,7 +69,7 @@ class BudgetProgressBar extends StatelessWidget {
               children: [
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    final progress = summary.totalSpent / summary.totalBudget;
+                    // Progress is already calculated and clamped above
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 500),
                       width: constraints.maxWidth * (progress > 1 ? 1 : progress),
@@ -75,6 +83,15 @@ class BudgetProgressBar extends StatelessWidget {
                           end: Alignment.centerRight,
                         ),
                         borderRadius: BorderRadius.circular(6),
+                        // Add a subtle shadow to the filled portion for depth
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 1,
+                            offset: const Offset(0, 1),
+                            spreadRadius: 0,
+                          ),
+                        ],
                       ),
                     );
                   },
