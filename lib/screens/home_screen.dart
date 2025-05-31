@@ -24,9 +24,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double maxHeightTabView =
+        double maxHeightTabView =
             MediaQuery.of(context).size.height *
-            LayoutConstants.tabViewHeightProcent;
+                LayoutConstants.tabViewHeightProcent -
+            40;
+        if (MediaQuery.of(context).size.height < 820) {
+          maxHeightTabView = 390;
+        }
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColorHomescreen,

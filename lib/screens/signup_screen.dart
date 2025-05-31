@@ -39,12 +39,10 @@ class SignupScreenState extends State<SignupScreen> {
         return;
       }
 
-
       if (!mounted) return;
       setState(() => _isLoading = false);
 
-      Navigator.pushReplacementNamed(context, '/loading');
-
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
