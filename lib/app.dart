@@ -10,9 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
-  App({super.key});
-
-  final User? user = FirebaseAuth.instance.currentUser;
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +21,17 @@ class App extends StatelessWidget {
           title: 'Budget Buddy',
           locale: locale,
           supportedLocales: const [Locale('en'), Locale('de'), Locale('ar')],
-          localizationsDelegates: [
+          localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
           routes: {
-            '/':
-                (context) =>
-                    user == null ? const LoginScreen() : const LoadingScreen(),
+            '/': (context) {
+              final user = FirebaseAuth.instance.currentUser;
+              return user == null ? const LoginScreen() : const LoadingScreen();
+            },
             '/loading': (context) => const LoadingScreen(),
             '/login': (context) => const LoginScreen(),
             '/signup': (context) => const SignupScreen(),

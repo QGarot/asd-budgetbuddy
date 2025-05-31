@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateBudgetButton extends StatelessWidget {
   const CreateBudgetButton({super.key});
@@ -21,7 +22,7 @@ class CreateBudgetButton extends StatelessWidget {
           );
         },
         icon: const Icon(Icons.add, size: 18),
-        label: const Text("Create Budget"),
+        label: Text(AppLocalizations.of(context)!.createBudgetButton_label),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryColor,
           foregroundColor: Colors.white,

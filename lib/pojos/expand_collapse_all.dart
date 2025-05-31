@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExpandAllButton extends StatelessWidget {
   final bool allExpanded;
@@ -13,6 +14,7 @@ class ExpandAllButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return TextButton.icon(
       onPressed: onToggle,
       icon: Icon(
@@ -20,7 +22,7 @@ class ExpandAllButton extends StatelessWidget {
         color: AppColors.primaryColor,
       ),
       label: Text(
-        allExpanded ? "Collapse All" : "Expand All",
+        allExpanded ? loc.collapseAll : loc.expandAll,
         style: const TextStyle(color: AppColors.primaryColor),
       ),
     );

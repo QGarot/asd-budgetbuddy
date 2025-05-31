@@ -16,7 +16,6 @@ class DashboardHeader extends StatelessWidget {
   final String title;
   final String subtitle;
   final String buttonText;
-  //onpressed of button
   final VoidCallback onPressed;
 
   @override
@@ -57,8 +56,8 @@ class DashboardHeader extends StatelessWidget {
             ],
           ),
         ),
-        Positioned(
-          right: 24,
+        PositionedDirectional(
+          end: 24,
           top: 28,
           child: Container(
             decoration: BoxDecoration(

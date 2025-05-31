@@ -64,20 +64,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       await Future.delayed(const Duration(milliseconds: 100));
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.languageSaved)),
+        SnackBar(content: Text(AppLocalizations.of(context)!.settingsScreen_languageSaved)),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.backgroundColorHomescreen,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HeaderBar(title: localization.settingsTitle),
+          HeaderBar(title: loc.settingsScreen_title),
           Expanded(
             child: SingleChildScrollView(
               child: Center(
@@ -94,14 +94,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(localization.settingsTitle, style: AppTextStyles.dashboardTitle),
+                            Text(loc.settingsScreen_title, style: AppTextStyles.dashboardTitle),
                             const SizedBox(height: 4),
-                            Text(localization.settingsSubtitle, style: AppTextStyles.dashboardSubtitle),
+                            Text(loc.settingsScreen_subtitle, style: AppTextStyles.dashboardSubtitle),
                           ],
                         ),
                       ),
                       const SizedBox(height: 24),
-                      _buildLanguageSection(localization),
+                      _buildLanguageSection(loc),
                     ],
                   ),
                 ),
@@ -113,7 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildLanguageSection(AppLocalizations localization) {
+  Widget _buildLanguageSection(AppLocalizations loc) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -129,13 +129,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const Icon(Icons.language, color: Colors.black87),
               const SizedBox(width: 12),
               Text(
-                localization.languageLabel,
+                loc.settingsScreen_languageTitle,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          Text(localization.languageSubtitle),
+          Text(loc.settingsScreen_languageSubtitle),
           const SizedBox(height: 20),
           ..._availableLocales.map((lang) {
             final isSelected = _selectedLocale == lang['code'];
@@ -183,7 +183,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(localization.saveLanguagePreference),
+                child: Text(loc.settingsScreen_saveLanguagePreference),
               ),
             ),
           ),

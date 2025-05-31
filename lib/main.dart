@@ -2,13 +2,15 @@ import 'package:budgetbuddy/app.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_bloc.dart';
 import 'package:budgetbuddy/bloc/CounterScreen/counter_cubit.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/bloc/Locale/locale_cubit.dart';
 import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
 import 'package:budgetbuddy/bloc/TextScreen/text_cubit.dart';
 import 'package:budgetbuddy/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/bloc/Locale/locale_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +24,13 @@ void main() async {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => DataCubit()),
         BlocProvider(create: (context) => SidebarCubit()),
-        BlocProvider(create: (_) => LocaleCubit()),
+        BlocProvider(
+          create:
+              (_) => LocaleCubit(
+                FirebaseAuth.instance,
+                FirebaseFirestore.instance,
+              ),
+        ),
       ],
       child: App(),
     ),
