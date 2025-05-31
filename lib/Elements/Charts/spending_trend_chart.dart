@@ -63,18 +63,22 @@ class SpendingTrendChart extends StatelessWidget {
       }
     }
     
-    // Convert map to list of points
+    // Convert map to list of points, ensuring no negative values
     final List<FlSpot> spots = [];
     double maxY = 0;
     
-    dailyExpenses.entries.toList()
-      ..sort((a, b) => a.key.compareTo(b.key))
-      ..asMap().forEach((index, entry) {
-        spots.add(FlSpot(index.toDouble(), entry.value));
-        if (entry.value > maxY) {
-          maxY = entry.value;
-        }
-      });
+    // First pass: process all data points
+    final sortedEntries = dailyExpenses.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
+    
+    // Second pass: ensure no negative values and find maxY
+    for (int i = 0; i < sortedEntries.length; i++) {
+      final entry = sortedEntries[i];
+      final y = entry.value < 0 ? 0.0 : entry.value.toDouble();
+      spots.add(FlSpot(i.toDouble(), y));
+      if (y > maxY) {
+        maxY = y;
+      }
+    }
 
     // If all spots are zero, show empty chart
     final hasNonZero = spots.any((spot) => spot.y > 0);
@@ -91,10 +95,44 @@ class SpendingTrendChart extends StatelessWidget {
       height: height,
       child: LineChart(
         LineChartData(
-          gridData: const FlGridData(
+          clipData: FlClipData.all(),
+          lineTouchData: LineTouchData(
+            enabled: true,
+            touchTooltipData: LineTouchTooltipData(
+              tooltipBgColor: Colors.white.withOpacity(0.8),
+              getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                return touchedSpots.map((LineBarSpot touchedSpot) {
+                  final index = touchedSpot.x.toInt();
+                  final value = touchedSpot.y;
+                  final date = dailyExpenses.keys.toList()..sort();
+                  
+                  if (index >= date.length) {
+                    return null;
+                  }
+                  
+                  final formattedDate = DateFormat('dd MMM').format(date[index]);
+                  
+                  return LineTooltipItem(
+                    '$formattedDate\n€${value.toStringAsFixed(2)}',
+                    const TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+          ),
+          gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
-            horizontalInterval: 100,
+            horizontalInterval: (maxY / 5).ceilToDouble(), // Match grid lines with y-axis labels
+            getDrawingHorizontalLine: (value) {
+              return FlLine(
+                color: Colors.black12,
+                strokeWidth: 1,
+              );
+            },
           ),
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
@@ -135,7 +173,12 @@ class SpendingTrendChart extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 40,
+                interval: (maxY / 5).ceilToDouble(), // Show only 5-6 labels on the y-axis
                 getTitlesWidget: (value, meta) {
+                  // Only show labels at intervals to avoid overcrowding
+                  if (value % ((maxY / 5).ceilToDouble()) != 0 && value != 0) {
+                    return const SizedBox.shrink();
+                  }
                   return Text(
                     '€${value.toInt()}',
                     style: const TextStyle(
@@ -160,11 +203,13 @@ class SpendingTrendChart extends StatelessWidget {
           minX: 0,
           maxX: spots.length.toDouble() - 1,
           minY: 0,
-          maxY: maxY * 1.2, // Add some padding at the top
+          maxY: (maxY * 1.2).toDouble(), // Add some padding at the top
           lineBarsData: [
             LineChartBarData(
               spots: spots,
               isCurved: true,
+              preventCurveOverShooting: true,  // Prevent curve overshooting
+              preventCurveOvershootingThreshold: 1.0, // Threshold for overshooting prevention
               color: AppColors.groceries,
               barWidth: 3,
               isStrokeCapRound: true,
@@ -172,36 +217,12 @@ class SpendingTrendChart extends StatelessWidget {
               belowBarData: BarAreaData(
                 show: true,
                 color: AppColors.groceries.withOpacity(0.2),
+                cutOffY: 0,
+                applyCutOffY: true,
               ),
             ),
           ],
-          lineTouchData: LineTouchData(
-            touchTooltipData: LineTouchTooltipData(
-              tooltipBgColor: Colors.white.withOpacity(0.8),
-              getTooltipItems: (List<LineBarSpot> touchedSpots) {
-                return touchedSpots.map((LineBarSpot touchedSpot) {
-                  final index = touchedSpot.x.toInt();
-                  final value = touchedSpot.y;
-                  final date = dailyExpenses.keys.toList()
-                    ..sort();
-                  
-                  if (index >= date.length) {
-                    return null;
-                  }
-                  
-                  final formattedDate = DateFormat('dd MMM').format(date[index]);
-                  
-                  return LineTooltipItem(
-                    '$formattedDate\n€${value.toStringAsFixed(2)}',
-                    const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                }).toList();
-              },
-            ),
-          ),
+
         ),
       ),
     );
