@@ -59,8 +59,8 @@ class DashboardHeader extends StatelessWidget {
           ),
         ),
         if (showButton)
-          Positioned(
-            right: 24,
+          PositionedDirectional(
+            end: 24,
             top: 28,
             child: Container(
               decoration: BoxDecoration(
