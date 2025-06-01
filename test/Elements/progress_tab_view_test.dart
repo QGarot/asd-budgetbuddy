@@ -41,6 +41,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -102,6 +103,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -156,6 +158,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -211,6 +214,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -245,6 +249,7 @@ void main() {
         AllUserData(
           username: 'TestUser',
           email: 'test@example.com',
+          locale: 'en',
           createdAt: DateTime(2024, 1, 1),
           budgets: [],
         ),

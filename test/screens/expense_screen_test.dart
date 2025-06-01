@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../mockito/mock_classes.mocks.dart';
 
@@ -48,6 +50,7 @@ void main() {
       testUserData = AllUserData(
         username: 'Test',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024),
         budgets: [testBudget],
       );
@@ -61,6 +64,16 @@ void main() {
 
     Widget createWidgetUnderTest() {
       return MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'), // English
+        ],
+        locale: const Locale('en'), // Force English locale for tests
         home: BlocProvider<DataCubit>.value(
           value: mockDataCubit,
           child: const ExpenseScreen(),
@@ -76,7 +89,7 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      expect(find.text('Budget Dashboard'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesScreen_title), findsOneWidget);
       expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     });
 
@@ -89,8 +102,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Test Budget'), findsOneWidget);
-      expect(find.text('Track and manage your expenses for this budget'), findsOneWidget);
-      expect(find.text('Add Expense'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesScreen_subtitle), findsOneWidget);
+      expect(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesScreen_addButton), findsOneWidget);
     });
 
     testWidgets('renders expenses tab view with correct tabs', (tester) async {
@@ -101,9 +114,9 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      expect(find.text('ALL EXPENSES'), findsOneWidget);
-      expect(find.text('RECENT'), findsOneWidget);
-      expect(find.text('HIGHEST'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesTab_allExpenses), findsOneWidget);
+      expect(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesTab_recent), findsOneWidget);
+      expect(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesTab_highest), findsOneWidget);
     });
 
     testWidgets('opens Add Expense dialog and check all input fields', (tester) async {
@@ -114,17 +127,18 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Add Expense'));
+      await tester.tap(find.text(AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!.expensesScreen_addButton));
       await tester.pumpAndSettle();
 
-      expect(find.bySemanticsLabel('Amount *'), findsOneWidget);
-      expect(find.bySemanticsLabel('Date *'), findsOneWidget);
-      expect(find.bySemanticsLabel('Merchant *'), findsOneWidget);
-      expect(find.bySemanticsLabel('Category'), findsOneWidget);
-      expect(find.bySemanticsLabel('Payment Method'), findsOneWidget);
-      expect(find.bySemanticsLabel('Notes'), findsOneWidget);
-      expect(find.text('Cancel'), findsOneWidget);
-      expect(find.text('Save Expense'), findsOneWidget);
+      final localizations = AppLocalizations.of(tester.element(find.byType(ExpenseScreen)))!;
+      expect(find.bySemanticsLabel(localizations.addExpenseDialog_amountLabel), findsOneWidget);
+      expect(find.bySemanticsLabel(localizations.addExpenseDialog_dateLabel), findsOneWidget);
+      expect(find.bySemanticsLabel(localizations.addExpenseDialog_merchantLabel), findsOneWidget);
+      expect(find.bySemanticsLabel(localizations.addExpenseDialog_categoryLabel), findsOneWidget);
+      expect(find.bySemanticsLabel(localizations.addExpenseDialog_paymentMethodLabel), findsOneWidget);
+      expect(find.bySemanticsLabel(localizations.addExpenseDialog_notesLabel), findsOneWidget);
+      expect(find.text(localizations.common_cancel), findsOneWidget);
+      expect(find.text(localizations.addExpenseDialog_save), findsOneWidget);
     });
   });
 }

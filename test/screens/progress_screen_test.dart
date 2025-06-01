@@ -33,6 +33,7 @@ void main() {
         AllUserData(
           username: 'TestUser',
           email: 'test@example.com',
+          locale: 'en',
           createdAt: DateTime(2025, 1, 1),
           budgets: [],
         ),

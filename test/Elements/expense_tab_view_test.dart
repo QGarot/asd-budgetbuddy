@@ -48,6 +48,7 @@ void main() {
       testUserData = AllUserData(
         username: 'Test',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024),
         budgets: [testBudget],
       );
