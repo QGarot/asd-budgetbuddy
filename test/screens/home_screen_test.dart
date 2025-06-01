@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../mockito/mock_classes.mocks.dart';
 
@@ -44,6 +46,16 @@ void main() {
             size: Size(1980, 1020),
           ), // Desktop-like width
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+            ],
+            locale: const Locale('en'), // Force English locale for tests
             home: Scaffold(
               body: MultiBlocProvider(
                 providers: [
@@ -62,7 +74,6 @@ void main() {
 
       expect(find.text('Budget Dashboard'), findsNWidgets(2));
       expect(find.text('Manage and track your spending'), findsOneWidget);
-
     },
     //skip: true
   );

@@ -4,6 +4,8 @@ import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mockito/mock_classes.mocks.dart';
@@ -11,17 +13,29 @@ import '../mockito/mock_classes.mocks.dart';
 void main() {
   testWidgets('BudgetTabView renders and switches tabs', (tester) async {
     final mockDataCubit = MockDataCubit();
-    when(mockDataCubit.state).thenReturn(AllUserData(
-      username: 'Test',
-      email: 'test@example.com',
-      locale: 'en',
-      createdAt: DateTime(2024),
-      budgets: [],
-    ));
+    when(mockDataCubit.state).thenReturn(
+      AllUserData(
+        username: 'Test',
+        email: 'test@example.com',
+        locale: 'en',
+        createdAt: DateTime(2024),
+        budgets: [],
+      ),
+    );
     when(mockDataCubit.stream).thenAnswer((_) => const Stream.empty());
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'), // English
+        ],
+        locale: const Locale('en'), // Force English locale for tests
         home: Scaffold(
           body: BlocProvider<DataCubit>.value(
             value: mockDataCubit,

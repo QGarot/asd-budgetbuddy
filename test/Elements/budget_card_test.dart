@@ -2,6 +2,8 @@ import 'package:budgetbuddy/Elements/budget_card.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   testWidgets(
@@ -11,6 +13,17 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+          ],
+          locale: const Locale('en'), // Force English locale for tests
+
           home: Scaffold(
             body: BudgetCard(
               title: 'Groceries',
