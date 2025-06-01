@@ -127,7 +127,16 @@ class _SidebarState extends State<Sidebar> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.logout, size: 18),
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Icon(
+                            Icons.logout,
+                            size: 18,
+                            color: _isLogoutHovered
+                                ? AppColors.primaryColor
+                                : Colors.black,
+                          ),
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           loc.sidebar_logout,
@@ -160,7 +169,10 @@ class _SidebarState extends State<Sidebar> {
                   const CircleAvatar(
                     radius: 20,
                     backgroundColor: AppColors.primaryColor,
-                    child: Icon(Icons.person, color: Colors.white),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Icon(Icons.person, color: Colors.white),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -183,11 +195,14 @@ class _SidebarState extends State<Sidebar> {
                       ],
                     ),
                   ),
-                  Icon(
-                    _showUserMenu
-                        ? Icons.keyboard_arrow_down
-                        : Icons.keyboard_arrow_up,
-                    color: AppColors.primaryColor,
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Icon(
+                      _showUserMenu
+                          ? Icons.keyboard_arrow_down
+                          : Icons.keyboard_arrow_up,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 ],
               ),
@@ -239,7 +254,10 @@ class _SidebarItemState extends State<_SidebarItem> {
           boxShadow: isSelected ? UIConstants.standardShadow : null,
         ),
         child: ListTile(
-          leading: Icon(widget.icon, size: 20, color: textColor),
+          leading: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Icon(widget.icon, size: 20, color: textColor),
+          ),
           title: Text(widget.label, style: TextStyle(color: textColor)),
           shape: RoundedRectangleBorder(borderRadius: UIConstants.borderRadius),
           onTap: () {
