@@ -72,13 +72,10 @@ void main() {
     expect(find.text('Rent'), findsOneWidget);
     expect(find.text('Groceries'), findsOneWidget);
 
-    // Get access to the localized strings
-    final localizations = AppLocalizations.of(tester.element(find.byType(BudgetListWidget)))!;
-    
     // Check if amounts are rendered correctly
-    expect(find.textContaining('${localizations.budgetList_totalLabel} €1000.00'), findsOneWidget);
-    expect(find.textContaining('${localizations.budgetList_spentLabel} €800.00'), findsOneWidget);
-    expect(find.textContaining('${localizations.budgetList_totalLabel} €200.00'), findsOneWidget);
-    expect(find.textContaining('${localizations.budgetList_spentLabel} €150.00'), findsOneWidget);
+    expect(find.textContaining('Total: €1000.00'), findsOneWidget);
+    expect(find.textContaining('Spent: €800.00'), findsOneWidget);
+    expect(find.textContaining('Total: €200.00'), findsOneWidget);
+    expect(find.textContaining('Spent: €150.00'), findsOneWidget);
   });
 }
