@@ -8,18 +8,36 @@ import 'package:budgetbuddy/screens/home_screen.dart';
 import 'package:budgetbuddy/screens/progress_screen.dart';
 import 'package:budgetbuddy/screens/settings_screen.dart';
 import 'package:budgetbuddy/screens/help_screen.dart';
+import 'package:budgetbuddy/screens/statistics_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 700) {
+    if (MediaQuery.of(context).size.width < 850) {
       return const Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: Center(
           child: Text(
             'BudgetBuddy requires a larger screen width',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    if (MediaQuery.of(context).size.height < 470) {
+      return const Scaffold(
+        backgroundColor: AppColors.primaryColor,
+        body: Center(
+          child: Text(
+            'BudgetBuddy requires a larger screen height',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -45,6 +63,8 @@ class MainScreen extends StatelessWidget {
                     return const HomeScreen();
                   case SidebarPage.progress:
                     return const ProgressScreen();
+                  case SidebarPage.statistics:
+                    return const StatisticsScreen();
                   case SidebarPage.settings:
                     return const SettingsScreen();
                   case SidebarPage.help:

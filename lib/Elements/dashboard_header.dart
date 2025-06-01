@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 
-
-
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({
     super.key,
@@ -11,12 +9,16 @@ class DashboardHeader extends StatelessWidget {
     required this.subtitle,
     required this.buttonText,
     required this.onPressed,
+    this.showButton = true,
   });
 
   final String title;
   final String subtitle;
   final String buttonText;
+  //onpressed of button
   final VoidCallback onPressed;
+  // Whether to show the action button
+  final bool showButton;
 
   @override
   Widget build(BuildContext context) {
@@ -56,33 +58,34 @@ class DashboardHeader extends StatelessWidget {
             ],
           ),
         ),
-        PositionedDirectional(
-          end: 24,
-          top: 28,
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow: UIConstants.standardShadow,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: ElevatedButton.icon(
-              onPressed: onPressed,
-              icon: const Icon(Icons.add, size: 18),
-              label: Text(buttonText),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
+        if (showButton)
+          Positioned(
+            right: 24,
+            top: 28,
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: UIConstants.standardShadow,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: ElevatedButton.icon(
+                onPressed: onPressed,
+                icon: const Icon(Icons.add, size: 18),
+                label: Text(buttonText),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 14,
-                ),
-                textStyle: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ),
-        ),
       ],
     );
   }
