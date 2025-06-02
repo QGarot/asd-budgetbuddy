@@ -59,9 +59,9 @@ class _SidebarState extends State<Sidebar> {
             label: loc.sidebar_progress,
             page: SidebarPage.progress,
           ),
-          const _SidebarItem(
+          _SidebarItem(
             icon: Icons.pie_chart,
-            label: "Statistics",
+            label: loc.sidebar_statistics,
             page: SidebarPage.statistics,
           ),
           const SizedBox(height: 12),
@@ -137,9 +137,10 @@ class _SidebarState extends State<Sidebar> {
                           child: Icon(
                             Icons.logout,
                             size: 18,
-                            color: _isLogoutHovered
-                                ? AppColors.primaryColor
-                                : Colors.black,
+                            color:
+                                _isLogoutHovered
+                                    ? AppColors.primaryColor
+                                    : Colors.black,
                           ),
                         ),
                         const SizedBox(width: 8),

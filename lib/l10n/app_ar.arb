@@ -206,6 +206,7 @@
   "sidebar_appTitle": "Budget Buddy",
   "sidebar_dashboard": "الرئيسية",
   "sidebar_progress": "التقدم",
+  "sidebar_statistics": "الإحصائيات",
   "sidebar_settings": "الإعدادات",
   "sidebar_help": "مساعدة",
   "sidebar_logout": "تسجيل الخروج",
@@ -215,5 +216,44 @@
   "summary_remaining": "المتبقي",
 
   "expandAll": "توسيع الكل",
-  "collapseAll": "طي الكل"
+  "collapseAll": "طي الكل",
+
+  "statisticsScreen_title": "لوحة إحصائيات الميزانية",
+  "statisticsScreen_subtitle": "تصوّر بيانات ميزانيتك",
+  "statisticsScreen_noData": "لا توجد بيانات ميزانية للعرض",
+  "statisticsScreen_summary": "الملخص",
+  "statisticsScreen_budgetUtilization": "استخدام الميزانية",
+  "statisticsScreen_remainingBudget": "الميزانية المتبقية",
+  "statisticsScreen_activeBudgets": "الميزانيات النشطة",
+
+  "budgetBarChart_noData": "لا توجد بيانات للميزانية",
+  "budgetBarChart_tooltipBudget": "الميزانية: €{amount}",
+  "@budgetBarChart_tooltipBudget": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "budgetBarChart_tooltipSpent": "المنفق: €{amount}",
+  "@budgetBarChart_tooltipSpent": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "budgetPieChart_noData": "لا توجد بيانات للميزانية",
+  "budgetPieChart_budgets": "الميزانيات",
+
+  "chartsDashboard_title": "رؤى الميزانية",
+  "chartsDashboard_tabOverview": "نظرة عامة",
+  "chartsDashboard_tabBudgetVsSpending": "الميزانية مقابل الإنفاق",
+  "chartsDashboard_tabTrends": "اتجاهات الإنفاق",
+
+  "chartsDashboard_overviewTitle": "توزيع الميزانية",
+  "chartsDashboard_budgetVsSpendingTitle": "الميزانية مقابل الإنفاق",
+  "chartsDashboard_trendsTitle": "اتجاهات الإنفاق (آخر 30 يومًا)",
+  "chartsDashboard_legendBudget": "الميزانية",
+  "chartsDashboard_legendSpent": "المنفق",
+
+  "spendingTrendChart_noData": "لا توجد بيانات مصاريف",
+  "spendingTrendChart_noRecentData": "لا توجد بيانات مصاريف حديثة"
 }

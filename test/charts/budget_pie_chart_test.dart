@@ -1,12 +1,14 @@
 import 'package:budgetbuddy/Elements/Charts/budget_pie_chart.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('BudgetPieChart Widget Tests', () {
-    // Create sample budgets
+    // Sample budgets to use in tests
     final List<Budget> sampleBudgets = [
       Budget(
         name: 'Groceries',
@@ -37,100 +39,121 @@ void main() {
       ),
     ];
 
-    testWidgets('renders correctly with budget data', (WidgetTester tester) async {
+    // Helper to wrap a widget in MaterialApp with localization
+    Widget _wrapWithMaterialApp({required Widget child}) {
+      return MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('en')],
+        locale: const Locale('en'),
+        home: Scaffold(body: child),
+      );
+    }
+
+    testWidgets('renders correctly with budget data', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BudgetPieChart(budgets: sampleBudgets),
-          ),
-        ),
+        _wrapWithMaterialApp(child: BudgetPieChart(budgets: sampleBudgets)),
       );
 
-      // Verify PieChart widget is present
+      // Verify that a PieChart widget is present
       expect(find.byType(PieChart), findsOneWidget);
-      
-      // Verify the center text showing budget count
+
+      // Now grab the localized strings from AppLocalizations
+      final BuildContext context = tester.element(find.byType(BudgetPieChart));
+      final loc = AppLocalizations.of(context)!;
+
+      // The center text should show the count '3'
       expect(find.text('3'), findsOneWidget);
-      expect(find.text('Budgets'), findsOneWidget);
+      // And the center label should use the localized “Budgets” string
+      expect(find.text(loc.budgetPieChart_budgets), findsOneWidget);
     });
 
-    testWidgets('renders correctly with empty budget list', (WidgetTester tester) async {
+    testWidgets('renders correctly with empty budget list', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BudgetPieChart(budgets: []),
-          ),
-        ),
+        _wrapWithMaterialApp(child: BudgetPieChart(budgets: [])),
       );
 
-      // Verify empty state message
-      expect(find.text('No budget data available'), findsOneWidget);
-      
-      // Verify no PieChart is rendered
+      // Grab the localized “no data” string
+      final BuildContext context = tester.element(find.byType(BudgetPieChart));
+      final loc = AppLocalizations.of(context)!;
+      final noDataText = loc.budgetPieChart_noData;
+
+      // Verify that the localized no-data message is shown
+      expect(find.text(noDataText), findsOneWidget);
+
+      // Verify that no PieChart is rendered when budgets is empty
       expect(find.byType(PieChart), findsNothing);
     });
 
-    testWidgets('renders with custom size parameter', (WidgetTester tester) async {
+    testWidgets('renders with custom size parameter', (
+      WidgetTester tester,
+    ) async {
       const double customSize = 300.0;
-      
+
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BudgetPieChart(
-              budgets: sampleBudgets,
-              size: customSize,
-            ),
-          ),
+        _wrapWithMaterialApp(
+          child: BudgetPieChart(budgets: sampleBudgets, size: customSize),
         ),
       );
 
-      // Find the SizedBox that constrains the pie chart
+      // Find the SizedBox that has both height and width equal to customSize
       final sizedBoxFinder = find.byWidgetPredicate(
-        (widget) => widget is SizedBox && widget.height == customSize && widget.width == customSize,
+        (widget) =>
+            widget is SizedBox &&
+            widget.height == customSize &&
+            widget.width == customSize,
       );
-      
       expect(sizedBoxFinder, findsOneWidget);
     });
 
-    testWidgets('generates correct sections based on budget amounts', (WidgetTester tester) async {
+    testWidgets('generates correct sections based on budget amounts', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BudgetPieChart(budgets: sampleBudgets),
-          ),
-        ),
+        _wrapWithMaterialApp(child: BudgetPieChart(budgets: sampleBudgets)),
       );
 
-      // Find PieChart widget
+      // Find the PieChart widget
       final pieChartFinder = find.byType(PieChart);
-      final pieChart = tester.widget<PieChart>(pieChartFinder);
-      
-      // Get PieChartData
-      final data = pieChart.data;
-      
-      // Verify centerSpaceRadius
+      expect(pieChartFinder, findsOneWidget);
+
+      // Extract PieChartData so we can inspect `sections`
+      final PieChart pieChart = tester.widget<PieChart>(pieChartFinder);
+      final PieChartData data = pieChart.data;
+
+      // By default, centerSpaceRadius should be 50 (per implementation)
       expect(data.centerSpaceRadius, 50);
-      
-      // Verify section count
+
+      // We provided 3 budgets, so there should be 3 sections
       expect(data.sections.length, 3);
-      
-      // Total budget amount: 300 + 200 + 500 = 1000
-      // Expected percentages: 30%, 20%, 50%
-      
-      // Verify sections have correct values
-      final totalAmount = sampleBudgets.fold(0.0, (sum, budget) => sum + budget.totalAmount);
-      
+
+      // Calculate totalAmount to check percentages
+      final totalAmount = sampleBudgets.fold<double>(
+        0.0,
+        (sum, budget) => sum + budget.totalAmount,
+      );
+
       for (int i = 0; i < data.sections.length; i++) {
         final section = data.sections[i];
         final budget = sampleBudgets[i];
         final expectedValue = budget.totalAmount;
-        
+
+        // Each section.value should equal that budget's totalAmount
         expect(section.value, expectedValue);
-        
-        // Check if percentage is correctly displayed for sections with >=5% share
+
+        // If the percentage is ≥ 5%, its title should be “XX.X%”
         final percentage = (budget.totalAmount / totalAmount) * 100;
         if (percentage >= 5) {
-          expect(section.title, '${percentage.toStringAsFixed(1)}%');
+          final expectedTitle = '${percentage.toStringAsFixed(1)}%';
+          expect(section.title, expectedTitle);
         } else {
           expect(section.title, '');
         }

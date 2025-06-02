@@ -224,6 +224,7 @@
   "sidebar_appTitle": "BudgetBuddy",
   "sidebar_dashboard": "Dashboard",
   "sidebar_progress": "Progress",
+  "sidebar_statistics": "Statistics",
   "sidebar_settings": "Settings",
   "sidebar_help": "Help",
   "sidebar_logout": "Logout",
@@ -233,5 +234,44 @@
   "summary_remaining": "Remaining",
 
   "expandAll": "Expand All",
-  "collapseAll": "Collapse All"
+  "collapseAll": "Collapse All",
+
+  "statisticsScreen_title": "Statistics Dashboard",
+  "statisticsScreen_subtitle": "Visualize your budget data",
+  "statisticsScreen_noData": "No budget data available to visualize",
+  "statisticsScreen_summary": "Summary",
+  "statisticsScreen_budgetUtilization": "Budget Utilization",
+  "statisticsScreen_remainingBudget": "Remaining Budget",
+  "statisticsScreen_activeBudgets": "Active Budgets",
+
+  "budgetBarChart_noData": "No budget data available",
+  "budgetBarChart_tooltipBudget": "Budget: €{amount}",
+  "@budgetBarChart_tooltipBudget": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "budgetBarChart_tooltipSpent": "Spent: €{amount}",
+  "@budgetBarChart_tooltipSpent": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "budgetPieChart_noData": "No budget data available",
+  "budgetPieChart_budgets": "Budgets",
+
+  "chartsDashboard_title": "Budget Insights",
+  "chartsDashboard_tabOverview": "Overview",
+  "chartsDashboard_tabBudgetVsSpending": "Budget vs Spending",
+  "chartsDashboard_tabTrends": "Trends",
+
+  "chartsDashboard_overviewTitle": "Budget Distribution",
+  "chartsDashboard_budgetVsSpendingTitle": "Budget vs Spending",
+  "chartsDashboard_trendsTitle": "Spending Trends (Last 30 Days)",
+  "chartsDashboard_legendBudget": "Budget",
+  "chartsDashboard_legendSpent": "Spent",
+
+  "spendingTrendChart_noData": "No expense data available",
+  "spendingTrendChart_noRecentData": "No recent expense data available"
 }

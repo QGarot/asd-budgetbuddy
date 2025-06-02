@@ -5,6 +5,7 @@ import 'package:budgetbuddy/Elements/Charts/spending_trend_chart.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChartsDashboard extends StatefulWidget {
   final List<Budget> budgets;
@@ -20,6 +21,8 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     // Get all expenses from all budgets
     final List<Expense> allExpenses = [];
     for (final budget in widget.budgets) {
@@ -46,9 +49,12 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Budget Insights',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  loc.chartsDashboard_title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   width: 350,
@@ -56,9 +62,17 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        _buildTabButton(0, 'Overview'),
-                        _buildTabButton(1, 'Budget vs Spending'),
-                        _buildTabButton(2, 'Trends'),
+                        _buildTabButton(
+                          0,
+                          loc.chartsDashboard_tabOverview,
+                          loc,
+                        ),
+                        _buildTabButton(
+                          1,
+                          loc.chartsDashboard_tabBudgetVsSpending,
+                          loc,
+                        ),
+                        _buildTabButton(2, loc.chartsDashboard_tabTrends, loc),
                       ],
                     ),
                   ),
@@ -73,13 +87,13 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
               index: _selectedTabIndex,
               children: [
                 // Tab 1: Overview with pie chart
-                _buildOverviewTab(widget.budgets),
+                _buildOverviewTab(widget.budgets, loc),
 
                 // Tab 2: Budget vs Spending bar chart
-                _buildBudgetVsSpendingTab(widget.budgets),
+                _buildBudgetVsSpendingTab(widget.budgets, loc),
 
                 // Tab 3: Spending trends
-                _buildTrendsTab(allExpenses),
+                _buildTrendsTab(allExpenses, loc),
               ],
             ),
           ),
@@ -88,7 +102,7 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
     );
   }
 
-  Widget _buildTabButton(int index, String label) {
+  Widget _buildTabButton(int index, String label, AppLocalizations loc) {
     final isSelected = _selectedTabIndex == index;
 
     return InkWell(
@@ -123,37 +137,43 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
     );
   }
 
-  Widget _buildOverviewTab(List<Budget> budgets) {
+  Widget _buildOverviewTab(List<Budget> budgets, AppLocalizations loc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Budget Distribution',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        Text(
+          loc.chartsDashboard_overviewTitle,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Center(child: BudgetPieChart(budgets: budgets)),
         const SizedBox(height: 16),
-        _buildLegend(budgets),
+        _buildLegend(budgets, loc),
       ],
     );
   }
 
-  Widget _buildBudgetVsSpendingTab(List<Budget> budgets) {
+  Widget _buildBudgetVsSpendingTab(List<Budget> budgets, AppLocalizations loc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Budget vs Spending',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        Text(
+          loc.chartsDashboard_budgetVsSpendingTitle,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _LegendItem(color: AppColors.totalBudgetBar, label: 'Budget'),
-            SizedBox(width: 16),
-            _LegendItem(color: AppColors.dangerColor, label: 'Spent'),
+            _LegendItem(
+              color: AppColors.totalBudgetBar,
+              label: loc.chartsDashboard_legendBudget,
+            ),
+            const SizedBox(width: 16),
+            _LegendItem(
+              color: AppColors.dangerColor,
+              label: loc.chartsDashboard_legendSpent,
+            ),
           ],
         ),
         const SizedBox(height: 16),
@@ -162,13 +182,13 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
     );
   }
 
-  Widget _buildTrendsTab(List<Expense> expenses) {
+  Widget _buildTrendsTab(List<Expense> expenses, AppLocalizations loc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Spending Trends (Last 30 Days)',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        Text(
+          loc.chartsDashboard_trendsTitle,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         SpendingTrendChart(expenses: expenses),
@@ -176,7 +196,7 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
     );
   }
 
-  Widget _buildLegend(List<Budget> budgets) {
+  Widget _buildLegend(List<Budget> budgets, AppLocalizations loc) {
     final List<Color> colors = [
       AppColors.groceries,
       AppColors.travel, // Using travel instead of transportation

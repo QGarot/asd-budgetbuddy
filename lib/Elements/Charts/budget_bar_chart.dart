@@ -1,8 +1,10 @@
 import 'dart:math' as math;
+
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BudgetBarChart extends StatelessWidget {
   final List<Budget> budgets;
@@ -20,12 +22,12 @@ class BudgetBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     if (budgets.isEmpty) {
       return SizedBox(
         height: height,
-        child: const Center(
-          child: Text('No budget data available'),
-        ),
+        child: Center(child: Text(loc.budgetBarChart_noData)),
       );
     }
 
@@ -41,7 +43,8 @@ class BudgetBarChart extends StatelessWidget {
     // Find the maximum value to set proper y-axis scale
     final maxValue = displayBudgets.fold<double>(
       0,
-      (max, budget) => math.max(max, math.max(budget.totalAmount, budget.spentAmount)),
+      (max, budget) =>
+          math.max(max, math.max(budget.totalAmount, budget.spentAmount)),
     );
 
     return SizedBox(
@@ -55,12 +58,20 @@ class BudgetBarChart extends StatelessWidget {
               tooltipBgColor: Colors.white.withOpacity(0.8),
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 final budget = displayBudgets[groupIndex];
-                final title = rodIndex == 0 
-                    ? 'Budget: €${budget.totalAmount.toStringAsFixed(2)}'
-                    : 'Spent: €${budget.spentAmount.toStringAsFixed(2)}';
+                final amount =
+                    rodIndex == 0
+                        ? budget.totalAmount.toStringAsFixed(2)
+                        : budget.spentAmount.toStringAsFixed(2);
+                final label =
+                    rodIndex == 0
+                        ? loc.budgetBarChart_tooltipBudget(amount)
+                        : loc.budgetBarChart_tooltipSpent(amount);
                 return BarTooltipItem(
-                  title,
-                  const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+                  label,
+                  const TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
                 );
               },
             ),
@@ -74,15 +85,14 @@ class BudgetBarChart extends StatelessWidget {
                   if (value < 0 || value >= displayBudgets.length) {
                     return const SizedBox.shrink();
                   }
-                  
+
                   final budget = displayBudgets[value.toInt()];
                   final name = budget.name;
-                  
+
                   // Truncate long names
-                  final displayName = name.length > 10 
-                      ? '${name.substring(0, 8)}...'
-                      : name;
-                  
+                  final displayName =
+                      name.length > 10 ? '${name.substring(0, 8)}...' : name;
+
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
@@ -105,10 +115,7 @@ class BudgetBarChart extends StatelessWidget {
                   // Format the y-axis values with currency symbol
                   return Text(
                     '€${value.toInt()}',
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 10,
-                    ),
+                    style: const TextStyle(color: Colors.black54, fontSize: 10),
                   );
                 },
                 reservedSize: 40,
@@ -121,9 +128,7 @@ class BudgetBarChart extends StatelessWidget {
               sideTitles: SideTitles(showTitles: false),
             ),
           ),
-          borderData: FlBorderData(
-            show: false,
-          ),
+          borderData: FlBorderData(show: false),
           barGroups: List.generate(displayBudgets.length, (index) {
             final budget = displayBudgets[index];
             return BarChartGroupData(
@@ -156,5 +161,3 @@ class BudgetBarChart extends StatelessWidget {
     );
   }
 }
-
-

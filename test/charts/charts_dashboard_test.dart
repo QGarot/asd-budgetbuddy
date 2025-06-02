@@ -1,10 +1,12 @@
-import 'package:budgetbuddy/Elements/Charts/charts_dashboard.dart';
-import 'package:budgetbuddy/Elements/Charts/budget_pie_chart.dart';
 import 'package:budgetbuddy/Elements/Charts/budget_bar_chart.dart';
+import 'package:budgetbuddy/Elements/Charts/budget_pie_chart.dart';
+import 'package:budgetbuddy/Elements/Charts/charts_dashboard.dart';
 import 'package:budgetbuddy/Elements/Charts/spending_trend_chart.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -98,28 +100,48 @@ void main() {
       ),
     ];
 
+    Widget _wrapWithMaterialApp({required Widget child}) {
+      return MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('en')],
+        locale: const Locale('en'),
+        home: Scaffold(body: child),
+      );
+    }
+
     testWidgets('renders correctly with budget data', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ChartsDashboard(budgets: sampleBudgets)),
-        ),
+        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
-      // Verify the dashboard title is displayed
-      expect(find.text('Budget Insights'), findsOneWidget);
+      // Obtain the localization instance
+      final BuildContext context = tester.element(find.byType(ChartsDashboard));
+      final loc = AppLocalizations.of(context)!;
 
-      // Verify the tab buttons are displayed
-      expect(find.text('Overview'), findsOneWidget);
-      expect(find.text('Budget vs Spending'), findsOneWidget);
-      expect(find.text('Trends'), findsOneWidget);
+      // 1) The main dashboard title:
+      expect(find.text(loc.chartsDashboard_title), findsOneWidget);
 
-      // By default, the Overview tab should be selected and show the pie chart
-      expect(find.text('Budget Distribution'), findsOneWidget);
+      // 2) The three tab buttons:
+      expect(find.text(loc.chartsDashboard_tabOverview), findsOneWidget);
+      expect(
+        find.text(loc.chartsDashboard_tabBudgetVsSpending),
+        findsOneWidget,
+      );
+      expect(find.text(loc.chartsDashboard_tabTrends), findsOneWidget);
+
+      // 3) By default, "Overview" pane should be selected:
+      //    Its pane heading is "Budget Distribution":
+      expect(find.text(loc.chartsDashboard_overviewTitle), findsOneWidget);
       expect(find.byType(BudgetPieChart), findsOneWidget);
 
-      // The other charts should not be visible yet
+      // 4) The other two chart widgets (Bar + Line) must be hidden initially:
       expect(find.byType(BudgetBarChart), findsNothing);
       expect(find.byType(SpendingTrendChart), findsNothing);
     });
@@ -128,31 +150,41 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(home: Scaffold(body: ChartsDashboard(budgets: []))),
+        _wrapWithMaterialApp(child: ChartsDashboard(budgets: [])),
       );
 
-      // The dashboard structure should still render
-      expect(find.text('Budget Insights'), findsOneWidget);
-      expect(find.text('Overview'), findsOneWidget);
+      // Obtain localization
+      final BuildContext context = tester.element(find.byType(ChartsDashboard));
+      final loc = AppLocalizations.of(context)!;
 
-      // The charts will handle their own empty states
+      // The dashboard structure (title + tabs) should still render:
+      expect(find.text(loc.chartsDashboard_title), findsOneWidget);
+      expect(find.text(loc.chartsDashboard_tabOverview), findsOneWidget);
+
+      // Even with empty budgets, we still see the PieChart widget—
+      // it will internally show its no-data text.
       expect(find.byType(BudgetPieChart), findsOneWidget);
+
+      // Check for the PieChart’s no-data text:
+      final noDataText = loc.budgetPieChart_noData;
+      expect(find.text(noDataText), findsOneWidget);
     });
 
     testWidgets('tab navigation shows correct initial state', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ChartsDashboard(budgets: sampleBudgets)),
-        ),
+        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
-      // Allow any initial animations to complete
       await tester.pumpAndSettle();
 
-      // Initially, the Overview tab should be selected
-      expect(find.text('Budget Distribution'), findsOneWidget);
+      // Obtain localization
+      final BuildContext context = tester.element(find.byType(ChartsDashboard));
+      final loc = AppLocalizations.of(context)!;
+
+      // By default, Overview pane’s heading ("Budget Distribution") is visible:
+      expect(find.text(loc.chartsDashboard_overviewTitle), findsOneWidget);
       expect(find.byType(BudgetPieChart), findsOneWidget);
     });
 
@@ -160,59 +192,74 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ChartsDashboard(budgets: sampleBudgets)),
-        ),
+        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
-      // Allow any initial animations to complete
       await tester.pumpAndSettle();
 
-      // Navigate to the Budget vs Spending tab
-      await tester.tap(find.text('Budget vs Spending'));
+      // Obtain localization
+      final BuildContext context = tester.element(find.byType(ChartsDashboard));
+      final loc = AppLocalizations.of(context)!;
+
+      // Tap the "Budget vs Spending" tab button:
+      await tester.tap(find.text(loc.chartsDashboard_tabBudgetVsSpending));
       await tester.pumpAndSettle();
 
-      // Now the bar chart should be visible
-      // Find the title in the tab content (not the tab button)
-      final titles = find.byWidgetPredicate(
-        (widget) => widget is Text && 
-                   widget.data == 'Budget vs Spending' &&
-                   widget.style?.fontSize == 16.0,
+      // Now we want exactly the **pane heading** "Budget vs Spending" (fontSize==16),
+      // not the tab button (fontSize==13). Use a predicate:
+      final paneTitleFinder = find.byWidgetPredicate(
+        (widget) =>
+            widget is Text &&
+            widget.data == loc.chartsDashboard_budgetVsSpendingTitle &&
+            widget.style?.fontSize == 16.0,
       );
-      expect(titles, findsOneWidget);
+      expect(paneTitleFinder, findsOneWidget);
+
+      // And the BarChart should appear:
       expect(find.byType(BudgetBarChart), findsOneWidget);
     });
 
     testWidgets('can navigate to Trends tab', (WidgetTester tester) async {
+      // We wrap in a vertical SingleChildScrollView so the horizontally scrolling
+      // tabs can slide off‐screen:
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(
-              child: ChartsDashboard(budgets: sampleBudgets),
-            ),
+        _wrapWithMaterialApp(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: ChartsDashboard(budgets: sampleBudgets),
           ),
         ),
       );
 
-      // Allow any initial animations to complete
       await tester.pumpAndSettle();
 
-      // Find the horizontal scrollable area containing the tabs
-      final horizontalScrollable = find.byWidgetPredicate(
-        (widget) => widget is SingleChildScrollView && 
-                   widget.scrollDirection == Axis.horizontal,
+      // Obtain localization
+      final BuildContext context = tester.element(find.byType(ChartsDashboard));
+      final loc = AppLocalizations.of(context)!;
+
+      // The "Trends" tab button may be off-screen horizontally, so scroll right:
+      final horizontalTabs = find.byWidgetPredicate(
+        (widget) =>
+            widget is SingleChildScrollView &&
+            widget.scrollDirection == Axis.horizontal,
       );
-      
-      // Scroll to the right to make the Trends tab visible
-      await tester.drag(horizontalScrollable, const Offset(-200, 0));
+      await tester.drag(horizontalTabs, const Offset(-200, 0));
       await tester.pumpAndSettle();
 
-      // Navigate to the Trends tab
-      await tester.tap(find.text('Trends'));
+      // Tap "Trends"
+      await tester.tap(find.text(loc.chartsDashboard_tabTrends));
       await tester.pumpAndSettle();
 
-      // Now the line chart should be visible
-      expect(find.text('Spending Trends (Last 30 Days)'), findsOneWidget);
+      // Now the pane heading "Spending Trends (Last 30 Days)" (fontSize==16) should appear:
+      final trendsTitleFinder = find.byWidgetPredicate(
+        (widget) =>
+            widget is Text &&
+            widget.data == loc.chartsDashboard_trendsTitle &&
+            widget.style?.fontSize == 16.0,
+      );
+      expect(trendsTitleFinder, findsOneWidget);
+
+      // And the line chart should show up:
       expect(find.byType(SpendingTrendChart), findsOneWidget);
     });
 
@@ -220,12 +267,10 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ChartsDashboard(budgets: sampleBudgets)),
-        ),
+        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
-      // Check that the budget names appear in the legend
+      // Each budget name should appear somewhere in the legend area:
       for (final budget in sampleBudgets) {
         expect(find.text(budget.name), findsOneWidget);
       }
