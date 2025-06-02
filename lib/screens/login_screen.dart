@@ -5,6 +5,7 @@ import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,7 +37,10 @@ class LoginScreenState extends State<LoginScreen> {
       );
 
       if (!AuthEvent.isLoggedIn(context)) {
-        MessageToUser.showMessage(context, "Login failed!");
+        MessageToUser.showMessage(
+          context,
+          AppLocalizations.of(context)!.loginScreen_failed,
+        );
         setState(() {
           _isLoading = false;
         });
@@ -54,12 +58,13 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.neutralBackground,
       body: Center(
         child: StandardDialogBox(
-          title: "Sign In",
-          subtitle: "Enter your details to access your account",
+          title: localization.loginScreen_title,
+          subtitle: localization.loginScreen_subtitle,
           icon: Icons.person,
           maxWidth: 360,
           content: StandardDialogBox.buildStandardForm(
@@ -68,62 +73,59 @@ class LoginScreenState extends State<LoginScreen> {
               children: [
                 StandardDialogBox.buildStandardFormField(
                   controller: _usernameController,
-                  label: "Email",
-                  hint: "example@email.com",
-                  prefixIcon: const Icon(Icons.person),
+                  label: localization.loginScreen_emailLabel,
+                  hint: localization.loginScreen_emailHint,
+                  prefixIcon: Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return "Email is required";
+                      return localization.loginScreen_emailRequired;
                     } else if (!RegExp(r"\S+@\S+\.\S+").hasMatch(value)) {
-                      return "Email is invalid";
+                      return localization.loginScreen_emailInvalid;
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 StandardDialogBox.buildStandardFormField(
                   controller: _passwordController,
-                  label: "Password",
+                  label: localization.loginScreen_passwordLabel,
                   obscureText: true,
-                  prefixIcon: const Icon(Icons.lock),
+                  prefixIcon: Icon(Icons.lock),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Password is required";
+                      return localization.loginScreen_passwordRequired;
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 if (_error != null)
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Text(
-                      _error!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: Text(_error!, style: TextStyle(color: Colors.red)),
                   ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 MainButton(
-                  text: "Sign in",
+                  text: localization.loginScreen_signInButton,
                   onPressed: () async {
                     if (!_isLoading) {
                       await _submitForm();
                     }
                   },
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account?"),
+                    Text(localization.loginScreen_noAccount),
                     TextButton(
                       onPressed:
                           () => Navigator.pushReplacementNamed(
                             context,
                             '/signup',
                           ),
-                      child: const Text(
-                        "Create Account",
+                      child: Text(
+                        localization.loginScreen_createAccount,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -132,7 +134,7 @@ class LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-          actions: const [],
+          actions: [],
         ),
       ),
     );

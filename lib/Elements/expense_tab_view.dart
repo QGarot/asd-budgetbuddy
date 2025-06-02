@@ -1,9 +1,10 @@
 import 'package:budgetbuddy/AppData/category_icons.dart';
+import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExpensesTabView extends StatefulWidget {
   const ExpensesTabView({super.key, required this.budgetId});
@@ -15,18 +16,21 @@ class ExpensesTabView extends StatefulWidget {
 }
 
 class _ExpensesTabViewState extends State<ExpensesTabView> {
-  final List<String> _tabs = const ['ALL EXPENSES', 'RECENT', 'HIGHEST'];
+  final List<String> _tabs = const ['allExpenses', 'recent', 'highest'];
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return BlocBuilder<DataCubit, AllUserData?>(
       builder: (context, userData) {
         if (userData == null) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final budget = userData.budgets
-            .firstWhere((b) => b.id == widget.budgetId);
+        final budget = userData.budgets.firstWhere(
+          (b) => b.id == widget.budgetId,
+        );
 
         return DefaultTabController(
           length: _tabs.length,
@@ -39,11 +43,14 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 0, 20),
                   child: Text(
-                    "Expenses",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    loc.expensesTab_title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 TabBar(
@@ -51,26 +58,48 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                   labelColor: Colors.deepPurple,
                   unselectedLabelColor: Colors.black45,
                   indicatorColor: Colors.deepPurpleAccent,
-                  tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
+                  tabs:
+                      _tabs.map((tabKey) {
+                        String label;
+                        switch (tabKey) {
+                          case 'allExpenses':
+                            label = loc.expensesTab_allExpenses;
+                            break;
+                          case 'recent':
+                            label = loc.expensesTab_recent;
+                            break;
+                          case 'highest':
+                            label = loc.expensesTab_highest;
+                            break;
+                          default:
+                            label = tabKey;
+                        }
+                        return Tab(text: label);
+                      }).toList(),
                 ),
                 Expanded(
                   child: TabBarView(
-                    children: _tabs.map((tab) {
-                      final expenses = _getExpensesByTab(tab, budget.expenses);
-
-                      return ListView.separated(
-                        padding: EdgeInsets.zero,
-                        itemCount: expenses.length,
-                        separatorBuilder: (_, __) => const Divider(height: 1),
-                        itemBuilder: (context, index) {
-                          final expense = expenses[index];
-                          return ExpenseListItem(
-                            expense: expense,
-                            category: budget.category,
+                    children:
+                        _tabs.map((tabKey) {
+                          final expenses = _getExpensesByTab(
+                            tabKey,
+                            budget.expenses,
                           );
-                        },
-                      );
-                    }).toList(),
+
+                          return ListView.separated(
+                            padding: EdgeInsets.zero,
+                            itemCount: expenses.length,
+                            separatorBuilder:
+                                (_, __) => const Divider(height: 1),
+                            itemBuilder: (context, index) {
+                              final expense = expenses[index];
+                              return ExpenseListItem(
+                                expense: expense,
+                                categoryKey: budget.category,
+                              );
+                            },
+                          );
+                        }).toList(),
                   ),
                 ),
               ],
@@ -81,35 +110,35 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
     );
   }
 
-  List<Expense> _getExpensesByTab(String tab, List<Expense> allExpenses) {
-    if (tab == 'RECENT') {
-      // Sort by most recent date
+  List<Expense> _getExpensesByTab(String tabKey, List<Expense> allExpenses) {
+    if (tabKey == 'recent') {
       final sorted = List<Expense>.from(allExpenses)
         ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       return sorted;
-    } else if (tab == 'HIGHEST') {
-      // Sort by highest amount
+    } else if (tabKey == 'highest') {
       final sorted = List<Expense>.from(allExpenses)
         ..sort((a, b) => b.amount.compareTo(a.amount));
       return sorted;
     }
-    // 'ALL EXPENSES' tab - return all expenses
     return allExpenses;
   }
 }
 
 class ExpenseListItem extends StatelessWidget {
   final Expense expense;
-  final String category;
+  final String categoryKey;
 
   const ExpenseListItem({
     super.key,
     required this.expense,
-    required this.category,
+    required this.categoryKey,
   });
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final localizedCategory = _localizedCategory(context, categoryKey);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       child: Row(
@@ -124,16 +153,19 @@ class ExpenseListItem extends StatelessWidget {
                     Flexible(
                       child: Text(
                         expense.merchant,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(4),
@@ -142,13 +174,13 @@ class ExpenseListItem extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            CategoryIcons.getIcon(category),
+                            CategoryIcons.getIcon(categoryKey),
                             size: 14,
                             color: Colors.grey[700],
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
-                            category,
+                            localizedCategory,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[700],
@@ -159,7 +191,7 @@ class ExpenseListItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   "${_formatDate(expense.createdAt)} • ${expense.notes}",
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
@@ -169,48 +201,48 @@ class ExpenseListItem extends StatelessWidget {
           ),
           Text(
             "€${expense.amount.toStringAsFixed(2)}",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Row(
             children: [
               Tooltip(
-                message: "Receipt",
+                message: loc.expensesTab_tooltipReceipt,
                 child: IconButton(
                   icon: Icon(Icons.receipt, color: Colors.grey),
                   onPressed: () {},
                   padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
+                  constraints: const BoxConstraints(),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Tooltip(
-                message: "Notes",
+                message: loc.expensesTab_tooltipNotes,
                 child: IconButton(
                   icon: Icon(Icons.notes_rounded, color: Colors.grey),
                   onPressed: () {},
                   padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
+                  constraints: const BoxConstraints(),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Tooltip(
-                message: "Edit",
+                message: loc.expensesTab_tooltipEdit,
                 child: IconButton(
                   icon: Icon(Icons.edit, color: Colors.grey),
                   onPressed: () {},
                   padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
+                  constraints: const BoxConstraints(),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Tooltip(
-                message: "Delete",
+                message: loc.expensesTab_tooltipDelete,
                 child: IconButton(
                   icon: Icon(Icons.delete, color: Colors.grey),
                   onPressed: () {},
                   padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
+                  constraints: const BoxConstraints(),
                 ),
               ),
             ],
@@ -222,5 +254,29 @@ class ExpenseListItem extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return "${date.day}/${date.month}/${date.year}";
+  }
+
+  String _localizedCategory(BuildContext context, String categoryKey) {
+    final loc = AppLocalizations.of(context)!;
+    switch (categoryKey) {
+      case 'Groceries':
+        return loc.category_groceries;
+      case 'Rent':
+        return loc.category_rent;
+      case 'Utilities':
+        return loc.category_utilities;
+      case 'Entertainment':
+        return loc.category_entertainment;
+      case 'Travel':
+        return loc.category_travel;
+      case 'Dining':
+        return loc.category_dining;
+      case 'Shopping':
+        return loc.category_shopping;
+      case 'Other':
+        return loc.category_other;
+      default:
+        return categoryKey;
+    }
   }
 }

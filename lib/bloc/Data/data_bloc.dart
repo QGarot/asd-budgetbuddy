@@ -1,10 +1,11 @@
-import 'package:budgetbuddy/pojos/user_data.dart';
+import 'dart:async';
+
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
+import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:async';
 
 class DataCubit extends Cubit<AllUserData?> {
   final FirebaseAuth _auth;
@@ -554,5 +555,12 @@ class DataCubit extends Cubit<AllUserData?> {
             print("Error in real-time expense stream: $e");
           }
         });
+  }
+
+  void patchUserLocale(String locale) {
+    if (_userData == null) return;
+
+    _userData = _userData!.copyWith(locale: locale);
+    emit(_userData);
   }
 }

@@ -5,6 +5,7 @@ import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/pojos/user_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -34,7 +35,10 @@ class SignupScreenState extends State<SignupScreen> {
       );
 
       if (!AuthEvent.isLoggedIn(context)) {
-        MessageToUser.showMessage(context, "Account creation failed!");
+        MessageToUser.showMessage(
+          context,
+          AppLocalizations.of(context)!.signupScreen_failed,
+        );
         setState(() => _isLoading = false);
         return;
       }
@@ -42,18 +46,20 @@ class SignupScreenState extends State<SignupScreen> {
       if (!mounted) return;
       setState(() => _isLoading = false);
 
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/loading');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.neutralBackground,
       body: Center(
         child: StandardDialogBox(
-          title: "Create Account",
-          subtitle: "Enter your details to create a new account",
+          title: loc.signupScreen_title,
+          subtitle: loc.signupScreen_subtitle,
           icon: Icons.person,
           maxWidth: 360,
           content: StandardDialogBox.buildStandardForm(
@@ -62,11 +68,11 @@ class SignupScreenState extends State<SignupScreen> {
               children: [
                 StandardDialogBox.buildStandardFormField(
                   controller: _usernameController,
-                  label: "Username",
+                  label: loc.signupScreen_usernameLabel,
                   prefixIcon: const Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return "Username is required";
+                      return loc.signupScreen_usernameRequired;
                     }
                     return null;
                   },
@@ -74,13 +80,13 @@ class SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 12),
                 StandardDialogBox.buildStandardFormField(
                   controller: _emailController,
-                  label: "Email",
+                  label: loc.signupScreen_emailLabel,
                   prefixIcon: const Icon(Icons.email),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return "Email is required";
+                      return loc.signupScreen_emailRequired;
                     } else if (!RegExp(r"\S+@\S+\.\S+").hasMatch(value)) {
-                      return "Email is invalid";
+                      return loc.signupScreen_emailInvalid;
                     }
                     return null;
                   },
@@ -88,21 +94,21 @@ class SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 12),
                 StandardDialogBox.buildStandardFormField(
                   controller: _passwordController,
-                  label: "Password",
+                  label: loc.signupScreen_passwordLabel,
                   obscureText: true,
                   prefixIcon: const Icon(Icons.lock),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Password is required";
+                      return loc.signupScreen_passwordRequired;
                     } else if (value.length < 8) {
-                      return "Password must be at least 8 characters";
+                      return loc.signupScreen_passwordTooShort;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 MainButton(
-                  text: "Sign up",
+                  text: loc.signupScreen_button,
                   onPressed: () async {
                     if (!_isLoading) {
                       await _submitForm();
@@ -113,14 +119,14 @@ class SignupScreenState extends State<SignupScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already have an account?"),
+                    Text(loc.signupScreen_hasAccount),
                     TextButton(
                       onPressed:
                           () =>
                               Navigator.pushReplacementNamed(context, '/login'),
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      child: Text(
+                        loc.signupScreen_login,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

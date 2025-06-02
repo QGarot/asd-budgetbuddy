@@ -3,7 +3,22 @@ import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+
+/// These enums belong in your shared model layer so all dialogs reuse them.
+enum ExpenseCategory {
+  Groceries,
+  Rent,
+  Utilities,
+  Entertainment,
+  Travel,
+  Dining,
+  Shopping,
+  Other,
+}
+
+enum PaymentMethod { Cash, CreditCard, DebitCard, OnlinePayment }
 
 class AddExpenseDialog extends StatefulWidget {
   final String budgetId;
@@ -21,34 +36,30 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
 
-  String? _selectedCategory;
-  String? _selectedPaymentMethod;
+  ExpenseCategory? _selectedCategory;
+  PaymentMethod? _selectedPaymentMethod;
   DateTime? _selectedDate;
-  String? _errorMessage = " ";
-
-  final List<String> _categories = [
-    'Groceries', 'Rent', 'Utilities', 'Entertainment', 'Travel', 'Dining', 'Shopping', 'Other'
-  ];
-  final List<String> _paymentMethods = ['Cash', 'Credit Card', 'Debit Card', 'Online Payment'];
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Dialog(
       backgroundColor: Colors.transparent,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520),
         child: StandardDialogBox(
-          title: "Add Expense",
-          subtitle: "Enter the details of your new expense.",
+          title: loc.addExpenseDialog_title,
+          subtitle: loc.addExpenseDialog_subtitle,
           icon: Icons.attach_money,
-          content: _buildDialogContent(),
-          actions: _buildDialogActions(),
+          content: _buildDialogContent(loc),
+          actions: _buildDialogActions(loc),
         ),
       ),
     );
   }
 
-  Widget _buildDialogContent() {
+  Widget _buildDialogContent(AppLocalizations loc) {
     return SingleChildScrollView(
       child: StandardDialogBox.buildStandardForm(
         formKey: _formKey,
@@ -60,14 +71,18 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                 Expanded(
                   child: StandardDialogBox.buildStandardFormField(
                     controller: _amountController,
-                    label: 'Amount *',
-                    hint: '€',
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    label: loc.addExpenseDialog_amountLabel,
+                    hint: loc.addExpenseDialog_amountHint,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     validator: (value) {
                       final text = value?.trim();
-                      final parsed = double.tryParse(text?.replaceAll(',', '.') ?? '');
+                      final parsed = double.tryParse(
+                        text?.replaceAll(',', '.') ?? '',
+                      );
                       if (parsed == null || parsed <= 0) {
-                        return 'Please enter a valid amount';
+                        return loc.addExpenseDialog_invalidAmount;
                       }
                       return null;
                     },
@@ -78,7 +93,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                   child: TextFormField(
                     controller: _dateController,
                     decoration: InputDecoration(
-                      labelText: 'Date *',
+                      labelText: loc.addExpenseDialog_dateLabel,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),
                         onPressed: () async {
@@ -91,7 +106,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           if (picked != null) {
                             setState(() {
                               _selectedDate = picked;
-                              _dateController.text = DateFormat('dd/MM/yyyy').format(picked);
+                              _dateController.text = DateFormat(
+                                'dd/MM/yyyy',
+                              ).format(picked);
                             });
                           }
                         },
@@ -100,13 +117,14 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                     keyboardType: TextInputType.datetime,
                     onChanged: (value) {
                       try {
-                        final parsed = DateFormat('dd/MM/yyyy').parseStrict(value);
-                        _selectedDate = parsed;
+                        _selectedDate = DateFormat(
+                          'dd/MM/yyyy',
+                        ).parseStrict(value);
                       } catch (_) {}
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Date is required';
+                        return loc.addExpenseDialog_dateRequired;
                       }
                       return null;
                     },
@@ -117,11 +135,11 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
             const SizedBox(height: 10),
             StandardDialogBox.buildStandardFormField(
               controller: _merchantController,
-              label: 'Merchant *',
-              hint: 'e.g. Supermarket',
+              label: loc.addExpenseDialog_merchantLabel,
+              hint: loc.addExpenseDialog_merchantHint,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Merchant is required';
+                  return loc.addExpenseDialog_merchantRequired;
                 }
                 return null;
               },
@@ -130,24 +148,59 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
             Row(
               children: [
                 Expanded(
-                  child: StandardDialogBox.buildStandardDropdown(
-                    context: context,
-                    label: 'Category',
-                    selectedValue: _selectedCategory,
-                    items: _categories,
-                    onChanged: (value) => setState(() => _selectedCategory = value),
-                    itemLabel: (item) => item,
-                  ),
+                  child:
+                      StandardDialogBox.buildStandardDropdown<ExpenseCategory>(
+                        context: context,
+                        label: loc.addExpenseDialog_categoryLabel,
+                        selectedValue: _selectedCategory,
+                        items: ExpenseCategory.values,
+                        onChanged:
+                            (value) =>
+                                setState(() => _selectedCategory = value),
+                        itemLabel: (cat) {
+                          switch (cat) {
+                            case ExpenseCategory.Groceries:
+                              return loc.category_groceries;
+                            case ExpenseCategory.Rent:
+                              return loc.category_rent;
+                            case ExpenseCategory.Utilities:
+                              return loc.category_utilities;
+                            case ExpenseCategory.Entertainment:
+                              return loc.category_entertainment;
+                            case ExpenseCategory.Travel:
+                              return loc.category_travel;
+                            case ExpenseCategory.Dining:
+                              return loc.category_dining;
+                            case ExpenseCategory.Shopping:
+                              return loc.category_shopping;
+                            case ExpenseCategory.Other:
+                              return loc.category_other;
+                          }
+                        },
+                      ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: StandardDialogBox.buildStandardDropdown(
+                  child: StandardDialogBox.buildStandardDropdown<PaymentMethod>(
                     context: context,
-                    label: 'Payment Method',
+                    label: loc.addExpenseDialog_paymentMethodLabel,
                     selectedValue: _selectedPaymentMethod,
-                    items: _paymentMethods,
-                    onChanged: (value) => setState(() => _selectedPaymentMethod = value),
-                    itemLabel: (item) => item,
+                    items: PaymentMethod.values,
+                    onChanged:
+                        (value) =>
+                            setState(() => _selectedPaymentMethod = value),
+                    itemLabel: (pm) {
+                      switch (pm) {
+                        case PaymentMethod.Cash:
+                          return loc.paymentMethod_cash;
+                        case PaymentMethod.CreditCard:
+                          return loc.paymentMethod_creditCard;
+                        case PaymentMethod.DebitCard:
+                          return loc.paymentMethod_debitCard;
+                        case PaymentMethod.OnlinePayment:
+                          return loc.paymentMethod_onlinePayment;
+                      }
+                    },
                   ),
                 ),
               ],
@@ -155,67 +208,83 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
             const SizedBox(height: 10),
             StandardDialogBox.buildStandardFormField(
               controller: _notesController,
-              label: 'Notes',
-              hint: 'Optional notes.',
+              label: loc.addExpenseDialog_notesLabel,
+              hint: loc.addExpenseDialog_notesHint,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
+            if (_errorMessage != null) ...[
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildDialogActions() {
-    return [
-      TextButton(
-        onPressed: () => Navigator.of(context).pop(),
-        child: const Text('Cancel'),
-      ),
-      ElevatedButton(
-        onPressed: _saveExpense,
-        child: const Text('Save Expense'),
-      ),
-    ];
-  }
+  List<Widget> _buildDialogActions(AppLocalizations loc) => [
+    TextButton(
+      onPressed: () => Navigator.of(context).pop(),
+      child: Text(loc.addExpenseDialog_cancel),
+    ),
+    ElevatedButton(
+      onPressed: _saveExpense,
+      child: Text(loc.addExpenseDialog_save),
+    ),
+  ];
 
   void _saveExpense() async {
-    setState(() => _errorMessage = " ");
+    setState(() => _errorMessage = null);
     final form = _formKey.currentState;
     if (form == null || !form.validate()) return;
 
     if (_selectedDate == null ||
         _selectedCategory == null ||
         _selectedPaymentMethod == null) {
-      setState(() => _errorMessage = 'Please fill in all required fields.');
+      setState(
+        () =>
+            _errorMessage =
+                AppLocalizations.of(context)!.addExpenseDialog_fillAll,
+      );
       return;
     }
 
-    final parsedAmount = double.tryParse(_amountController.text.replaceAll(',', '.')) ?? 0;
+    final parsedAmount =
+        double.tryParse(_amountController.text.replaceAll(',', '.')) ?? 0;
 
     final expense = Expense(
       merchant: _merchantController.text.trim(),
       amount: parsedAmount,
       createdAt: _selectedDate!,
       notes: _notesController.text.trim(),
-      category: _selectedCategory!,
-      paymentMethod: _selectedPaymentMethod!,
+      category: _selectedCategory!.name,
+      paymentMethod: _selectedPaymentMethod!.name,
     );
 
-    final success = await DataEvent.addExpense(context, widget.budgetId, expense);
+    final success = await DataEvent.addExpense(
+      context,
+      widget.budgetId,
+      expense,
+    );
 
     if (!mounted) return;
 
     if (success) {
-      MessageToUser.showMessage(context, "Expense saved successfully!");
+      MessageToUser.showMessage(
+        context,
+        AppLocalizations.of(context)!.addExpenseDialog_success,
+      );
       Navigator.of(context).pop();
     } else {
-      setState(() => _errorMessage = "Failed to save expense.");
+      setState(
+        () =>
+            _errorMessage =
+                AppLocalizations.of(context)!.addExpenseDialog_failure,
+      );
     }
   }
 }

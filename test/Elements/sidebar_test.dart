@@ -8,6 +8,8 @@ import 'package:budgetbuddy/pojos/user_data.dart';
 
 import '../mockito/mock_classes.mocks.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   testWidgets('Sidebar updates cubit and visually indicates selected item', (
@@ -20,6 +22,7 @@ void main() {
       AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [],
       ),
@@ -28,6 +31,16 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'), // English
+        ],
+        locale: const Locale('en'), // Force English locale for tests
         home: Scaffold(
           body: MultiBlocProvider(
             providers: [
@@ -61,7 +74,14 @@ void main() {
     final settingsText = settingsTile.title as Text;
     expect(settingsText.style?.color, equals(Colors.white));
 
-    final settingsIcon = settingsTile.leading as Icon;
+    // Find the icon within the leading widget hierarchy instead of direct casting
+    final iconFinder = find.descendant(
+      of: find.widgetWithText(ListTile, "Settings"),
+      matching: find.byType(Icon),
+    );
+    expect(iconFinder, findsOneWidget);
+    
+    final settingsIcon = tester.widget<Icon>(iconFinder);
     expect(settingsIcon.color, equals(Colors.white));
   });
 }

@@ -2,28 +2,29 @@ import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/layout_constants.dart';
 import 'package:budgetbuddy/Elements/dashboard_header.dart';
 import 'package:budgetbuddy/Elements/header_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budgetbuddy/Elements/progress_tab_view.dart';
 import 'package:flutter/material.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});
 
-  final String title = "Budget Progress";
-  final String subtitle = "Track your spending over time";
-
   @override
   Widget build(BuildContext context) {
+    final title = AppLocalizations.of(context)!.progressScreen_title;
+    final subtitle = AppLocalizations.of(context)!.progressScreen_subtitle;
     final double maxHeightTabView =
         MediaQuery.of(context).size.height *
         LayoutConstants.tabViewHeightProcent;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColorHomescreen,
+      appBar: HeaderBar(
+        title: AppLocalizations.of(context)!.progressScreen_header,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const HeaderBar(title: "Progress"),
-
           Expanded(
             child: SingleChildScrollView(
               child: Center(

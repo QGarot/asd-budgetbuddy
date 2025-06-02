@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:budgetbuddy/Elements/add_expense_dialog.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FakeDataCubit extends Mock implements DataCubit {}
 
@@ -16,19 +18,33 @@ void main() {
 
   Widget createTestWidget() {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+      ],
+      locale: const Locale('en'), // Force English locale for tests,
       home: BlocProvider<DataCubit>.value(
         value: mockDataCubit,
         child: Scaffold(
           body: Builder(
-            builder: (context) => ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => const AddExpenseDialog(budgetId: 'test-budget-id'),
-                );
-              },
-              child: const Text('Show Dialog'),
-            ),
+            builder:
+                (context) => ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (_) => const AddExpenseDialog(
+                            budgetId: 'test-budget-id',
+                          ),
+                    );
+                  },
+                  child: const Text('Show Dialog'),
+                ),
           ),
         ),
       ),
@@ -59,7 +75,9 @@ void main() {
       expect(find.text('Notes'), findsOneWidget);
     });
 
-    testWidgets('shows validation errors when fields are empty', (tester) async {
+    testWidgets('shows validation errors when fields are empty', (
+      tester,
+    ) async {
       await tester.pumpWidget(createTestWidget());
       await tester.tap(find.text('Show Dialog'));
       await tester.pumpAndSettle();

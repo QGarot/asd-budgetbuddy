@@ -2,25 +2,22 @@ import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BudgetPieChart extends StatelessWidget {
   final List<Budget> budgets;
   final double size;
 
-  const BudgetPieChart({
-    super.key,
-    required this.budgets,
-    this.size = 250,
-  });
+  const BudgetPieChart({super.key, required this.budgets, this.size = 250});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     if (budgets.isEmpty) {
       return SizedBox(
         height: size,
-        child: const Center(
-          child: Text('No budget data available'),
-        ),
+        child: Center(child: Text(loc.budgetPieChart_noData)),
       );
     }
 
@@ -50,12 +47,9 @@ class BudgetPieChart extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
-                  'Budgets',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                  ),
+                Text(
+                  loc.budgetPieChart_budgets,
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
                 ),
               ],
             ),
@@ -67,13 +61,13 @@ class BudgetPieChart extends StatelessWidget {
 
   List<PieChartSectionData> _generateSections() {
     final List<PieChartSectionData> sections = [];
-    
+
     // Define a list of colors to use for the pie chart
     final List<Color> colors = [
       AppColors.groceries,
-      AppColors.travel,         // Using travel instead of transportation
+      AppColors.travel, // Using travel instead of transportation
       AppColors.entertainment,
-      AppColors.rent,           // Using rent instead of housing
+      AppColors.rent, // Using rent instead of housing
       AppColors.utilities,
       AppColors.dangerColor,
       AppColors.totalBudgetBar,
@@ -81,20 +75,21 @@ class BudgetPieChart extends StatelessWidget {
       AppColors.dining,
       AppColors.other,
     ];
-    
+
     // Calculate total amount for percentage calculation
     final double totalAmount = budgets.fold(
-        0, (sum, budget) => sum + budget.totalAmount);
-    
+      0,
+      (sum, budget) => sum + budget.totalAmount,
+    );
+
     for (int i = 0; i < budgets.length; i++) {
       final budget = budgets[i];
-      final double percentage = totalAmount > 0 
-          ? (budget.totalAmount / totalAmount) * 100 
-          : 0;
-      
+      final double percentage =
+          totalAmount > 0 ? (budget.totalAmount / totalAmount) * 100 : 0;
+
       // Use modulo to cycle through colors if we have more budgets than colors
       final Color color = colors[i % colors.length];
-      
+
       sections.add(
         PieChartSectionData(
           color: color,
@@ -109,7 +104,7 @@ class BudgetPieChart extends StatelessWidget {
         ),
       );
     }
-    
+
     return sections;
   }
 }

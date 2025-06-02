@@ -8,22 +8,22 @@ import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
 
-  final String title = "Statistics Dashboard";
-  final String subtitle = "Visualize your budget data";
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColorHomescreen,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // 🔹 Top bar
-          const HeaderBar(title: "Statistics Dashboard"),
+          HeaderBar(title: loc.statisticsScreen_title),
 
           // 🔹 Main content
           Expanded(
@@ -40,9 +40,9 @@ class StatisticsScreen extends StatelessWidget {
                       children: [
                         // 🔹 Page Title
                         DashboardHeader(
-                          title: title,
-                          subtitle: subtitle,
-                          buttonText: "",
+                          title: loc.statisticsScreen_title,
+                          subtitle: loc.statisticsScreen_subtitle,
+                          buttonText: '',
                           onPressed: () {},
                           showButton: false,
                         ),
@@ -52,12 +52,12 @@ class StatisticsScreen extends StatelessWidget {
                         BlocBuilder<DataCubit, AllUserData?>(
                           builder: (context, userData) {
                             if (userData == null || userData.budgets.isEmpty) {
-                              return const Center(
+                              return Center(
                                 child: Padding(
-                                  padding: EdgeInsets.all(32.0),
+                                  padding: const EdgeInsets.all(32.0),
                                   child: Text(
-                                    'No budget data available to visualize',
-                                    style: TextStyle(
+                                    loc.statisticsScreen_noData,
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       color: Colors.black54,
                                     ),
@@ -74,7 +74,7 @@ class StatisticsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // 🔹 Analytics info cards
-                                _buildAnalyticsCards(summary, userData),
+                                _buildAnalyticsCards(loc, summary, userData),
                                 const SizedBox(height: 32),
 
                                 // 🔹 Charts Dashboard
@@ -98,7 +98,11 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAnalyticsCards(BudgetSummary summary, AllUserData userData) {
+  Widget _buildAnalyticsCards(
+    AppLocalizations loc,
+    BudgetSummary summary,
+    AllUserData userData,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -115,15 +119,15 @@ class StatisticsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Summary',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Text(
+            loc.statisticsScreen_summary,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           Row(
             children: [
               _buildInfoCard(
-                'Budget Utilization',
+                loc.statisticsScreen_budgetUtilization,
                 '${((summary.totalSpent / summary.totalBudget) * 100).toStringAsFixed(1)}%',
                 summary.totalSpent < summary.totalBudget * 0.8
                     ? Colors.green
@@ -133,13 +137,13 @@ class StatisticsScreen extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               _buildInfoCard(
-                'Remaining Budget',
+                loc.statisticsScreen_remainingBudget,
                 '€${summary.remaining.toStringAsFixed(2)}',
                 summary.remaining > 0 ? Colors.green : Colors.red,
               ),
               const SizedBox(width: 16),
               _buildInfoCard(
-                'Active Budgets',
+                loc.statisticsScreen_activeBudgets,
                 '${userData.budgets.length}',
                 AppColors.primaryColor,
               ),

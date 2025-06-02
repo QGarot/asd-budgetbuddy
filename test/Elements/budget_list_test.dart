@@ -6,6 +6,8 @@ import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import '../mockito/mock_classes.mocks.dart';
 
 void main() {
@@ -37,6 +39,7 @@ void main() {
     final mockUserData = AllUserData(
       username: 'TestUser',
       email: 'test@example.com',
+      locale: 'en',
       createdAt: DateTime.now(),
       budgets: mockBudgets,
     );
@@ -46,6 +49,16 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'), // English
+        ],
+        locale: const Locale('en'), // Force English locale for tests
         home: BlocProvider<DataCubit>.value(
           value: mockDataCubit,
           child: const Scaffold(body: BudgetListWidget()),

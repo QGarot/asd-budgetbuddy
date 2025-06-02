@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 
-
-
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({
     super.key,
@@ -61,8 +59,8 @@ class DashboardHeader extends StatelessWidget {
           ),
         ),
         if (showButton)
-          Positioned(
-            right: 24,
+          PositionedDirectional(
+            end: 24,
             top: 28,
             child: Container(
               decoration: BoxDecoration(

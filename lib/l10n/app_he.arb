@@ -1,0 +1,277 @@
+{
+  "@@locale": "he",
+  "appTitle": "חבר התקציב",
+  "common_cancel": "ביטול",
+
+  "category_groceries": "מכולת",
+  "category_rent": "שכר דירה",
+  "category_utilities": "חשמל ומים",
+  "category_entertainment": "בילויים",
+  "category_travel": "נסיעות",
+  "category_dining": "אוכל במסעדות",
+  "category_shopping": "קניות",
+  "category_other": "אחר",
+
+  "period_weekly": "שבועי",
+  "period_biweekly": "דו-שבועי",
+  "period_monthly": "חודשי",
+
+  "paymentMethod_cash": "מזומן",
+  "paymentMethod_creditCard": "כרטיס אשראי",
+  "paymentMethod_debitCard": "כרטיס חיוב",
+  "paymentMethod_onlinePayment": "תשלום מקוון",
+
+  "settingsScreen_languageSaved": "השפה נשמרה",
+  "settingsScreen_saveLanguagePreference": "שמור העדפת שפה",
+  "settingsScreen_title": "הגדרות",
+  "settingsScreen_subtitle": "נהל את הגדרות התקציב שלך",
+  "settingsScreen_languageTitle": "שפה",
+  "settingsScreen_languageSubtitle": "בחר את השפה המועדפת עליך",
+
+  "expensesScreen_title": "לוח בקרת תקציב",
+  "expensesScreen_subtitle": "עקוב ונהל את ההוצאות שלך עבור תקציב זה",
+  "expensesScreen_addButton": "הוסף הוצאה",
+
+  "helpScreen_title": "עזרה",
+  "helpScreen_label": "❓ מסך עזרה",
+
+  "homeScreen_title": "לוח בקרת תקציב",
+  "homeScreen_subtitle": "נהל ועקוב אחר ההוצאות שלך",
+  "homeScreen_createBudget": "צור תקציב",
+
+  "loginScreen_title": "התחברות",
+  "loginScreen_subtitle": "הזן את הפרטים שלך כדי לגשת לחשבון שלך",
+  "loginScreen_emailLabel": "אימייל",
+  "loginScreen_emailHint": "example@email.com",
+  "loginScreen_emailRequired": "אימייל נדרש",
+  "loginScreen_emailInvalid": "אימייל לא תקין",
+  "loginScreen_passwordLabel": "סיסמה",
+  "loginScreen_passwordRequired": "סיסמה נדרשת",
+  "loginScreen_failed": "ההתחברות נכשלה!",
+  "loginScreen_buttonText": "התחבר",
+  "loginScreen_noAccount": "אין לך חשבון?",
+  "loginScreen_createAccount": "צור חשבון",
+  "loginScreen_signInButton": "התחבר",
+
+  "progressScreen_header": "התקדמות",
+  "progressScreen_title": "התקדמות בתקציב",
+  "progressScreen_subtitle": "מעקב על ההוצאות לאורך הזמן",
+
+  "signupScreen_title": "יצירת חשבון",
+  "signupScreen_subtitle": "הזן את הפרטים שלך כדי ליצור חשבון חדש",
+  "signupScreen_usernameLabel": "שם משתמש",
+  "signupScreen_usernameRequired": "שם משתמש נדרש",
+  "signupScreen_emailLabel": "אימייל",
+  "signupScreen_emailRequired": "אימייל נדרש",
+  "signupScreen_emailInvalid": "אימייל לא תקין",
+  "signupScreen_passwordLabel": "סיסמה",
+  "signupScreen_passwordRequired": "סיסמה נדרשת",
+  "signupScreen_passwordTooShort": "הסיסמה חייבת להכיל לפחות 8 תווים",
+  "signupScreen_button": "הירשם",
+  "signupScreen_alreadyAccount": "כבר יש לך חשבון?",
+  "signupScreen_login": "התחברות",
+  "signupScreen_failed": "יצירת החשבון נכשלה!",
+  "signupScreen_hasAccount": "כבר יש לך חשבון?",
+
+  "addBudgetDialog_title": "צור תקציב חדש",
+  "addBudgetDialog_subtitle": "הגדר תקציב חדש כדי לעקוב אחר ההוצאות שלך.",
+  "addBudgetDialog_budgetNameLabel": "שם התקציב",
+  "addBudgetDialog_budgetNameHint": "לדוגמה, מכולת",
+  "addBudgetDialog_amountLabel": "סכום",
+  "addBudgetDialog_amountHint": "0,00€",
+  "addBudgetDialog_invalidAmount": "אנא הזן סכום תקין",
+  "addBudgetDialog_categoryLabel": "קטגוריה",
+  "addBudgetDialog_periodLabel": "תקופה",
+  "addBudgetDialog_alertThreshold": "סף התראה: {percent}%",
+  "@addBudgetDialog_alertThreshold": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "addBudgetDialog_thresholdMin": "0%",
+  "addBudgetDialog_thresholdMax": "100%",
+  "addBudgetDialog_alertDescription": "תקבל התראה כשההוצאות שלך יגיעו לאחוז זה מהתקציב",
+  "addBudgetDialog_cancel": "ביטול",
+  "addBudgetDialog_createBudget": "צור תקציב",
+  "addBudgetDialog_fillAllFields": "אנא מלא את כל השדות.",
+  "addBudgetDialog_addedSuccess": "התקציב נוסף בהצלחה!",
+  "addBudgetDialog_addFailed": "נכשל בהוספת התקציב.",
+
+  "addExpenseDialog_title": "הוסף הוצאה",
+  "addExpenseDialog_subtitle": "הזן את הפרטים של ההוצאה החדשה שלך.",
+  "addExpenseDialog_amountLabel": "סכום *",
+  "addExpenseDialog_amountHint": "€",
+  "addExpenseDialog_invalidAmount": "אנא הזן סכום תקין",
+  "addExpenseDialog_dateLabel": "תאריך *",
+  "addExpenseDialog_dateRequired": "תאריך נדרש",
+  "addExpenseDialog_merchantLabel": "בית עסק *",
+  "addExpenseDialog_merchantHint": "לדוגמה סופרמרקט",
+  "addExpenseDialog_merchantRequired": "בית עסק נדרש",
+  "addExpenseDialog_categoryLabel": "קטגוריה",
+  "addExpenseDialog_paymentMethodLabel": "אמצעי תשלום",
+  "addExpenseDialog_notesLabel": "הערות",
+  "addExpenseDialog_notesHint": "הערות אופציונליות.",
+  "addExpenseDialog_fillAll": "אנא מלא את כל השדות הנדרשים.",
+  "addExpenseDialog_cancel": "ביטול",
+  "addExpenseDialog_save": "שמור הוצאה",
+  "addExpenseDialog_success": "ההוצאה נשמרה בהצלחה!",
+  "addExpenseDialog_failure": "נכשל בשמירת ההוצאה.",
+
+  "budgetCard_menuEdit": "עריכה",
+  "budgetCard_menuDelete": "מחיקה",
+  "budgetCard_confirmDeletionTitle": "אשר מחיקה",
+  "budgetCard_confirmDeletionContent": "האם אתה בטוח שברצונך למחוק את תקציב \"{title}\"? פעולה זו לא ניתנת לביטול.",
+  "@budgetCard_confirmDeletionContent": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetCard_of": "מתוך",
+  "budgetCard_remaining": "נותר",
+  "budgetCard_warningApproachingLimit": "מתקרב לגבול",
+  "budgetCard_viewExpenses": "צפה בהוצאות",
+  "budgetCard_delete": "מחק",
+
+  "editBudgetDialog_title": "ערוך תקציב",
+  "editBudgetDialog_subtitle": "עדכן את פרטי התקציב שלך למטה.",
+  "editBudgetDialog_budgetNameLabel": "שם התקציב",
+  "editBudgetDialog_budgetNameHint": "לדוגמה, מכולת",
+  "editBudgetDialog_amountLabel": "סכום",
+  "editBudgetDialog_amountHint": "0,00€",
+  "editBudgetDialog_categoryLabel": "קטגוריה",
+  "editBudgetDialog_periodLabel": "תקופה",
+  "editBudgetDialog_fillMissingFields": "אנא מלא את השדות החסרים.",
+  "editBudgetDialog_saveChanges": "שמור שינויים",
+  "editBudgetDialog_success": "התקציב עודכן בהצלחה!",
+  "editBudgetDialog_failure": "נכשל בעדכון התקציב.",
+  "editBudgetDialog_errorOccurred": "אירעה שגיאה: {error}",
+  "@editBudgetDialog_errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "budgetList_noBudgets": "אין תקציבים זמינים",
+  "budgetList_categoryLabel": "קטגוריה:",
+  "budgetList_totalLabel": "סה\"כ:",
+  "budgetList_spentLabel": "הוצא:",
+
+  "budgetTab_title": "התקציבים שלך",
+  "budgetTab_all": "הכל",
+
+  "createBudgetButton_label": "צור תקציב",
+
+  "expensesTab_title": "הוצאות",
+  "expensesTab_allExpenses": "כל ההוצאות",
+  "expensesTab_recent": "אחרונות",
+  "expensesTab_highest": "הגבוהות ביותר",
+  "expensesTab_tooltipReceipt": "קבלה",
+  "expensesTab_tooltipNotes": "הערות",
+  "expensesTab_tooltipEdit": "עריכה",
+  "expensesTab_tooltipDelete": "מחיקה",
+
+  "progressTab_title": "ההתקדמות שלך",
+  "progressTab_yearProgress": "התקדמות תקציב {year}",
+  "@progressTab_yearProgress": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "progressTab_of": "מתוך",
+  "progressTab_spent": "הוצא",
+  "progressTab_overBudget": "מעבר לתקציב",
+  "progressTab_remaining": "נותר",
+  "progressTab_weekRange": "שבוע {week} ({start} - {end})",
+  "@progressTab_weekRange": {
+    "placeholders": {
+      "week": {
+        "type": "String"
+      },
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "progressTab_biweeklyRange": "שבוע {startWeek}-{endWeek} ({start} - {end})",
+  "@progressTab_biweeklyRange": {
+    "placeholders": {
+      "startWeek": {
+        "type": "String"
+      },
+      "endWeek": {
+        "type": "String"
+      },
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+
+  "sidebar_appTitle": "חבר התקציב",
+  "sidebar_dashboard": "לוח בקרה",
+  "sidebar_progress": "התקדמות",
+  "sidebar_statistics": "סטטיסטיקות",
+  "sidebar_settings": "הגדרות",
+  "sidebar_help": "עזרה",
+  "sidebar_logout": "התנתקות",
+
+  "summary_totalBudget": "סה\"כ תקציב",
+  "summary_totalSpent": "סה\"כ הוצא",
+  "summary_remaining": "נותר",
+
+  "expandAll": "הרחב הכל",
+  "collapseAll": "כווץ הכל",
+
+  "statisticsScreen_title": "לוח סטטיסטיקות",
+  "statisticsScreen_subtitle": "הצג את נתוני התקציב שלך בצורה חזותית",
+  "statisticsScreen_noData": "אין נתוני תקציב זמינים להצגה",
+  "statisticsScreen_summary": "סיכום",
+  "statisticsScreen_budgetUtilization": "ניצול תקציב",
+  "statisticsScreen_remainingBudget": "תקציב נותר",
+  "statisticsScreen_activeBudgets": "תקציבים פעילים",
+
+  "budgetBarChart_noData": "אין נתוני תקציב זמינים",
+  "budgetBarChart_tooltipBudget": "תקציב: €{amount}",
+  "@budgetBarChart_tooltipBudget": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "budgetBarChart_tooltipSpent": "הוצא: €{amount}",
+  "@budgetBarChart_tooltipSpent": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "budgetPieChart_noData": "אין נתוני תקציב זמינים",
+  "budgetPieChart_budgets": "תקציבים",
+
+  "chartsDashboard_title": "תובנות תקציב",
+  "chartsDashboard_tabOverview": "סקירה כללית",
+  "chartsDashboard_tabBudgetVsSpending": "תקציב מול הוצאות",
+  "chartsDashboard_tabTrends": "מגמות",
+
+  "chartsDashboard_overviewTitle": "חלוקת תקציב",
+  "chartsDashboard_budgetVsSpendingTitle": "תקציב מול הוצאות",
+  "chartsDashboard_trendsTitle": "מגמות הוצאות (30 הימים האחרונים)",
+  "chartsDashboard_legendBudget": "תקציב",
+  "chartsDashboard_legendSpent": "הוצא",
+
+  "spendingTrendChart_noData": "אין נתוני הוצאות זמינים",
+  "spendingTrendChart_noRecentData": "אין נתוני הוצאות אחרונים זמינים"
+}

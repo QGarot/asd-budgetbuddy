@@ -1,14 +1,16 @@
 import 'package:budgetbuddy/Elements/Charts/spending_trend_chart.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('SpendingTrendChart Widget Tests', () {
     // Sample dates for consistent testing
     final baseDate = DateTime(2025, 1, 1);
-    
+
     // Create sample expenses
     final List<Expense> sampleExpenses = [
       Expense(
@@ -48,55 +50,74 @@ void main() {
       ),
     ];
 
-    testWidgets('renders correctly with expense data', (WidgetTester tester) async {
+    Widget _wrapWithMaterialApp({required Widget child}) {
+      return MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('en')],
+        locale: const Locale('en'),
+        home: Scaffold(body: child),
+      );
+    }
+
+    testWidgets('renders correctly with expense data', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpendingTrendChart(expenses: sampleExpenses, daysToShow: 200),
-          ),
+        _wrapWithMaterialApp(
+          child: SpendingTrendChart(expenses: sampleExpenses, daysToShow: 200),
         ),
       );
-      
+
       // Allow animations to complete
       await tester.pumpAndSettle();
 
-      // Verify LineChart widget is present
+      // Verify that a LineChart widget is present
       expect(find.byType(LineChart), findsOneWidget);
     });
 
-    testWidgets('renders correctly with empty expense list', (WidgetTester tester) async {
+    testWidgets('renders correctly with empty expense list', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpendingTrendChart(expenses: []),
-          ),
-        ),
+        _wrapWithMaterialApp(child: SpendingTrendChart(expenses: [])),
       );
-      
+
       // Allow animations to complete
       await tester.pumpAndSettle();
 
-      // Verify empty state message
-      expect(find.text('No expense data available'), findsOneWidget);
-      
+      // Grab the localized no-data string
+      final BuildContext context = tester.element(
+        find.byType(SpendingTrendChart),
+      );
+      final loc = AppLocalizations.of(context)!;
+      final noDataText = loc.spendingTrendChart_noData;
+
+      // Verify the localized no-data message appears
+      expect(find.text(noDataText), findsOneWidget);
+
       // Verify no LineChart is rendered
       expect(find.byType(LineChart), findsNothing);
     });
 
-    testWidgets('renders with custom height parameter', (WidgetTester tester) async {
+    testWidgets('renders with custom height parameter', (
+      WidgetTester tester,
+    ) async {
       const double customHeight = 400.0;
-      
+
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpendingTrendChart(
-              expenses: sampleExpenses,
-              height: customHeight,
-            ),
+        _wrapWithMaterialApp(
+          child: SpendingTrendChart(
+            expenses: sampleExpenses,
+            height: customHeight,
           ),
         ),
       );
-      
+
       // Allow animations to complete
       await tester.pumpAndSettle();
 
@@ -104,13 +125,12 @@ void main() {
       final sizedBoxFinder = find.byWidgetPredicate(
         (widget) => widget is SizedBox && widget.height == customHeight,
       );
-      
       expect(sizedBoxFinder, findsOneWidget);
     });
 
     testWidgets('respects daysToShow parameter', (WidgetTester tester) async {
       const int customDaysToShow = 15;
-      // Add a recent expense so it's within the customDaysToShow window
+      // Add a recent expense so it falls within the customDaysToShow window
       final List<Expense> expensesWithRecent = [
         ...sampleExpenses,
         Expense(
@@ -121,41 +141,38 @@ void main() {
           paymentMethod: 'Cash',
         ),
       ];
-      
+
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpendingTrendChart(
-              expenses: expensesWithRecent,
-              daysToShow: customDaysToShow,
-            ),
+        _wrapWithMaterialApp(
+          child: SpendingTrendChart(
+            expenses: expensesWithRecent,
+            daysToShow: customDaysToShow,
           ),
         ),
       );
 
-      // Find LineChart widget
+      // Allow animations to complete
+      await tester.pumpAndSettle();
+
+      // The LineChart should be rendered because there is recent data
       final lineChartFinder = find.byType(LineChart);
       expect(lineChartFinder, findsOneWidget);
-      
-      // It's difficult to directly test the exact days range in the widget tree
-      // But we can verify the widget renders without errors
+
+      // Extract the PieChartData to do a basic sanity check
       final lineChart = tester.widget<LineChart>(lineChartFinder);
       final data = lineChart.data;
-      
-      // Verify basic properties are set correctly
+
+      // Basic properties: minY is zero, and there is one line bar
       expect(data.minY, 0);
       expect(data.lineBarsData.length, 1);
-      
-      // The line bar should have data points
+
+      // Ensure there are data points (spots) on the chart
       final lineBarData = data.lineBarsData[0];
-      expect(lineBarData.spots.isNotEmpty, true);
-      
-      // The spots should represent our expenses within the date range
-      // Note: The actual spot values depend on the grouping logic in the component
+      expect(lineBarData.spots.isNotEmpty, isTrue);
     });
 
     testWidgets('handles old expenses gracefully', (WidgetTester tester) async {
-      // Create a list of expenses that are all older than the default 30 days
+      // Create expenses all older than the default 30-day window
       final List<Expense> oldExpenses = [
         Expense(
           merchant: 'Old Store',
@@ -172,34 +189,39 @@ void main() {
           paymentMethod: 'Cash',
         ),
       ];
-      
+
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpendingTrendChart(
-              expenses: oldExpenses,
-              // Default daysToShow is 30
-            ),
+        _wrapWithMaterialApp(child: SpendingTrendChart(expenses: oldExpenses)),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Grab the localized "no recent data" string
+      final BuildContext context = tester.element(
+        find.byType(SpendingTrendChart),
+      );
+      final loc = AppLocalizations.of(context)!;
+      final noRecentText = loc.spendingTrendChart_noRecentData;
+
+      // Since there is no data in the last 30 days, expect the "no recent" message
+      expect(find.text(noRecentText), findsOneWidget);
+
+      // And no LineChart should appear
+      expect(find.byType(LineChart), findsNothing);
+
+      // Now increase daysToShow to include these old expenses
+      await tester.pumpWidget(
+        _wrapWithMaterialApp(
+          child: SpendingTrendChart(
+            expenses: oldExpenses,
+            daysToShow: 100, // Now 60 and 90-day-old entries fall inside
           ),
         ),
       );
 
-      // When no recent data is available, the chart shouldn't be displayed
-      expect(find.byType(LineChart), findsNothing);
-      
-      // But if we increase the daysToShow, it should show the data
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SpendingTrendChart(
-              expenses: oldExpenses,
-              daysToShow: 100, // Increase to include the old expenses
-            ),
-          ),
-        ),
-      );
-      
-      // Now we should see the chart
+      await tester.pumpAndSettle();
+
+      // Now the LineChart should be visible
       expect(find.byType(LineChart), findsOneWidget);
     });
   });

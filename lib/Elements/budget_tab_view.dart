@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
-import 'package:budgetbuddy/pojos/budget.dart';
-import 'package:budgetbuddy/pojos/user_data.dart';
-import 'package:budgetbuddy/Elements/budget_card.dart';
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/category_icons.dart';
-import 'package:budgetbuddy/pojos/expand_collapse_all.dart';
 import 'package:budgetbuddy/AppData/layout_constants.dart';
+import 'package:budgetbuddy/Elements/budget_card.dart';
+import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/pojos/budget.dart';
+import 'package:budgetbuddy/pojos/expand_collapse_all.dart';
+import 'package:budgetbuddy/pojos/user_data.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BudgetTabView extends StatefulWidget {
   const BudgetTabView({super.key});
@@ -57,6 +58,8 @@ class _BudgetTabViewState extends State<BudgetTabView> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: _tabs.length,
       child: Container(
@@ -73,18 +76,15 @@ class _BudgetTabViewState extends State<BudgetTabView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Your Budgets",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    loc.budgetTab_title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.filter_list,
-                        color: AppColors.primaryColor,
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.sort, color: AppColors.primaryColor),
                       const SizedBox(width: 8),
                       Builder(
                         builder:
@@ -104,24 +104,44 @@ class _BudgetTabViewState extends State<BudgetTabView> {
               labelColor: Colors.deepPurple,
               unselectedLabelColor: Colors.black45,
               indicatorColor: Colors.deepPurpleAccent,
-              tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
+              tabs:
+                  _tabs.map((tabKey) {
+                    String label;
+                    switch (tabKey) {
+                      case 'All':
+                        label = loc.budgetTab_all;
+                        break;
+                      case 'Monthly':
+                        label = loc.period_monthly;
+                        break;
+                      case 'Biweekly':
+                        label = loc.period_biweekly;
+                        break;
+                      case 'Weekly':
+                        label = loc.period_weekly;
+                        break;
+                      default:
+                        label = tabKey;
+                    }
+                    return Tab(text: label);
+                  }).toList(),
             ),
             const SizedBox(height: 16),
             Flexible(
               child: TabBarView(
                 children:
-                    _tabs.map((tab) {
+                    _tabs.map((tabKey) {
                       return BlocBuilder<DataCubit, AllUserData?>(
                         builder: (context, userData) {
                           final List<Budget> budgets = userData?.budgets ?? [];
                           final filtered =
-                              tab == "All"
+                              tabKey == "All"
                                   ? budgets
                                   : budgets
                                       .where(
                                         (b) =>
                                             b.resetPeriod.toLowerCase() ==
-                                            tab.toLowerCase(),
+                                            tabKey.toLowerCase(),
                                       )
                                       .toList();
 
@@ -151,9 +171,8 @@ class _BudgetTabViewState extends State<BudgetTabView> {
                                             b.spentAmount >=
                                             (b.totalAmount * b.alertThreshold);
                                         final isCollapsed =
-                                            _collapsedIdsPerTab[tab]?.contains(
-                                              b.id,
-                                            ) ??
+                                            _collapsedIdsPerTab[tabKey]
+                                                ?.contains(b.id) ??
                                             false;
 
                                         return SizedBox(
@@ -171,9 +190,10 @@ class _BudgetTabViewState extends State<BudgetTabView> {
                                             isCollapsed: isCollapsed,
                                             idOfBudget: b.id,
                                             onToggle:
-                                                () =>
-                                                    _toggleCollapse(tab, b.id),
-
+                                                () => _toggleCollapse(
+                                                  tabKey,
+                                                  b.id,
+                                                ),
                                             budget: b,
                                           ),
                                         );

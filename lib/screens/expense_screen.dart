@@ -1,9 +1,9 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/layout_constants.dart';
+import 'package:budgetbuddy/Elements/add_expense_dialog.dart';
 import 'package:budgetbuddy/Elements/dashboard_header.dart';
 import 'package:budgetbuddy/Elements/expense_tab_view.dart';
 import 'package:budgetbuddy/Elements/header_bar.dart';
-import 'package:budgetbuddy/Elements/add_expense_dialog.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
@@ -11,6 +11,7 @@ import 'package:budgetbuddy/Elements/summary_cards.dart';
 import 'package:budgetbuddy/Elements/budget_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CurrentBudget {
   static String budgetId = "";
@@ -35,7 +36,9 @@ class ExpenseScreen extends StatelessWidget {
             );
 
             // 🔹 Call the expense listener here
-            context.read<DataCubit>().listenToExpenseChanges(CurrentBudget.budgetId);
+            context.read<DataCubit>().listenToExpenseChanges(
+              CurrentBudget.budgetId,
+            );
 
             return Scaffold(
               backgroundColor: AppColors.backgroundColorHomescreen,
@@ -44,8 +47,8 @@ class ExpenseScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const HeaderBar(
-                        title: "Budget Dashboard",
+                      HeaderBar(
+                        title: AppLocalizations.of(context)!.expensesScreen_title,
                         showReturnButton: true,
                       ),
                       Expanded(
@@ -53,23 +56,34 @@ class ExpenseScreen extends StatelessWidget {
                           child: Center(
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
-                                maxWidth: LayoutConstants.getContentMaxWidth(context),
+                                maxWidth: LayoutConstants.getContentMaxWidth(
+                                  context,
+                                ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  const SizedBox(height: LayoutConstants.spaceOverDashboard),
+                                  const SizedBox(
+                                    height: LayoutConstants.spaceOverDashboard,
+                                  ),
 
                                   DashboardHeader(
                                     title: budget.name,
-                                    subtitle: "Track and manage your expenses for this budget",
-                                    buttonText: "Add Expense",
+                                    subtitle:
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.expensesScreen_subtitle,
+                                    buttonText:
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.expensesScreen_addButton,
                                     onPressed: () {
                                       showDialog(
                                         context: context,
-                                        builder: (dialogContext) => AddExpenseDialog(
-                                          budgetId: CurrentBudget.budgetId,
-                                        ),
+                                        builder:
+                                            (dialogContext) => AddExpenseDialog(
+                                              budgetId: CurrentBudget.budgetId,
+                                            ),
                                       );
                                     },
                                   ),
@@ -118,7 +132,10 @@ class ExpenseScreen extends StatelessWidget {
                                   
                                   Container(
                                     height: 500,
-                                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 8,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(12),

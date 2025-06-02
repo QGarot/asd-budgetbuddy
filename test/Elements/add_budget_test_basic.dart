@@ -1,13 +1,27 @@
 import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   testWidgets(
     'fills text fields and selects options in dropdowns in AddBudgetDialog',
     (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(home: Scaffold(body: const AddBudgetDialog())),
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+          ],
+          locale: const Locale('en'), // Force English locale for tests,
+          home: Scaffold(body: const AddBudgetDialog()),
+        ),
       );
 
       expect(find.text("Create New Budget"), findsOneWidget);
