@@ -55,8 +55,8 @@
   "loginScreen_signInButton": "Anmelden",
 
   "progressScreen_header": "Fortschritt",
-  "progressScreen_title": "Budgetfortschritt",
-  "progressScreen_subtitle": "Verfolge deine Ausgaben im Zeitverlauf",
+  "progressScreen_title": "Budget-Fortschritt",
+  "progressScreen_subtitle": "Verfolgen Sie Ihre Ausgaben über die Zeit",
 
   "signupScreen_title": "Konto erstellen",
   "signupScreen_subtitle": "Gib deine Daten ein, um ein neues Konto zu erstellen",

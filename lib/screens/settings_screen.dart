@@ -27,6 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     {'code': 'en', 'label': 'English', 'subtitle': 'English'},
     {'code': 'de', 'label': 'Deutsch', 'subtitle': 'German'},
     {'code': 'ar', 'label': 'العربية', 'subtitle': 'Arabic'},
+    {'code': 'he', 'label': 'עברית', 'subtitle': 'Hebrew'},
   ];
 
   @override

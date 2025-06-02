@@ -20,7 +20,7 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Budget Buddy',
           locale: locale,
-          supportedLocales: const [Locale('en'), Locale('de'), Locale('ar')],
+          supportedLocales: const [Locale('en'), Locale('de'), Locale('ar'), Locale('he')],
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

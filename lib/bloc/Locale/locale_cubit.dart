@@ -19,7 +19,7 @@ class LocaleCubit extends Cubit<Locale> {
             .get()
             .then((snap) {
               final code = snap.data()?['settings']?['locale'] as String?;
-              if (code != null && ['en', 'de', 'ar'].contains(code)) {
+              if (code != null && ['en', 'de', 'ar', 'he'].contains(code)) {
                 emit(Locale(code));
               }
             })
@@ -32,7 +32,7 @@ class LocaleCubit extends Cubit<Locale> {
 
   static Locale _deviceLocale() {
     final device = WidgetsBinding.instance.window.locale;
-    return ['en', 'de', 'ar'].contains(device.languageCode)
+    return ['en', 'de', 'ar', 'he'].contains(device.languageCode)
         ? Locale(device.languageCode)
         : const Locale('en');
   }
