@@ -1,9 +1,11 @@
 import 'package:budgetbuddy/AppData/category_icons.dart';
+import 'package:budgetbuddy/Elements/edit_expense.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/Elements/message_to_user.dart';
 
 class ExpensesTabView extends StatefulWidget {
   const ExpensesTabView({super.key, required this.budgetId});
@@ -67,6 +69,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                           return ExpenseListItem(
                             expense: expense,
                             category: budget.category,
+                            budgetId: budget.id,
                           );
                         },
                       );
@@ -101,11 +104,14 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
 class ExpenseListItem extends StatelessWidget {
   final Expense expense;
   final String category;
+  final String budgetId;
 
   const ExpenseListItem({
     super.key,
     required this.expense,
     required this.category,
+    required this.budgetId,
+
   });
 
   @override
@@ -161,8 +167,10 @@ class ExpenseListItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "${_formatDate(expense.createdAt)} • ${expense.notes}",
+                  "${_formatDate(expense.createdAt)} • ${expense.notes.length > 18 ? expense.notes.substring(0, 18) + '…' : expense.notes}",
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ],
             ),
@@ -175,22 +183,56 @@ class ExpenseListItem extends StatelessWidget {
           Row(
             children: [
               Tooltip(
-                message: "Receipt",
-                child: IconButton(
-                  icon: Icon(Icons.receipt, color: Colors.grey),
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                ),
-              ),
-              SizedBox(width: 8),
-              Tooltip(
                 message: "Notes",
                 child: IconButton(
-                  icon: Icon(Icons.notes_rounded, color: Colors.grey),
-                  onPressed: () {},
+                  icon: const Icon(Icons.notes_rounded, color: Colors.grey),
+                  onPressed: () {
+                    TextEditingController notesController =
+                        TextEditingController(text: expense.notes);
+
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Edit Notes"),
+                        content: SizedBox(
+                          height: 300,
+                          width: 400,
+                          child: TextField(
+                            controller: notesController,
+                            maxLines: null,
+                            expands: true,
+                            textAlignVertical: TextAlignVertical.top,
+                            keyboardType: TextInputType.multiline,
+                            decoration: const InputDecoration(
+                              hintText: "Enter your notes...",
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.all(12),
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Cancel"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              String updatedText = notesController.text;
+                              context.read<DataCubit>().updateExpense(
+                                budgetId,
+                                expense.copyWith(notes: updatedText),
+                              );
+                              Navigator.pop(context);
+                              MessageToUser.showMessage(context, "Notes updated.");
+                            },
+                            child: const Text("Save"),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
+                  constraints: const BoxConstraints(),
                 ),
               ),
               SizedBox(width: 8),
@@ -198,7 +240,15 @@ class ExpenseListItem extends StatelessWidget {
                 message: "Edit",
                 child: IconButton(
                   icon: Icon(Icons.edit, color: Colors.grey),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => EditExpenseDialog(
+                        budgetId: budgetId,
+                        expense: expense,
+                      ),
+                    );
+                  },
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                 ),
@@ -208,7 +258,10 @@ class ExpenseListItem extends StatelessWidget {
                 message: "Delete",
                 child: IconButton(
                   icon: Icon(Icons.delete, color: Colors.grey),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<DataCubit>().deleteExpense(budgetId, expense.id);
+                    MessageToUser.showMessage(context, "Expense deleted.");
+                  },
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                 ),
