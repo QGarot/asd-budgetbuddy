@@ -1,0 +1,259 @@
+{
+  "@@locale": "ar",
+
+  "appTitle": "Budget Buddy",
+
+  "common_cancel": "إلغاء",
+
+  "category_groceries": "البقالة",
+  "category_rent": "الإيجار",
+  "category_utilities": "المرافق",
+  "category_entertainment": "الترفيه",
+  "category_travel": "السفر",
+  "category_dining": "المطاعم",
+  "category_shopping": "التسوق",
+  "category_other": "أخرى",
+
+  "period_weekly": "أسبوعيًا",
+  "period_biweekly": "كل أسبوعين",
+  "period_monthly": "شهريًا",
+
+  "paymentMethod_cash": "نقدًا",
+  "paymentMethod_creditCard": "بطاقة ائتمان",
+  "paymentMethod_debitCard": "بطاقة خصم",
+  "paymentMethod_onlinePayment": "الدفع عبر الإنترنت",
+
+  "settingsScreen_languageSaved": "تم حفظ اللغة",
+  "settingsScreen_saveLanguagePreference": "حفظ تفضيل اللغة",
+  "settingsScreen_title": "الإعدادات",
+  "settingsScreen_subtitle": "إدارة إعدادات الميزانية",
+  "settingsScreen_languageTitle": "اللغة",
+  "settingsScreen_languageSubtitle": "اختر لغتك المفضلة",
+
+  "expensesScreen_title": "لوحة الميزانية",
+  "expensesScreen_subtitle": "تتبع وإدارة مصروفاتك لهذا الميزانية",
+  "expensesScreen_addButton": "إضافة مصروف",
+
+  "helpScreen_title": "مساعدة",
+  "helpScreen_label": "❓ شاشة المساعدة",
+
+  "homeScreen_title": "لوحة الميزانية",
+  "homeScreen_subtitle": "إدارة وتتبع مصروفاتك",
+  "homeScreen_createBudget": "إنشاء ميزانية",
+
+  "loginScreen_title": "تسجيل الدخول",
+  "loginScreen_subtitle": "أدخل بياناتك للوصول إلى حسابك",
+  "loginScreen_emailLabel": "البريد الإلكتروني",
+  "loginScreen_emailHint": "مثال@example.com",
+  "loginScreen_emailRequired": "البريد الإلكتروني مطلوب",
+  "loginScreen_emailInvalid": "البريد الإلكتروني غير صالح",
+  "loginScreen_passwordLabel": "كلمة المرور",
+  "loginScreen_passwordRequired": "كلمة المرور مطلوبة",
+  "loginScreen_failed": "فشل تسجيل الدخول!",
+  "loginScreen_buttonText": "تسجيل الدخول",
+  "loginScreen_noAccount": "ليس لديك حساب؟",
+  "loginScreen_createAccount": "إنشاء حساب",
+  "loginScreen_signInButton": "تسجيل الدخول",
+
+  "progressScreen_header": "التقدم",
+  "progressScreen_title": "تقدم الميزانية",
+  "progressScreen_subtitle": "تتبع نفقاتك مع مرور الوقت",
+
+  "signupScreen_title": "إنشاء حساب",
+  "signupScreen_subtitle": "أدخل بياناتك لإنشاء حساب جديد",
+  "signupScreen_usernameLabel": "اسم المستخدم",
+  "signupScreen_usernameRequired": "اسم المستخدم مطلوب",
+  "signupScreen_emailLabel": "البريد الإلكتروني",
+  "signupScreen_emailRequired": "البريد الإلكتروني مطلوب",
+  "signupScreen_emailInvalid": "البريد الإلكتروني غير صالح",
+  "signupScreen_passwordLabel": "كلمة المرور",
+  "signupScreen_passwordRequired": "كلمة المرور مطلوبة",
+  "signupScreen_passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+  "signupScreen_button": "تسجيل",
+  "signupScreen_alreadyAccount": "هل لديك حساب بالفعل؟",
+  "signupScreen_login": "تسجيل الدخول",
+  "signupScreen_failed": "فشل إنشاء الحساب!",
+  "signupScreen_hasAccount": "هل لديك حساب بالفعل؟",
+
+  "addBudgetDialog_title": "إنشاء ميزانية جديدة",
+  "addBudgetDialog_subtitle": "قم بإنشاء ميزانية جديدة لتتبع مصروفاتك.",
+  "addBudgetDialog_budgetNameLabel": "اسم الميزانية",
+  "addBudgetDialog_budgetNameHint": "مثال: البقالة",
+  "addBudgetDialog_amountLabel": "المبلغ",
+  "addBudgetDialog_amountHint": "0,00€",
+  "addBudgetDialog_invalidAmount": "يرجى إدخال مبلغ صالح",
+  "addBudgetDialog_categoryLabel": "الفئة",
+  "addBudgetDialog_periodLabel": "الفترة",
+  "addBudgetDialog_alertThreshold": "نسبة الإنذار: {percent} %",
+  "@addBudgetDialog_alertThreshold": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "addBudgetDialog_thresholdMin": "0 %",
+  "addBudgetDialog_thresholdMax": "100 %",
+  "addBudgetDialog_alertDescription":
+    "ستتلقى تنبيهًا عندما تصل مصروفاتك إلى هذه النسبة من ميزانيتك",
+  "addBudgetDialog_cancel": "إلغاء",
+  "addBudgetDialog_createBudget": "إنشاء ميزانية",
+  "addBudgetDialog_fillAllFields": "يرجى ملء جميع الحقول.",
+  "addBudgetDialog_addedSuccess": "تمت إضافة الميزانية بنجاح!",
+  "addBudgetDialog_addFailed": "فشل في إضافة الميزانية.",
+
+  "addExpenseDialog_title": "إضافة مصروف",
+  "addExpenseDialog_subtitle": "أدخل تفاصيل مصروفك الجديد.",
+  "addExpenseDialog_amountLabel": "المبلغ *",
+  "addExpenseDialog_amountHint": "€",
+  "addExpenseDialog_invalidAmount": "يرجى إدخال مبلغ صالح",
+  "addExpenseDialog_dateLabel": "التاريخ *",
+  "addExpenseDialog_dateRequired": "التاريخ مطلوب",
+  "addExpenseDialog_merchantLabel": "التاجر *",
+  "addExpenseDialog_merchantHint": "مثال: سوبرماركت",
+  "addExpenseDialog_merchantRequired": "التاجر مطلوب",
+  "addExpenseDialog_categoryLabel": "الفئة",
+  "addExpenseDialog_paymentMethodLabel": "طريقة الدفع",
+  "addExpenseDialog_notesLabel": "ملاحظات",
+  "addExpenseDialog_notesHint": "ملاحظات اختيارية.",
+  "addExpenseDialog_fillAll": "يرجى ملء جميع الحقول المطلوبة.",
+  "addExpenseDialog_cancel": "إلغاء",
+  "addExpenseDialog_save": "حفظ المصروف",
+  "addExpenseDialog_success": "تم حفظ المصروف بنجاح!",
+  "addExpenseDialog_failure": "فشل في حفظ المصروف.",
+
+  "budgetCard_menuEdit": "تعديل",
+  "budgetCard_menuDelete": "حذف",
+  "budgetCard_confirmDeletionTitle": "تأكيد الحذف",
+  "budgetCard_confirmDeletionContent":
+    "هل أنت متأكد أنك تريد حذف ميزانية „{title}“؟ لا يمكن التراجع عن هذا الإجراء.",
+  "@budgetCard_confirmDeletionContent": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "budgetCard_of": "من",
+  "budgetCard_remaining": "المتبقي",
+  "budgetCard_warningApproachingLimit": "وصلت إلى الحد",
+  "budgetCard_viewExpenses": "عرض المصروفات",
+  "budgetCard_delete": "حذف",
+
+  "editBudgetDialog_title": "تعديل الميزانية",
+  "editBudgetDialog_subtitle": "قم بتحديث تفاصيل ميزانيتك أدناه.",
+  "editBudgetDialog_budgetNameLabel": "اسم الميزانية",
+  "editBudgetDialog_budgetNameHint": "مثال: البقالة",
+  "editBudgetDialog_amountLabel": "المبلغ",
+  "editBudgetDialog_amountHint": "0,00€",
+  "editBudgetDialog_categoryLabel": "الفئة",
+  "editBudgetDialog_periodLabel": "الفترة",
+  "editBudgetDialog_fillMissingFields": "يرجى ملء الحقول الفارغة.",
+  "editBudgetDialog_saveChanges": "حفظ التغييرات",
+  "editBudgetDialog_success": "تم تحديث الميزانية بنجاح!",
+  "editBudgetDialog_failure": "فشل في تحديث الميزانية.",
+  "editBudgetDialog_errorOccurred": "حدث خطأ: {error}",
+  "@editBudgetDialog_errorOccurred": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+
+  "budgetList_noBudgets": "لا توجد ميزانيات",
+  "budgetList_categoryLabel": "الفئة:",
+  "budgetList_totalLabel": "الإجمالي:",
+  "budgetList_spentLabel": "المبلغ المصروف:",
+
+  "budgetTab_title": "ميزانياتك",
+  "budgetTab_all": "الكل",
+
+  "createBudgetButton_label": "إنشاء ميزانية",
+
+  "expensesTab_title": "المصروفات",
+  "expensesTab_allExpenses": "جميع المصروفات",
+  "expensesTab_recent": "الأحدث",
+  "expensesTab_highest": "الأعلى",
+  "expensesTab_tooltipReceipt": "الإيصال",
+  "expensesTab_tooltipNotes": "ملاحظات",
+  "expensesTab_tooltipEdit": "تعديل",
+  "expensesTab_tooltipDelete": "حذف",
+
+  "progressTab_title": "تقدمك",
+  "progressTab_yearProgress": "تقدم الميزانية لعام {year}",
+  "@progressTab_yearProgress": {
+    "placeholders": {
+      "year": { "type": "String" }
+    }
+  },
+  "progressTab_of": "من",
+  "progressTab_spent": "مصروف",
+  "progressTab_overBudget": "تجاوز الميزانية",
+  "progressTab_remaining": "متبقي",
+  "progressTab_weekRange": "الأسبوع {week} ({start} - {end})",
+  "@progressTab_weekRange": {
+    "placeholders": {
+      "week": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+  "progressTab_biweeklyRange": "الأسبوع {startWeek}-{endWeek} ({start} - {end})",
+  "@progressTab_biweeklyRange": {
+    "placeholders": {
+      "startWeek": { "type": "String" },
+      "endWeek": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+
+  "sidebar_appTitle": "Budget Buddy",
+  "sidebar_dashboard": "الرئيسية",
+  "sidebar_progress": "التقدم",
+  "sidebar_statistics": "الإحصائيات",
+  "sidebar_settings": "الإعدادات",
+  "sidebar_help": "مساعدة",
+  "sidebar_logout": "تسجيل الخروج",
+
+  "summary_totalBudget": "إجمالي الميزانية",
+  "summary_totalSpent": "إجمالي المصروف",
+  "summary_remaining": "المتبقي",
+
+  "expandAll": "توسيع الكل",
+  "collapseAll": "طي الكل",
+
+  "statisticsScreen_title": "لوحة إحصائيات الميزانية",
+  "statisticsScreen_subtitle": "تصوّر بيانات ميزانيتك",
+  "statisticsScreen_noData": "لا توجد بيانات ميزانية للعرض",
+  "statisticsScreen_summary": "الملخص",
+  "statisticsScreen_budgetUtilization": "استخدام الميزانية",
+  "statisticsScreen_remainingBudget": "الميزانية المتبقية",
+  "statisticsScreen_activeBudgets": "الميزانيات النشطة",
+
+  "budgetBarChart_noData": "لا توجد بيانات للميزانية",
+  "budgetBarChart_tooltipBudget": "الميزانية: €{amount}",
+  "@budgetBarChart_tooltipBudget": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "budgetBarChart_tooltipSpent": "المنفق: €{amount}",
+  "@budgetBarChart_tooltipSpent": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "budgetPieChart_noData": "لا توجد بيانات للميزانية",
+  "budgetPieChart_budgets": "الميزانيات",
+
+  "chartsDashboard_title": "رؤى الميزانية",
+  "chartsDashboard_tabOverview": "نظرة عامة",
+  "chartsDashboard_tabBudgetVsSpending": "الميزانية مقابل الإنفاق",
+  "chartsDashboard_tabTrends": "اتجاهات الإنفاق",
+
+  "chartsDashboard_overviewTitle": "توزيع الميزانية",
+  "chartsDashboard_budgetVsSpendingTitle": "الميزانية مقابل الإنفاق",
+  "chartsDashboard_trendsTitle": "اتجاهات الإنفاق (آخر 30 يومًا)",
+  "chartsDashboard_legendBudget": "الميزانية",
+  "chartsDashboard_legendSpent": "المنفق",
+
+  "spendingTrendChart_noData": "لا توجد بيانات مصاريف",
+  "spendingTrendChart_noRecentData": "لا توجد بيانات مصاريف حديثة"
+}

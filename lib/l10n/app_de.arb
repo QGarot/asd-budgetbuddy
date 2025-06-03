@@ -1,0 +1,258 @@
+{
+  "@@locale": "de",
+
+  "appTitle": "Budget Buddy",
+  "common_cancel": "Abbrechen",
+
+  "category_groceries":    "Lebensmittel",
+  "category_rent":         "Miete",
+  "category_utilities":    "Nebenkosten",
+  "category_entertainment": "Unterhaltung",
+  "category_travel":       "Reisen",
+  "category_dining":       "Essen",
+  "category_shopping":     "Einkaufen",
+  "category_other":        "Sonstiges",
+
+  "period_weekly":         "Wöchentlich",
+  "period_biweekly":       "Alle zwei Wochen",
+  "period_monthly":        "Monatlich",
+
+  "paymentMethod_cash":          "Bargeld",
+  "paymentMethod_creditCard":    "Kreditkarte",
+  "paymentMethod_debitCard":     "Debitkarte",
+  "paymentMethod_onlinePayment": "Online-Zahlung",
+
+  "settingsScreen_languageSaved": "Sprache gespeichert",
+  "settingsScreen_saveLanguagePreference": "Spracheinstellungen speichern",
+  "settingsScreen_title": "Einstellungen",
+  "settingsScreen_subtitle": "Verwalte deine Budget-Einstellungen",
+  "settingsScreen_languageTitle": "Sprache",
+  "settingsScreen_languageSubtitle": "Wähle deine bevorzugte Sprache",
+
+  "expensesScreen_title": "Budget-Übersicht",
+  "expensesScreen_subtitle": "Verwalte und verfolge deine Ausgaben für dieses Budget",
+  "expensesScreen_addButton": "Ausgabe hinzufügen",
+
+  "helpScreen_title": "Hilfe",
+  "helpScreen_label": "❓ Hilfeseite",
+
+  "homeScreen_title": "Budget-Übersicht",
+  "homeScreen_subtitle": "Verwalte und verfolge deine Ausgaben",
+  "homeScreen_createBudget": "Budget erstellen",
+
+  "loginScreen_title": "Anmelden",
+  "loginScreen_subtitle": "Gib deine Daten ein, um dich anzumelden",
+  "loginScreen_emailLabel": "E-Mail",
+  "loginScreen_emailHint": "beispiel@beispiel.de",
+  "loginScreen_emailRequired": "E-Mail ist erforderlich",
+  "loginScreen_emailInvalid": "E-Mail ist ungültig",
+  "loginScreen_passwordLabel": "Passwort",
+  "loginScreen_passwordRequired": "Passwort ist erforderlich",
+  "loginScreen_failed": "Anmeldung fehlgeschlagen!",
+  "loginScreen_buttonText": "Anmelden",
+  "loginScreen_noAccount": "Noch kein Konto?",
+  "loginScreen_createAccount": "Konto erstellen",
+  "loginScreen_signInButton": "Anmelden",
+
+  "progressScreen_header": "Fortschritt",
+  "progressScreen_title": "Budget-Fortschritt",
+  "progressScreen_subtitle": "Verfolgen Sie Ihre Ausgaben über die Zeit",
+
+  "signupScreen_title": "Konto erstellen",
+  "signupScreen_subtitle": "Gib deine Daten ein, um ein neues Konto zu erstellen",
+  "signupScreen_usernameLabel": "Benutzername",
+  "signupScreen_usernameRequired": "Benutzername ist erforderlich",
+  "signupScreen_emailLabel": "E-Mail",
+  "signupScreen_emailRequired": "E-Mail ist erforderlich",
+  "signupScreen_emailInvalid": "E-Mail ist ungültig",
+  "signupScreen_passwordLabel": "Passwort",
+  "signupScreen_passwordRequired": "Passwort ist erforderlich",
+  "signupScreen_passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
+  "signupScreen_button": "Registrieren",
+  "signupScreen_alreadyAccount": "Du hast bereits ein Konto?",
+  "signupScreen_login": "Einloggen",
+  "signupScreen_failed": "Kontoerstellung fehlgeschlagen!",
+  "signupScreen_hasAccount": "Du hast bereits ein Konto?",
+
+  "addBudgetDialog_title": "Neues Budget erstellen",
+  "addBudgetDialog_subtitle": "Lege ein neues Budget an, um deine Ausgaben zu verfolgen.",
+  "addBudgetDialog_budgetNameLabel": "Budgetname",
+  "addBudgetDialog_budgetNameHint": "z. B. Lebensmittel",
+  "addBudgetDialog_amountLabel": "Betrag",
+  "addBudgetDialog_amountHint": "0,00 €",
+  "addBudgetDialog_invalidAmount": "Bitte gib einen gültigen Betrag ein",
+  "addBudgetDialog_categoryLabel": "Kategorie",
+  "addBudgetDialog_periodLabel": "Zeitraum",
+  "addBudgetDialog_alertThreshold": "Warning bei: {percent} %",
+  "@addBudgetDialog_alertThreshold": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "addBudgetDialog_thresholdMin": "0 %",
+  "addBudgetDialog_thresholdMax": "100 %",
+  "addBudgetDialog_alertDescription":
+    "Du erhältst eine Benachrichtigung, wenn deine Ausgaben diesen Prozentsatz deines Budgets erreichen",
+  "addBudgetDialog_cancel": "Abbrechen",
+  "addBudgetDialog_createBudget": "Budget erstellen",
+  "addBudgetDialog_fillAllFields": "Bitte fülle alle Felder aus.",
+  "addBudgetDialog_addedSuccess": "Budget erfolgreich hinzugefügt!",
+  "addBudgetDialog_addFailed": "Hinzufügen des Budgets fehlgeschlagen.",
+
+  "addExpenseDialog_title": "Ausgabe hinzufügen",
+  "addExpenseDialog_subtitle": "Gib die Details deiner neuen Ausgabe ein.",
+  "addExpenseDialog_amountLabel": "Betrag *",
+  "addExpenseDialog_amountHint": "€",
+  "addExpenseDialog_invalidAmount": "Bitte gib einen gültigen Betrag ein",
+  "addExpenseDialog_dateLabel": "Datum *",
+  "addExpenseDialog_dateRequired": "Datum ist erforderlich",
+  "addExpenseDialog_merchantLabel": "Händler *",
+  "addExpenseDialog_merchantHint": "z. B. Supermarkt",
+  "addExpenseDialog_merchantRequired": "Händler ist erforderlich",
+  "addExpenseDialog_categoryLabel": "Kategorie",
+  "addExpenseDialog_paymentMethodLabel": "Zahlungsmethode",
+  "addExpenseDialog_notesLabel": "Notizen",
+  "addExpenseDialog_notesHint": "Optionale Notizen.",
+  "addExpenseDialog_fillAll": "Bitte fülle alle Pflichtfelder aus.",
+  "addExpenseDialog_cancel": "Abbrechen",
+  "addExpenseDialog_save": "Ausgabe speichern",
+  "addExpenseDialog_success": "Ausgabe erfolgreich gespeichert!",
+  "addExpenseDialog_failure": "Speichern der Ausgabe fehlgeschlagen.",
+
+  "budgetCard_menuEdit": "Bearbeiten",
+  "budgetCard_menuDelete": "Löschen",
+  "budgetCard_confirmDeletionTitle": "Löschen bestätigen",
+  "budgetCard_confirmDeletionContent":
+    "Möchtest du das Budget „{title}“ wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+  "@budgetCard_confirmDeletionContent": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "budgetCard_of": "von",
+  "budgetCard_remaining": "verbleibend",
+  "budgetCard_warningApproachingLimit": "Limit erreicht",
+  "budgetCard_viewExpenses": "Ausgaben anzeigen",
+  "budgetCard_delete": "Löschen",
+
+  "editBudgetDialog_title": "Budget bearbeiten",
+  "editBudgetDialog_subtitle": "Aktualisiere deine Budgetdetails.",
+  "editBudgetDialog_budgetNameLabel": "Budgetname",
+  "editBudgetDialog_budgetNameHint": "z. B. Lebensmittel",
+  "editBudgetDialog_amountLabel": "Betrag",
+  "editBudgetDialog_amountHint": "0,00 €",
+  "editBudgetDialog_categoryLabel": "Kategorie",
+  "editBudgetDialog_periodLabel": "Zeitraum",
+  "editBudgetDialog_fillMissingFields": "Bitte fülle die fehlenden Felder aus.",
+  "editBudgetDialog_saveChanges": "Änderungen speichern",
+  "editBudgetDialog_success": "Budget erfolgreich aktualisiert!",
+  "editBudgetDialog_failure": "Aktualisierung des Budgets fehlgeschlagen.",
+  "editBudgetDialog_errorOccurred": "Ein Fehler ist aufgetreten: {error}",
+  "@editBudgetDialog_errorOccurred": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+
+  "budgetList_noBudgets": "Keine Budgets verfügbar",
+  "budgetList_categoryLabel": "Kategorie:",
+  "budgetList_totalLabel": "Gesamt:",
+  "budgetList_spentLabel": "Ausgegeben:",
+
+  "budgetTab_title": "Deine Budgets",
+  "budgetTab_all": "Alle",
+
+  "createBudgetButton_label": "Budget erstellen",
+
+  "expensesTab_title": "Ausgaben",
+  "expensesTab_allExpenses": "ALLE AUSGABEN",
+  "expensesTab_recent": "NEUESTE",
+  "expensesTab_highest": "HÖCHSTE",
+  "expensesTab_tooltipReceipt": "Beleg",
+  "expensesTab_tooltipNotes": "Notizen",
+  "expensesTab_tooltipEdit": "Bearbeiten",
+  "expensesTab_tooltipDelete": "Löschen",
+
+  "progressTab_title": "Dein Fortschritt",
+  "progressTab_yearProgress": "{year} Budgetfortschritt",
+  "@progressTab_yearProgress": {
+    "placeholders": {
+      "year": { "type": "String" }
+    }
+  },
+  "progressTab_of": "von",
+  "progressTab_spent": "ausgegeben",
+  "progressTab_overBudget": "im Minus",
+  "progressTab_remaining": "verbleibend",
+  "progressTab_weekRange": "Woche {week} ({start} - {end})",
+  "@progressTab_weekRange": {
+    "placeholders": {
+      "week": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+  "progressTab_biweeklyRange": "Woche {startWeek}-{endWeek} ({start} - {end})",
+  "@progressTab_biweeklyRange": {
+    "placeholders": {
+      "startWeek": { "type": "String" },
+      "endWeek": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+
+  "sidebar_appTitle": "BudgetBuddy",
+  "sidebar_dashboard": "Übersicht",
+  "sidebar_progress": "Fortschritt",
+  "sidebar_statistics": "Statistik",
+  "sidebar_settings": "Einstellungen",
+  "sidebar_help": "Hilfe",
+  "sidebar_logout": "Abmelden",
+
+  "summary_totalBudget": "Gesamtbudget",
+  "summary_totalSpent": "Gesamtausgaben",
+  "summary_remaining": "Verbleibend",
+
+  "expandAll": "Alle erweitern",
+  "collapseAll": "Alle reduzieren",
+
+  "statisticsScreen_title": "Statistik-Dashboard",
+  "statisticsScreen_subtitle": "Visualisiere deine Budgetdaten",
+  "statisticsScreen_noData": "Keine Budgetdaten zum Anzeigen vorhanden",
+  "statisticsScreen_summary": "Übersicht",
+  "statisticsScreen_budgetUtilization": "Budgetauslastung",
+  "statisticsScreen_remainingBudget": "Verbleibendes Budget",
+  "statisticsScreen_activeBudgets": "Aktive Budgets",
+
+  "budgetBarChart_noData": "Keine Budgetdaten verfügbar",
+  "budgetBarChart_tooltipBudget": "Budget: €{amount}",
+  "@budgetBarChart_tooltipBudget": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "budgetBarChart_tooltipSpent": "Ausgegeben: €{amount}",
+  "@budgetBarChart_tooltipSpent": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "budgetPieChart_noData": "Keine Budgetdaten verfügbar",
+  "budgetPieChart_budgets": "Budgets",
+
+  "chartsDashboard_title": "Budget‐Einblicke",
+  "chartsDashboard_tabOverview": "Übersicht",
+  "chartsDashboard_tabBudgetVsSpending": "Budget vs Ausgaben",
+  "chartsDashboard_tabTrends": "Trends",
+
+  "chartsDashboard_overviewTitle": "Budgetverteilung",
+  "chartsDashboard_budgetVsSpendingTitle": "Budget vs Ausgaben",
+  "chartsDashboard_trendsTitle": "Ausgabenverlauf (Letzte 30 Tage)",
+  "chartsDashboard_legendBudget": "Budget",
+  "chartsDashboard_legendSpent": "Ausgegeben",
+
+  "spendingTrendChart_noData": "Keine Ausgabendaten verfügbar",
+  "spendingTrendChart_noRecentData": "Keine kürzlichen Ausgabendaten verfügbar"
+}

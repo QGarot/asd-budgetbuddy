@@ -1,32 +1,33 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
-
+import 'package:budgetbuddy/AppData/layout_constants.dart';
 import 'package:budgetbuddy/Elements/add_budget_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
-import 'package:budgetbuddy/Elements/summary_cards.dart';
-import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
-import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:budgetbuddy/Elements/budget_tab_view.dart';
 import 'package:budgetbuddy/Elements/dashboard_header.dart';
-import 'package:budgetbuddy/AppData/layout_constants.dart';
-
 import 'package:budgetbuddy/Elements/header_bar.dart';
+import 'package:budgetbuddy/Elements/summary_cards.dart';
+import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
+import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
+import 'package:budgetbuddy/pojos/user_data.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  final String title = "Budget Dashboard";
-  final String subtitle = "Manage and track your spending";
-  final String buttonText = "Create Budget";
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double maxHeightTabView =
+        double maxHeightTabView =
             MediaQuery.of(context).size.height *
-            LayoutConstants.tabViewHeightProcent;
+                LayoutConstants.tabViewHeightProcent -
+            40;
+        if (MediaQuery.of(context).size.height < 820) {
+          maxHeightTabView = 390;
+        }
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColorHomescreen,
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 🔹 Top bar (full width after sidebar)
-                  const HeaderBar(title: "Budget Dashboard"),
+                  HeaderBar(title: loc.homeScreen_title),
 
                   Expanded(
                     child: SingleChildScrollView(
@@ -56,9 +57,9 @@ class HomeScreen extends StatelessWidget {
 
                               // 🔹 Dashboard Header
                               DashboardHeader(
-                                title: title,
-                                subtitle: subtitle,
-                                buttonText: buttonText,
+                                title: loc.homeScreen_title,
+                                subtitle: loc.homeScreen_subtitle,
+                                buttonText: loc.homeScreen_createBudget,
                                 onPressed: () {
                                   showDialog(
                                     context: context,

@@ -6,9 +6,12 @@ import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/AppData/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HeaderBar extends StatelessWidget {
+class HeaderBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showReturnButton;
+
+  @override
+  Size get preferredSize => const Size(double.infinity, 60);
 
   const HeaderBar({
     super.key,

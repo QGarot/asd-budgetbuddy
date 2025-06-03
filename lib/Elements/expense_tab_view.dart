@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExpensesTabView extends StatefulWidget {
   const ExpensesTabView({super.key, required this.budgetId});
@@ -17,18 +18,20 @@ class ExpensesTabView extends StatefulWidget {
 }
 
 class _ExpensesTabViewState extends State<ExpensesTabView> {
-  final List<String> _tabs = const ['ALL EXPENSES', 'RECENT', 'HIGHEST'];
+  final List<String> _tabs = const ['allExpenses', 'recent', 'highest'];
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return BlocBuilder<DataCubit, AllUserData?>(
       builder: (context, userData) {
         if (userData == null) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final budget = userData.budgets
-            .firstWhere((b) => b.id == widget.budgetId);
+        final budget = userData.budgets.firstWhere(
+          (b) => b.id == widget.budgetId,
+        );
 
         return DefaultTabController(
           length: _tabs.length,
@@ -41,10 +44,10 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
                   child: Text(
-                    "Expenses",
+                    loc.expensesTab_title,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -53,27 +56,49 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                   labelColor: Colors.deepPurple,
                   unselectedLabelColor: Colors.black45,
                   indicatorColor: Colors.deepPurpleAccent,
-                  tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
+                  tabs: _tabs.map((tabKey) {
+                    String label;
+                    switch (tabKey) {
+                      case 'allExpenses':
+                        label = loc.expensesTab_allExpenses;
+                        break;
+                      case 'recent':
+                        label = loc.expensesTab_recent;
+                        break;
+                      case 'highest':
+                        label = loc.expensesTab_highest;
+                        break;
+                      default:
+                        label = tabKey;
+                    }
+                    return Tab(text: label);
+                  }).toList(),
                 ),
                 Expanded(
                   child: TabBarView(
-                    children: _tabs.map((tab) {
-                      final expenses = _getExpensesByTab(tab, budget.expenses);
-
-                      return ListView.separated(
-                        padding: EdgeInsets.zero,
-                        itemCount: expenses.length,
-                        separatorBuilder: (_, __) => const Divider(height: 1),
-                        itemBuilder: (context, index) {
-                          final expense = expenses[index];
-                          return ExpenseListItem(
-                            expense: expense,
-                            category: budget.category,
-                            budgetId: budget.id,
+                    children:
+                        _tabs.map((tab) {
+                          final expenses = _getExpensesByTab(
+                            tab,
+                            budget.expenses,
                           );
-                        },
-                      );
-                    }).toList(),
+
+                          return ListView.separated(
+                            padding: EdgeInsets.zero,
+                            itemCount: expenses.length,
+                            separatorBuilder:
+                                (_, __) => const Divider(height: 1),
+                            itemBuilder: (context, index) {
+                              final expense = expenses[index];
+                              return ExpenseListItem(
+                                expense: expense,
+                                category: budget.category,
+                                budgetId: budget.id,
+                                categoryKey: budget.category,
+                              );
+                            },
+                          );
+                        }).toList(),
                   ),
                 ),
               ],
@@ -85,18 +110,18 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
   }
 
   List<Expense> _getExpensesByTab(String tab, List<Expense> allExpenses) {
-    if (tab == 'RECENT') {
+    if (tab == 'recent') {
       // Sort by most recent date
       final sorted = List<Expense>.from(allExpenses)
         ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       return sorted;
-    } else if (tab == 'HIGHEST') {
+    } else if (tab == 'highest') {
       // Sort by highest amount
       final sorted = List<Expense>.from(allExpenses)
         ..sort((a, b) => b.amount.compareTo(a.amount));
       return sorted;
     }
-    // 'ALL EXPENSES' tab - return all expenses
+    // 'allExpenses' tab - return all expenses
     return allExpenses;
   }
 }
@@ -105,17 +130,21 @@ class ExpenseListItem extends StatelessWidget {
   final Expense expense;
   final String category;
   final String budgetId;
+  final String categoryKey;
 
   const ExpenseListItem({
     super.key,
     required this.expense,
     required this.category,
     required this.budgetId,
-
+    required this.categoryKey
   });
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final localizedCategory = _localizedCategory(context, categoryKey);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       child: Row(
@@ -148,13 +177,13 @@ class ExpenseListItem extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            CategoryIcons.getIcon(category),
+                            CategoryIcons.getIcon(categoryKey),
                             size: 14,
                             color: Colors.grey[700],
                           ),
                           SizedBox(width: 4),
                           Text(
-                            category,
+                            localizedCategory,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[700],
@@ -183,7 +212,7 @@ class ExpenseListItem extends StatelessWidget {
           Row(
             children: [
               Tooltip(
-                message: "Notes",
+                message: loc.expensesTab_tooltipNotes,
                 child: IconButton(
                   icon: const Icon(Icons.notes_rounded, color: Colors.grey),
                   onPressed: () {
@@ -192,43 +221,47 @@ class ExpenseListItem extends StatelessWidget {
 
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("Edit Notes"),
-                        content: SizedBox(
-                          height: 300,
-                          width: 400,
-                          child: TextField(
-                            controller: notesController,
-                            maxLines: null,
-                            expands: true,
-                            textAlignVertical: TextAlignVertical.top,
-                            keyboardType: TextInputType.multiline,
-                            decoration: const InputDecoration(
-                              hintText: "Enter your notes...",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(12),
+                      builder:
+                          (context) => AlertDialog(
+                            title: Text("Edit Notes"),
+                            content: SizedBox(
+                              height: 300,
+                              width: 400,
+                              child: TextField(
+                                controller: notesController,
+                                maxLines: null,
+                                expands: true,
+                                textAlignVertical: TextAlignVertical.top,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  hintText: "Enter your notes...",
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.all(12),
+                                ),
+                              ),
                             ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(loc.common_cancel),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  String updatedText = notesController.text;
+                                  context.read<DataCubit>().updateExpense(
+                                    budgetId,
+                                    expense.copyWith(notes: updatedText),
+                                  );
+                                  Navigator.pop(context);
+                                  MessageToUser.showMessage(
+                                    context,
+                                    "Notes updated.",
+                                  );
+                                },
+                                child: Text("Save"),
+                              ),
+                            ],
                           ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text("Cancel"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              String updatedText = notesController.text;
-                              context.read<DataCubit>().updateExpense(
-                                budgetId,
-                                expense.copyWith(notes: updatedText),
-                              );
-                              Navigator.pop(context);
-                              MessageToUser.showMessage(context, "Notes updated.");
-                            },
-                            child: const Text("Save"),
-                          ),
-                        ],
-                      ),
                     );
                   },
                   padding: EdgeInsets.zero,
@@ -237,16 +270,17 @@ class ExpenseListItem extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Tooltip(
-                message: "Edit",
+                message: loc.expensesTab_tooltipEdit,
                 child: IconButton(
                   icon: Icon(Icons.edit, color: Colors.grey),
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) => EditExpenseDialog(
-                        budgetId: budgetId,
-                        expense: expense,
-                      ),
+                      builder:
+                          (context) => EditExpenseDialog(
+                            budgetId: budgetId,
+                            expense: expense,
+                          ),
                     );
                   },
                   padding: EdgeInsets.zero,
@@ -255,11 +289,14 @@ class ExpenseListItem extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Tooltip(
-                message: "Delete",
+                message: loc.expensesTab_tooltipDelete,
                 child: IconButton(
                   icon: Icon(Icons.delete, color: Colors.grey),
                   onPressed: () {
-                    context.read<DataCubit>().deleteExpense(budgetId, expense.id);
+                    context.read<DataCubit>().deleteExpense(
+                      budgetId,
+                      expense.id,
+                    );
                     MessageToUser.showMessage(context, "Expense deleted.");
                   },
                   padding: EdgeInsets.zero,
@@ -275,5 +312,29 @@ class ExpenseListItem extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return "${date.day}/${date.month}/${date.year}";
+  }
+
+  String _localizedCategory(BuildContext context, String categoryKey) {
+    final loc = AppLocalizations.of(context)!;
+    switch (categoryKey) {
+      case 'Groceries':
+        return loc.category_groceries;
+      case 'Rent':
+        return loc.category_rent;
+      case 'Utilities':
+        return loc.category_utilities;
+      case 'Entertainment':
+        return loc.category_entertainment;
+      case 'Travel':
+        return loc.category_travel;
+      case 'Dining':
+        return loc.category_dining;
+      case 'Shopping':
+        return loc.category_shopping;
+      case 'Other':
+        return loc.category_other;
+      default:
+        return categoryKey;
+    }
   }
 }

@@ -6,12 +6,14 @@ class AllUserData {
   String username;
   DateTime createdAt;
   List<Budget> budgets;
+  String locale;
 
   AllUserData({
     required this.email,
     required this.username,
     required this.createdAt,
     required this.budgets,
+    required this.locale,
   });
 
   AllUserData copyWith({
@@ -19,12 +21,14 @@ class AllUserData {
     String? username,
     DateTime? createdAt,
     List<Budget>? budgets,
+    String? locale,
   }) {
     return AllUserData(
       email: email ?? this.email,
       username: username ?? this.username,
       createdAt: createdAt ?? this.createdAt,
       budgets: budgets ?? this.budgets.map((b) => b.copyWith()).toList(),
+      locale: locale ?? this.locale,
     );
   }
 
@@ -33,11 +37,15 @@ class AllUserData {
     Map<String, dynamic> data,
     List<Budget> budgets,
   ) {
+    final settings = data['settings'] ?? {};
+    final language = settings['locale'] ?? 'en';
+
     return AllUserData(
       email: data['email'] ?? '',
       username: data['username'] ?? '',
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       budgets: budgets,
+      locale: language,
     );
   }
 }

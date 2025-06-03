@@ -7,6 +7,20 @@ import 'package:budgetbuddy/pojos/budget.dart';
 import 'package:budgetbuddy/screens/expense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+enum BudgetCategory {
+  Groceries,
+  Rent,
+  Utilities,
+  Entertainment,
+  Travel,
+  Dining,
+  Shopping,
+  Other,
+}
+
+enum BudgetPeriod { Weekly, Biweekly, Monthly }
 
 class BudgetCard extends StatelessWidget {
   final String title;
@@ -45,17 +59,18 @@ class BudgetCard extends StatelessWidget {
   }
 
   void _showDeleteConfirmation(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
             backgroundColor: Colors.white,
-            title: const Text(
-              'Confirm Deletion',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            title: Text(
+              loc.budgetCard_confirmDeletionTitle,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             content: Text(
-              'Are you sure you want to delete "$title" budget? This action can not be undone.',
+              loc.budgetCard_confirmDeletionContent(title),
               style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
             shape: RoundedRectangleBorder(
@@ -64,9 +79,9 @@ class BudgetCard extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
+                child: Text(
+                  loc.common_cancel,
+                  style: const TextStyle(
                     color: Colors.deepPurple,
                     fontWeight: FontWeight.w500,
                   ),
@@ -87,9 +102,9 @@ class BudgetCard extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                   ),
-                  child: const Text(
-                    'Delete',
-                    style: TextStyle(
+                  child: Text(
+                    loc.budgetCard_delete,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -107,8 +122,24 @@ class BudgetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final percent = (spent / limit).clamp(0.0, 1.0);
     final remaining = limit - spent;
+
+    String localizedPeriod;
+    switch (period.toLowerCase()) {
+      case 'weekly':
+        localizedPeriod = loc.period_weekly;
+        break;
+      case 'biweekly':
+        localizedPeriod = loc.period_biweekly;
+        break;
+      case 'monthly':
+        localizedPeriod = loc.period_monthly;
+        break;
+      default:
+        localizedPeriod = period;
+    }
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -154,23 +185,26 @@ class BudgetCard extends StatelessWidget {
                 },
                 itemBuilder:
                     (BuildContext context) => <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
+                      PopupMenuItem<String>(
                         value: 'edit',
                         child: Row(
                           children: [
-                            Icon(Icons.edit),
-                            SizedBox(width: 8),
-                            Text('Edit'),
+                            const Icon(Icons.edit),
+                            const SizedBox(width: 8),
+                            Text(loc.budgetCard_menuEdit),
                           ],
                         ),
                       ),
-                      const PopupMenuItem<String>(
+                      PopupMenuItem<String>(
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete, color: Colors.red),
-                            SizedBox(width: 8),
-                            Text('Delete', style: TextStyle(color: Colors.red)),
+                            const Icon(Icons.delete, color: Colors.red),
+                            const SizedBox(width: 8),
+                            Text(
+                              loc.budgetCard_menuDelete,
+                              style: const TextStyle(color: Colors.red),
+                            ),
                           ],
                         ),
                       ),
@@ -180,16 +214,18 @@ class BudgetCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           if (!isCollapsed)
-            Text(period, style: const TextStyle(color: Colors.black54)),
+            Text(
+              localizedPeriod,
+              style: const TextStyle(color: Colors.black54),
+            ),
           const SizedBox(height: 16),
 
-          // Always visible: bar + label
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
                 child: Text(
-                  "€${spent.toStringAsFixed(2)} of €${limit.toStringAsFixed(2)}",
+                  "€${spent.toStringAsFixed(2)} ${loc.budgetCard_of} €${limit.toStringAsFixed(2)}",
                   style: const TextStyle(fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -215,7 +251,7 @@ class BudgetCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "€${remaining.toStringAsFixed(2)} remaining",
+                  "€${remaining.toStringAsFixed(2)} ${loc.budgetCard_remaining}",
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
@@ -231,18 +267,18 @@ class BudgetCard extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.warning,
                           size: 16,
                           color: AppColors.dangerColor,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
-                          "Approaching limit",
-                          style: TextStyle(
+                          loc.budgetCard_warningApproachingLimit,
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: AppColors.dangerColor,
@@ -266,7 +302,7 @@ class BudgetCard extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   foregroundColor: AppColors.primaryColor,
                 ),
-                child: const Text("View Expenses"),
+                child: Text(loc.budgetCard_viewExpenses),
               ),
             ),
           ],
@@ -290,34 +326,27 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
   late TextEditingController _nameController;
   late TextEditingController _amountController;
 
-  late String _selectedCategory;
-  late String _selectedPeriod;
+  late BudgetCategory _selectedCategory;
+  late BudgetPeriod _selectedPeriod;
   late double _alertThreshold;
 
-  String? _errorMessage = " ";
-
-  final List<String> _categories = [
-    'Groceries',
-    'Rent',
-    'Utilities',
-    'Entertainment',
-    'Travel',
-    'Dining',
-    'Shopping',
-    'Other',
-  ];
-  final List<String> _periods = ['Weekly', 'Biweekly', 'Monthly'];
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    // Imp -> Initialize controllers with existing budget data
     _nameController = TextEditingController(text: widget.budget.name);
     _amountController = TextEditingController(
-      text: widget.budget.totalAmount.toString(),
+      text: widget.budget.totalAmount.toStringAsFixed(2),
     );
-    _selectedCategory = widget.budget.category;
-    _selectedPeriod = widget.budget.resetPeriod;
+    _selectedCategory = BudgetCategory.values.firstWhere(
+      (c) => c.name == widget.budget.category,
+      orElse: () => BudgetCategory.Other,
+    );
+    _selectedPeriod = BudgetPeriod.values.firstWhere(
+      (p) => p.name == widget.budget.resetPeriod,
+      orElse: () => BudgetPeriod.Monthly,
+    );
     _alertThreshold = widget.budget.alertThreshold;
   }
 
@@ -330,9 +359,10 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return StandardDialogBox(
-      title: "Edit Budget",
-      subtitle: "Update your budget details below.",
+      title: loc.editBudgetDialog_title,
+      subtitle: loc.editBudgetDialog_subtitle,
       icon: Icons.edit,
       content: SingleChildScrollView(
         child: StandardDialogBox.buildStandardForm(
@@ -343,8 +373,8 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
             children: [
               StandardDialogBox.buildStandardFormField(
                 controller: _nameController,
-                label: 'Budget Name',
-                hint: 'e.g., Groceries',
+                label: loc.editBudgetDialog_budgetNameLabel,
+                hint: loc.editBudgetDialog_budgetNameHint,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return null;
@@ -355,8 +385,8 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
               const SizedBox(height: 10),
               StandardDialogBox.buildStandardFormField(
                 controller: _amountController,
-                label: 'Amount',
-                hint: "0,00€",
+                label: loc.editBudgetDialog_amountLabel,
+                hint: loc.editBudgetDialog_amountHint,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
@@ -367,7 +397,7 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
                   }
                   final parsed = double.tryParse(text.replaceAll(',', '.'));
                   if (parsed == null || parsed <= 0) {
-                    return "Please enter a valid amount";
+                    return loc.addBudgetDialog_invalidAmount;
                   }
                   return null;
                 },
@@ -376,76 +406,122 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
               Row(
                 children: [
                   Expanded(
-                    child: StandardDialogBox.buildStandardDropdown<String>(
-                      context: context,
-                      label: 'Category',
-                      selectedValue: _selectedCategory,
-                      items: _categories,
-                      onChanged:
-                          (value) => setState(() => _selectedCategory = value!),
-                      itemLabel: (item) => item,
-                    ),
+                    child:
+                        StandardDialogBox.buildStandardDropdown<BudgetCategory>(
+                          context: context,
+                          label: loc.editBudgetDialog_categoryLabel,
+                          selectedValue: _selectedCategory,
+                          items: BudgetCategory.values,
+                          onChanged:
+                              (value) =>
+                                  setState(() => _selectedCategory = value!),
+                          itemLabel: (cat) {
+                            switch (cat) {
+                              case BudgetCategory.Groceries:
+                                return loc.category_groceries;
+                              case BudgetCategory.Rent:
+                                return loc.category_rent;
+                              case BudgetCategory.Utilities:
+                                return loc.category_utilities;
+                              case BudgetCategory.Entertainment:
+                                return loc.category_entertainment;
+                              case BudgetCategory.Travel:
+                                return loc.category_travel;
+                              case BudgetCategory.Dining:
+                                return loc.category_dining;
+                              case BudgetCategory.Shopping:
+                                return loc.category_shopping;
+                              case BudgetCategory.Other:
+                                return loc.category_other;
+                            }
+                          },
+                        ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: StandardDialogBox.buildStandardDropdown<String>(
-                      context: context,
-                      label: 'Period',
-                      selectedValue: _selectedPeriod,
-                      items: _periods,
-                      onChanged:
-                          (value) => setState(() => _selectedPeriod = value!),
-                      itemLabel: (item) => item,
-                    ),
+                    child:
+                        StandardDialogBox.buildStandardDropdown<BudgetPeriod>(
+                          context: context,
+                          label: loc.editBudgetDialog_periodLabel,
+                          selectedValue: _selectedPeriod,
+                          items: BudgetPeriod.values,
+                          onChanged:
+                              (value) =>
+                                  setState(() => _selectedPeriod = value!),
+                          itemLabel: (p) {
+                            switch (p) {
+                              case BudgetPeriod.Weekly:
+                                return loc.period_weekly;
+                              case BudgetPeriod.Biweekly:
+                                return loc.period_biweekly;
+                              case BudgetPeriod.Monthly:
+                                return loc.period_monthly;
+                            }
+                          },
+                        ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               Text(
-                'Alert Threshold: ${(100 * _alertThreshold).toInt()}%',
+                loc.addBudgetDialog_alertThreshold(
+                  (100 * _alertThreshold).toInt(),
+                ),
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  trackHeight: 8,
-                  trackShape: const RoundedRectSliderTrackShape(),
-                  activeTrackColor: AppColors.yellowColor,
-                  inactiveTrackColor: AppColors.yellowColorFaint,
-                  thumbColor: Colors.transparent,
-                  overlayColor: Colors.transparent,
-                  thumbShape: const RoundSliderThumbShape(
-                    enabledThumbRadius: 0,
-                  ),
-                  overlayShape: const RoundSliderOverlayShape(overlayRadius: 0),
-                  tickMarkShape: const RoundSliderTickMarkShape(
-                    tickMarkRadius: 0,
-                  ),
-                  showValueIndicator: ShowValueIndicator.never,
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: Column(
+                  children: [
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 8,
+                        trackShape: const RoundedRectSliderTrackShape(),
+                        activeTrackColor: AppColors.yellowColor,
+                        inactiveTrackColor: AppColors.yellowColorFaint,
+                        thumbColor: Colors.transparent,
+                        overlayColor: Colors.transparent,
+                        thumbShape: const RoundSliderThumbShape(
+                          enabledThumbRadius: 0,
+                        ),
+                        overlayShape: const RoundSliderOverlayShape(
+                          overlayRadius: 0,
+                        ),
+                        tickMarkShape: const RoundSliderTickMarkShape(
+                          tickMarkRadius: 0,
+                        ),
+                        showValueIndicator: ShowValueIndicator.never,
+                      ),
+                      child: Slider(
+                        value: _alertThreshold,
+                        onChanged:
+                            (value) => setState(() => _alertThreshold = value),
+                        min: 0.0,
+                        max: 1.0,
+                        divisions: 20,
+                      ),
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text("0%"), Text("100%")],
+                    ),
+                  ],
                 ),
-                child: Slider(
-                  value: _alertThreshold,
-                  onChanged: (value) => setState(() => _alertThreshold = value),
-                  min: 0.0,
-                  max: 1.0,
-                  divisions: 20,
-                ),
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("0%"), Text("100%")],
               ),
               const SizedBox(height: 13),
               Text(
-                "You'll receive an alert when your spending reaches this percentage of your budget",
+                loc.addBudgetDialog_alertDescription,
                 style: TextStyle(color: Colors.grey[600], fontSize: 13),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(
-                  _errorMessage!,
-                  style: const TextStyle(color: Colors.red),
+              if (_errorMessage != null) ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
@@ -458,7 +534,7 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
             ),
-            child: const Text('Cancel'),
+            child: Text(loc.common_cancel),
           ),
         ),
         Padding(
@@ -474,7 +550,7 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
               ),
               elevation: 4,
             ),
-            child: const Text('Save Changes'),
+            child: Text(loc.editBudgetDialog_saveChanges),
           ),
         ),
       ],
@@ -482,10 +558,11 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
   }
 
   void _updateBudget() {
+    final loc = AppLocalizations.of(context)!;
     final form = _formKey.currentState;
 
     setState(() {
-      _errorMessage = " ";
+      _errorMessage = null;
     });
 
     if (form == null || !form.validate()) return;
@@ -493,46 +570,46 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
     if (_nameController.text.trim().isEmpty ||
         _amountController.text.trim().isEmpty) {
       setState(() {
-        _errorMessage = "Please fill in the missing fields.";
+        _errorMessage = loc.editBudgetDialog_fillMissingFields;
       });
       return;
     }
 
-    // Parse the amount
     final rawAmountText = _amountController.text.trim().replaceAll(',', '.');
     final parsedAmount = double.tryParse(rawAmountText);
 
     if (parsedAmount == null || parsedAmount <= 0) {
       setState(() {
-        _errorMessage = "Please enter a valid amount.";
+        _errorMessage = loc.addBudgetDialog_invalidAmount;
       });
       return;
     }
 
-    // Update the budget using DataCubit with ALL the updated parameters
     final DataCubit dataCubit = context.read<DataCubit>();
     dataCubit
         .updateBudget(
           widget.budget.id,
           name: _nameController.text.trim(),
-          category: _selectedCategory,
+          category: _selectedCategory.name,
           alertThreshold: _alertThreshold,
-          resetPeriod: _selectedPeriod,
+          resetPeriod: _selectedPeriod.name,
           totalAmount: parsedAmount,
         )
         .then((success) {
           if (success) {
-            MessageToUser.showMessage(context, "Budget updated successfully!");
+            MessageToUser.showMessage(context, loc.editBudgetDialog_success);
             Navigator.of(context).pop();
           } else {
             setState(() {
-              _errorMessage = "Failed to update budget.";
+              _errorMessage = loc.editBudgetDialog_failure;
             });
           }
         })
         .catchError((error) {
           setState(() {
-            _errorMessage = "An error occurred: $error";
+            _errorMessage = loc.editBudgetDialog_errorOccurred(
+              error.toString(),
+            );
           });
         });
   }

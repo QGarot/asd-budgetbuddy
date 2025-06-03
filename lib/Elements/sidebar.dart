@@ -1,4 +1,5 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
+import 'package:budgetbuddy/AppData/layout_constants.dart';
 import 'package:budgetbuddy/AppData/ui_constants.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_event.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
@@ -6,7 +7,7 @@ import 'package:budgetbuddy/bloc/Navigation/sidebar_cubit.dart';
 import 'package:budgetbuddy/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:budgetbuddy/AppData/layout_constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
@@ -17,9 +18,12 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   bool _showUserMenu = false;
+  bool _isUserHovered = false;
+  bool _isLogoutHovered = false;
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final userData = context.watch<DataCubit>().state;
 
     return Container(
@@ -35,7 +39,7 @@ class _SidebarState extends State<Sidebar> {
                 cubit.selectPage(SidebarPage.dashboard);
               },
               child: Text(
-                "BudgetBuddy",
+                loc.sidebar_appTitle,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -45,31 +49,35 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           const SizedBox(height: 40),
-          const _SidebarItem(
+          _SidebarItem(
             icon: Icons.dashboard,
-            label: "Dashboard",
+            label: loc.sidebar_dashboard,
             page: SidebarPage.dashboard,
           ),
-          const _SidebarItem(
+          _SidebarItem(
             icon: Icons.show_chart,
-            label: "Progress",
+            label: loc.sidebar_progress,
             page: SidebarPage.progress,
+          ),
+          _SidebarItem(
+            icon: Icons.pie_chart,
+            label: loc.sidebar_statistics,
+            page: SidebarPage.statistics,
           ),
           const SizedBox(height: 12),
           Divider(color: Colors.grey[400], thickness: 1),
           const SizedBox(height: 12),
-          const _SidebarItem(
+          _SidebarItem(
             icon: Icons.settings,
-            label: "Settings",
+            label: loc.sidebar_settings,
             page: SidebarPage.settings,
           ),
-          const _SidebarItem(
+          _SidebarItem(
             icon: Icons.help_outline,
-            label: "Help",
+            label: loc.sidebar_help,
             page: SidebarPage.help,
           ),
           const Spacer(),
-
           if (userData != null)
             Padding(
               padding: const EdgeInsets.all(16),
@@ -81,93 +89,129 @@ class _SidebarState extends State<Sidebar> {
   }
 
   Widget _buildUserMenu(BuildContext context, String username, String email) {
+    final loc = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_showUserMenu)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () async {
-                  await AuthEvent.signOut(context);
-                  Navigator.of(context).pushAndRemoveUntil(
-                    PageRouteBuilder(
-                      pageBuilder:
-                          (context, animation1, animation2) =>
-                              const LoginScreen(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
+          MouseRegion(
+            onEnter: (_) => setState(() => _isLogoutHovered = true),
+            onExit: (_) => setState(() => _isLogoutHovered = false),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () async {
+                    await AuthEvent.signOut(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      PageRouteBuilder(
+                        pageBuilder:
+                            (context, animation1, animation2) =>
+                                const LoginScreen(),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  borderRadius: UIConstants.borderRadius,
+                  child: Container(
+                    width: 200,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
                     ),
-                    (route) => false,
-                  );
-                },
-                borderRadius: UIConstants.borderRadius,
-                child: Container(
-                  width: 200,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: UIConstants.borderRadius,
-                    boxShadow: UIConstants.standardShadow,
-                  ),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.logout, size: 18),
-                      SizedBox(width: 8),
-                      Text('Logout', style: TextStyle(fontSize: 14)),
-                    ],
+                    decoration: BoxDecoration(
+                      color:
+                          _isLogoutHovered
+                              ? AppColors.primaryFaint
+                              : Colors.white,
+                      borderRadius: UIConstants.borderRadius,
+                      boxShadow: UIConstants.standardShadow,
+                    ),
+                    child: Row(
+                      children: [
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Icon(
+                            Icons.logout,
+                            size: 18,
+                            color:
+                                _isLogoutHovered
+                                    ? AppColors.primaryColor
+                                    : Colors.black,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          loc.sidebar_logout,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        InkWell(
-          onTap: () => setState(() => _showUserMenu = !_showUserMenu),
-          borderRadius: UIConstants.borderRadius,
-          child: Container(
-            decoration: BoxDecoration(
-              color:
-                  _showUserMenu ? AppColors.primaryFaint : Colors.transparent,
-              borderRadius: UIConstants.borderRadius,
-            ),
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundColor: AppColors.primaryColor,
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        username,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        email,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+        MouseRegion(
+          onEnter: (_) => setState(() => _isUserHovered = true),
+          onExit: (_) => setState(() => _isUserHovered = false),
+          child: InkWell(
+            onTap: () => setState(() => _showUserMenu = !_showUserMenu),
+            borderRadius: UIConstants.borderRadius,
+            child: Container(
+              decoration: BoxDecoration(
+                color:
+                    (_showUserMenu || _isUserHovered)
+                        ? AppColors.primaryFaint
+                        : Colors.transparent,
+                borderRadius: UIConstants.borderRadius,
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 20,
+                    backgroundColor: AppColors.primaryColor,
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Icon(Icons.person, color: Colors.white),
+                    ),
                   ),
-                ),
-                Icon(
-                  _showUserMenu
-                      ? Icons.keyboard_arrow_down
-                      : Icons.keyboard_arrow_up,
-                  color: AppColors.primaryColor,
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          username,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          email,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Icon(
+                      _showUserMenu
+                          ? Icons.keyboard_arrow_down
+                          : Icons.keyboard_arrow_up,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -216,7 +260,10 @@ class _SidebarItemState extends State<_SidebarItem> {
           boxShadow: isSelected ? UIConstants.standardShadow : null,
         ),
         child: ListTile(
-          leading: Icon(widget.icon, size: 20, color: textColor),
+          leading: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Icon(widget.icon, size: 20, color: textColor),
+          ),
           title: Text(widget.label, style: TextStyle(color: textColor)),
           shape: RoundedRectangleBorder(borderRadius: UIConstants.borderRadius),
           onTap: () {

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../mockito/mock_classes.mocks.dart';
 
@@ -41,6 +43,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -49,11 +52,23 @@ void main() {
       when(mockDataCubit.stream).thenAnswer((_) => const Stream.empty());
     });
 
-    testWidgets('displays monthly progress correctly', (WidgetTester tester) async {
+    testWidgets('displays monthly progress correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MediaQuery(
           data: const MediaQueryData(size: Size(1200, 800)),
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+            ],
+            locale: const Locale('en'), // Force English locale for tests
             home: Scaffold(
               body: BlocProvider<DataCubit>.value(
                 value: mockDataCubit,
@@ -77,7 +92,9 @@ void main() {
       expect(find.textContaining('75.00 € remaining'), findsOneWidget);
     });
 
-    testWidgets('displays weekly progress correctly', (WidgetTester tester) async {
+    testWidgets('displays weekly progress correctly', (
+      WidgetTester tester,
+    ) async {
       final budget = Budget(
         name: 'Transport',
         category: 'Travel',
@@ -102,6 +119,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -113,6 +131,16 @@ void main() {
         MediaQuery(
           data: const MediaQueryData(size: Size(1200, 800)),
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+            ],
+            locale: const Locale('en'), // Force English locale for tests
             home: Scaffold(
               body: BlocProvider<DataCubit>.value(
                 value: mockDataCubit,
@@ -131,7 +159,9 @@ void main() {
       expect(find.textContaining('35.00 € remaining'), findsOneWidget);
     });
 
-    testWidgets('displays biweekly progress correctly', (WidgetTester tester) async {
+    testWidgets('displays biweekly progress correctly', (
+      WidgetTester tester,
+    ) async {
       final budget = Budget(
         name: 'Events',
         category: 'Entertainment',
@@ -156,6 +186,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -167,6 +198,16 @@ void main() {
         MediaQuery(
           data: const MediaQueryData(size: Size(1200, 800)),
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+            ],
+            locale: const Locale('en'), // Force English locale for tests
             home: Scaffold(
               body: BlocProvider<DataCubit>.value(
                 value: mockDataCubit,
@@ -185,7 +226,9 @@ void main() {
       expect(find.textContaining('140.00 € remaining'), findsOneWidget);
     });
 
-    testWidgets('displays danger styling when over budget', (WidgetTester tester) async {
+    testWidgets('displays danger styling when over budget', (
+      WidgetTester tester,
+    ) async {
       final budget = Budget(
         name: 'Travel',
         category: 'Trips',
@@ -211,6 +254,7 @@ void main() {
       final mockData = AllUserData(
         username: 'TestUser',
         email: 'test@example.com',
+        locale: 'en',
         createdAt: DateTime(2024, 1, 1),
         budgets: [budget],
       );
@@ -222,6 +266,16 @@ void main() {
         MediaQuery(
           data: const MediaQueryData(size: Size(1200, 800)),
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+            ],
+            locale: const Locale('en'), // Force English locale for tests
             home: Scaffold(
               body: BlocProvider<DataCubit>.value(
                 value: mockDataCubit,
@@ -238,13 +292,16 @@ void main() {
       expect(find.textContaining('30.00 € over budget'), findsOneWidget);
     });
 
-    testWidgets('renders correctly when there are no budgets', (WidgetTester tester) async {
+    testWidgets('renders correctly when there are no budgets', (
+      WidgetTester tester,
+    ) async {
       final mockDataCubit = MockDataCubit();
 
       when(mockDataCubit.state).thenReturn(
         AllUserData(
           username: 'TestUser',
           email: 'test@example.com',
+          locale: 'en',
           createdAt: DateTime(2024, 1, 1),
           budgets: [],
         ),
@@ -255,6 +312,16 @@ void main() {
         MediaQuery(
           data: const MediaQueryData(size: Size(1200, 800)),
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+            ],
+            locale: const Locale('en'), // Force English locale for tests
             home: Scaffold(
               body: BlocProvider<DataCubit>.value(
                 value: mockDataCubit,
