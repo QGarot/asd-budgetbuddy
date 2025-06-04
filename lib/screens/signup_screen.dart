@@ -62,9 +62,11 @@ class SignupScreenState extends State<SignupScreen> {
           subtitle: loc.signupScreen_subtitle,
           icon: Icons.person,
           maxWidth: 360,
+          actions: const [],
           content: StandardDialogBox.buildStandardForm(
             formKey: _formKey,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 StandardDialogBox.buildStandardFormField(
                   controller: _usernameController,
@@ -116,25 +118,27 @@ class SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(loc.signupScreen_hasAccount),
-                    TextButton(
-                      onPressed:
-                          () =>
-                              Navigator.pushReplacementNamed(context, '/login'),
-                      child: Text(
-                        loc.signupScreen_login,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(loc.signupScreen_hasAccount),
+                        TextButton(
+                          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                          child: Text(
+                            loc.signupScreen_login,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
           ),
-          actions: const [],
         ),
       ),
     );

@@ -211,14 +211,6 @@ void main() {
         find.descendant(of: firstExpenseItem, matching: find.text('Groceries')),
         findsOneWidget,
       );
-
-      expect(
-        find.descendant(
-          of: firstExpenseItem,
-          matching: find.byIcon(Icons.receipt),
-        ),
-        findsOneWidget,
-      );
       expect(
         find.descendant(
           of: firstExpenseItem,

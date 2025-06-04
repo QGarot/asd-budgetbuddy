@@ -215,7 +215,7 @@ class _AddBudgetDialogState extends State<AddBudgetDialog> {
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
             ),
-            child: Text(loc.addBudgetDialog_cancel),
+            child: Text(loc.common_cancel),
           ),
         ),
         Padding(
