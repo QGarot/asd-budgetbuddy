@@ -273,5 +273,23 @@
   "chartsDashboard_legendSpent": "הוצא",
 
   "spendingTrendChart_noData": "אין נתוני הוצאות זמינים",
-  "spendingTrendChart_noRecentData": "אין נתוני הוצאות אחרונים זמינים"
+  "spendingTrendChart_noRecentData": "אין נתוני הוצאות אחרונים זמינים",
+  
+  "editExpense_title": "ערוך הוצאה",
+  "editExpense_subtitle": "עדכן את פרטי ההוצאה הזו.",
+  "editExpense_amountLabel": "סכום *",
+  "editExpense_amountHint": "₪",
+  "editExpense_amountError": "אנא הזן סכום חוקי",
+  "editExpense_dateLabel": "תאריך *",
+  "editExpense_merchantLabel": "בית עסק *",
+  "editExpense_merchantHint": "לדוגמה סופרמרקט",
+  "editExpense_merchantError": "נדרש שם בית עסק",
+  "editExpense_categoryLabel": "קטגוריה",
+  "editExpense_paymentMethodLabel": "אמצעי תשלום",
+  "editExpense_notesLabel": "הערות",
+  "editExpense_notesHint": "הערות אופציונליות.",
+  "editExpense_cancel": "ביטול",
+  "editExpense_saveChanges": "שמור שינויים",
+  "editExpense_success": "ההוצאה עודכנה בהצלחה!",
+  "editExpense_error": "שגיאה בעדכון ההוצאה."
 }

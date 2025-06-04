@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:budgetbuddy/bloc/Data/data_bloc.dart';
 import 'package:budgetbuddy/Elements/edit_expense.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FakeDataCubit extends Mock implements DataCubit {}
 
@@ -17,6 +19,16 @@ void main() {
 
   Widget createTestWidget() {
     return MaterialApp(
+      localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+          ],
+          locale: const Locale('en'), // Force English locale for tests
       home: BlocProvider<DataCubit>.value(
         value: mockDataCubit,
         child: Scaffold(

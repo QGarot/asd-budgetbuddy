@@ -1,6 +1,7 @@
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BudgetProgressBar extends StatelessWidget {
   final BudgetSummary summary;
@@ -12,6 +13,7 @@ class BudgetProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     // Calculate progress, handling the case when totalBudget is 0
     final progress = summary.totalBudget > 0 
         ? (summary.totalSpent / summary.totalBudget).clamp(0.0, 1.0)
@@ -38,7 +40,7 @@ class BudgetProgressBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Budget Usage',
+                loc.statisticsScreen_budgetUtilization,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -104,14 +106,14 @@ class BudgetProgressBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '€0',
+                '€0', // Zero doesn't need translation
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
                 ),
               ),
               Text(
-                '€${summary.totalBudget.toStringAsFixed(2)}',
+                '€${summary.totalBudget.toStringAsFixed(2)}', // Currency formatting
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],

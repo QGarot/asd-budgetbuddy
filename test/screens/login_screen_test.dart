@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:budgetbuddy/bloc/Auth/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FakeAuthCubit extends Cubit<AuthUserData?> implements AuthCubit {
   FakeAuthCubit() : super(null);
@@ -37,39 +39,54 @@ void main() {
     late FakeAuthCubit fakeAuthCubit;
 
     Widget createLoginWidget() => MaterialApp(
-          routes: {
-            '/loading': (_) => const Scaffold(body: Text('Loading Screen')),
-            '/signup': (_) => BlocProvider<AuthCubit>.value(
-                  value: fakeAuthCubit,
-                  child: const SignupScreen(),
-                ),
-          },
-          home: BlocProvider<AuthCubit>.value(
-            value: fakeAuthCubit,
-            child: const LoginScreen(),
-          ),
-        );
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+      ],
+      locale: const Locale('en'), // Force English locale for tests
+      routes: {
+        '/loading': (_) => const Scaffold(body: Text('Loading Screen')),
+        '/signup':
+            (_) => BlocProvider<AuthCubit>.value(
+              value: fakeAuthCubit,
+              child: const SignupScreen(),
+            ),
+      },
+      home: BlocProvider<AuthCubit>.value(
+        value: fakeAuthCubit,
+        child: const LoginScreen(),
+      ),
+    );
 
     Widget createSignupWidget() => MaterialApp(
-          routes: {
-            '/loading': (_) => const Scaffold(body: Text('Loading Screen')),
-            '/login': (_) => BlocProvider<AuthCubit>.value(
-                  value: fakeAuthCubit,
-                  child: const LoginScreen(),
-                ),
-          },
-          home: BlocProvider<AuthCubit>.value(
-            value: fakeAuthCubit,
-            child: const SignupScreen(),
-          ),
-        );
+      routes: {
+        '/loading': (_) => const Scaffold(body: Text('Loading Screen')),
+        '/login':
+            (_) => BlocProvider<AuthCubit>.value(
+              value: fakeAuthCubit,
+              child: const LoginScreen(),
+            ),
+      },
+      home: BlocProvider<AuthCubit>.value(
+        value: fakeAuthCubit,
+        child: const SignupScreen(),
+      ),
+    );
 
     setUp(() => fakeAuthCubit = FakeAuthCubit());
 
     testWidgets('Login screen', (tester) async {
       await tester.pumpWidget(createLoginWidget());
       expect(find.text('Sign In'), findsOneWidget);
-      expect(find.text('Enter your details to access your account'), findsOneWidget);
+      expect(
+        find.text('Enter your details to access your account'),
+        findsOneWidget,
+      );
       expect(find.text('Email'), findsOneWidget);
       expect(find.text('Password'), findsOneWidget);
       expect(find.text("Sign in"), findsOneWidget);
@@ -80,7 +97,10 @@ void main() {
     testWidgets('Signup screen', (tester) async {
       await tester.pumpWidget(createSignupWidget());
       expect(find.text('Create Account'), findsOneWidget);
-      expect(find.text('Enter your details to create a new account'), findsOneWidget);
+      expect(
+        find.text('Enter your details to create a new account'),
+        findsOneWidget,
+      );
       expect(find.text('Username'), findsOneWidget);
       expect(find.text('Email'), findsOneWidget);
       expect(find.text('Password'), findsOneWidget);

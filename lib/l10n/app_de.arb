@@ -254,5 +254,23 @@
   "chartsDashboard_legendSpent": "Ausgegeben",
 
   "spendingTrendChart_noData": "Keine Ausgabendaten verfügbar",
-  "spendingTrendChart_noRecentData": "Keine kürzlichen Ausgabendaten verfügbar"
+  "spendingTrendChart_noRecentData": "Keine kürzlichen Ausgabendaten verfügbar",
+  
+  "editExpense_title": "Ausgabe bearbeiten",
+  "editExpense_subtitle": "Aktualisiere die Details dieser Ausgabe.",
+  "editExpense_amountLabel": "Betrag *",
+  "editExpense_amountHint": "€",
+  "editExpense_amountError": "Bitte gib einen gültigen Betrag ein",
+  "editExpense_dateLabel": "Datum *",
+  "editExpense_merchantLabel": "Händler *",
+  "editExpense_merchantHint": "z.B. Supermarkt",
+  "editExpense_merchantError": "Händler ist erforderlich",
+  "editExpense_categoryLabel": "Kategorie",
+  "editExpense_paymentMethodLabel": "Zahlungsmethode",
+  "editExpense_notesLabel": "Notizen",
+  "editExpense_notesHint": "Optionale Notizen.",
+  "editExpense_cancel": "Abbrechen",
+  "editExpense_saveChanges": "Änderungen speichern",
+  "editExpense_success": "Ausgabe erfolgreich aktualisiert!",
+  "editExpense_error": "Aktualisierung der Ausgabe fehlgeschlagen."
 }

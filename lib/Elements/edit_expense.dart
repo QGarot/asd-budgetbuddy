@@ -2,6 +2,7 @@ import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -25,6 +26,7 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
   late TextEditingController _merchantController;
   late TextEditingController _notesController;
   late TextEditingController _dateController;
+  late AppLocalizations loc;
 
   late String _selectedCategory;
   late String _selectedPaymentMethod;
@@ -36,6 +38,12 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
     'Groceries', 'Rent', 'Utilities', 'Entertainment', 'Travel', 'Dining', 'Shopping', 'Other'
   ];
   final List<String> _paymentMethods = ['Cash', 'Credit Card', 'Debit Card', 'Online Payment'];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loc = AppLocalizations.of(context)!;
+  }
 
   @override
   void initState() {
@@ -56,8 +64,8 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520),
         child: StandardDialogBox(
-          title: "Edit Expense",
-          subtitle: "Update the details of this expense.",
+          title: loc.editExpense_title,
+          subtitle: loc.editExpense_subtitle,
           icon: Icons.edit,
           content: _buildDialogContent(),
           actions: _buildDialogActions(),
@@ -78,14 +86,14 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
                 Expanded(
                   child: StandardDialogBox.buildStandardFormField(
                     controller: _amountController,
-                    label: 'Amount *',
-                    hint: '€',
+                    label: loc.editExpense_amountLabel,
+                    hint: loc.editExpense_amountHint,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     validator: (value) {
                       final text = value?.trim();
                       final parsed = double.tryParse(text?.replaceAll(',', '.') ?? '');
                       if (parsed == null || parsed <= 0) {
-                        return 'Please enter a valid amount';
+                        return loc.editExpense_amountError;
                       }
                       return null;
                     },
@@ -96,7 +104,7 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
                   child: TextFormField(
                     controller: _dateController,
                     decoration: InputDecoration(
-                      labelText: 'Date *',
+                      labelText: loc.editExpense_dateLabel,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),
                         onPressed: () async {
@@ -135,11 +143,11 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
             const SizedBox(height: 10),
             StandardDialogBox.buildStandardFormField(
               controller: _merchantController,
-              label: 'Merchant *',
-              hint: 'e.g. Supermarket',
+              label: loc.editExpense_merchantLabel,
+              hint: loc.editExpense_merchantHint,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Merchant is required';
+                  return loc.editExpense_merchantError;
                 }
                 return null;
               },
@@ -150,7 +158,7 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
                 Expanded(
                   child: StandardDialogBox.buildStandardDropdown(
                     context: context,
-                    label: 'Category',
+                    label: loc.editExpense_categoryLabel,
                     selectedValue: _selectedCategory,
                     items: _categories,
                     onChanged: (value) => setState(() => _selectedCategory = value!),
@@ -161,7 +169,7 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
                 Expanded(
                   child: StandardDialogBox.buildStandardDropdown(
                     context: context,
-                    label: 'Payment Method',
+                    label: loc.editExpense_paymentMethodLabel,
                     selectedValue: _selectedPaymentMethod,
                     items: _paymentMethods,
                     onChanged: (value) => setState(() => _selectedPaymentMethod = value!),
@@ -173,8 +181,8 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
             const SizedBox(height: 10),
             StandardDialogBox.buildStandardFormField(
               controller: _notesController,
-              label: 'Notes',
-              hint: 'Optional notes.',
+              label: loc.editExpense_notesLabel,
+              hint: loc.editExpense_notesHint,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 12),
@@ -193,11 +201,11 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
     return [
       TextButton(
         onPressed: () => Navigator.of(context).pop(),
-        child: const Text('Cancel'),
+        child: Text(loc.editExpense_cancel),
       ),
       ElevatedButton(
         onPressed: _updateExpense,
-        child: const Text('Save Changes'),
+        child: Text(loc.editExpense_saveChanges),
       ),
     ];
   }
@@ -223,10 +231,10 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
     if (!mounted) return;
 
     if (success) {
-      MessageToUser.showMessage(context, "Expense updated successfully!");
+      MessageToUser.showMessage(context, loc.editExpense_success);
       Navigator.of(context).pop();
     } else {
-      setState(() => _errorMessage = "Failed to update expense.");
+      setState(() => _errorMessage = loc.editExpense_error);
     }
   }
 }
