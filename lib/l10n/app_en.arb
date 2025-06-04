@@ -2,6 +2,7 @@
   "@@locale": "en",
   "appTitle": "Budget Buddy",
   "common_cancel": "Cancel",
+  "common_save": "Save",
 
   "category_groceries": "Groceries",
   "category_rent": "Rent",
@@ -93,7 +94,6 @@
   "addBudgetDialog_thresholdMin": "0%",
   "addBudgetDialog_thresholdMax": "100%",
   "addBudgetDialog_alertDescription": "You'll receive an alert when your spending reaches this percentage of your budget",
-  "addBudgetDialog_cancel": "Cancel",
   "addBudgetDialog_createBudget": "Create Budget",
   "addBudgetDialog_fillAllFields": "Please fill in all fields.",
   "addBudgetDialog_addedSuccess": "Budget added successfully!",
@@ -114,7 +114,6 @@
   "addExpenseDialog_notesLabel": "Notes",
   "addExpenseDialog_notesHint": "Optional notes.",
   "addExpenseDialog_fillAll": "Please fill in all required fields.",
-  "addExpenseDialog_cancel": "Cancel",
   "addExpenseDialog_save": "Save Expense",
   "addExpenseDialog_success": "Expense saved successfully!",
   "addExpenseDialog_failure": "Failed to save expense.",
@@ -291,5 +290,10 @@
   "chartsDashboard_legendSpent": "Spent",
 
   "spendingTrendChart_noData": "No expense data available",
-  "spendingTrendChart_noRecentData": "No recent expense data available"
+  "spendingTrendChart_noRecentData": "No recent expense data available",
+
+  "expensesTab_enterYourNotes": "Enter your notes...",
+  "expensesTab_editNotes": "Edit Notes",
+  "expensesTab_notesUpdated": "Notes updated.",
+  "expensesTab_expenseDeleted": "Expense deleted."
 }

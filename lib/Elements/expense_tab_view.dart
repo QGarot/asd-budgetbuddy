@@ -223,7 +223,7 @@ class ExpenseListItem extends StatelessWidget {
                       context: context,
                       builder:
                           (context) => AlertDialog(
-                            title: Text("Edit Notes"),
+                            title: Text(loc.expensesTab_editNotes),
                             content: SizedBox(
                               height: 300,
                               width: 400,
@@ -234,7 +234,7 @@ class ExpenseListItem extends StatelessWidget {
                                 textAlignVertical: TextAlignVertical.top,
                                 keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
-                                  hintText: "Enter your notes...",
+                                  hintText: loc.expensesTab_enterYourNotes,
                                   border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.all(12),
                                 ),
@@ -255,10 +255,10 @@ class ExpenseListItem extends StatelessWidget {
                                   Navigator.pop(context);
                                   MessageToUser.showMessage(
                                     context,
-                                    "Notes updated.",
+                                    loc.expensesTab_notesUpdated,
                                   );
                                 },
-                                child: Text("Save"),
+                                child: Text(loc.common_save),
                               ),
                             ],
                           ),
@@ -297,7 +297,7 @@ class ExpenseListItem extends StatelessWidget {
                       budgetId,
                       expense.id,
                     );
-                    MessageToUser.showMessage(context, "Expense deleted.");
+                    MessageToUser.showMessage(context, loc.expensesTab_expenseDeleted);
                   },
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),

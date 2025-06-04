@@ -3,6 +3,7 @@
 
   "appTitle": "Budget Buddy",
   "common_cancel": "Abbrechen",
+  "common_save": "Speichern",
 
   "category_groceries":    "Lebensmittel",
   "category_rent":         "Miete",
@@ -93,7 +94,6 @@
   "addBudgetDialog_thresholdMax": "100 %",
   "addBudgetDialog_alertDescription":
     "Du erhältst eine Benachrichtigung, wenn deine Ausgaben diesen Prozentsatz deines Budgets erreichen",
-  "addBudgetDialog_cancel": "Abbrechen",
   "addBudgetDialog_createBudget": "Budget erstellen",
   "addBudgetDialog_fillAllFields": "Bitte fülle alle Felder aus.",
   "addBudgetDialog_addedSuccess": "Budget erfolgreich hinzugefügt!",
@@ -114,7 +114,6 @@
   "addExpenseDialog_notesLabel": "Notizen",
   "addExpenseDialog_notesHint": "Optionale Notizen.",
   "addExpenseDialog_fillAll": "Bitte fülle alle Pflichtfelder aus.",
-  "addExpenseDialog_cancel": "Abbrechen",
   "addExpenseDialog_save": "Ausgabe speichern",
   "addExpenseDialog_success": "Ausgabe erfolgreich gespeichert!",
   "addExpenseDialog_failure": "Speichern der Ausgabe fehlgeschlagen.",
@@ -272,5 +271,10 @@
   "editExpense_cancel": "Abbrechen",
   "editExpense_saveChanges": "Änderungen speichern",
   "editExpense_success": "Ausgabe erfolgreich aktualisiert!",
-  "editExpense_error": "Aktualisierung der Ausgabe fehlgeschlagen."
+  "editExpense_error": "Aktualisierung der Ausgabe fehlgeschlagen.",
+
+  "expensesTab_enterYourNotes": "Geben Sie Ihre Notizen ein...",
+  "expensesTab_editNotes": "Notizen bearbeiten",
+  "expensesTab_notesUpdated": "Notizen aktualisiert.",
+  "expensesTab_expenseDeleted": "Ausgabe gelöscht."
 }

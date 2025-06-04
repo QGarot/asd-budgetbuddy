@@ -280,7 +280,8 @@ class _ProgressTabViewState extends State<ProgressTabView> {
 
     if (periodKey == "monthly") {
       final date = DateTime.parse("$key-01");
-      return DateFormat("MMMM yyyy", loc.localeName).format(date);
+      final dateLocale = (loc.localeName == 'sty') ? 'de' : loc.localeName;
+      return DateFormat("MMMM yyyy", dateLocale).format(date);
     }
 
     if (periodKey == "weekly") {
@@ -289,8 +290,9 @@ class _ProgressTabViewState extends State<ProgressTabView> {
       final week = int.parse(parts[1].substring(1));
       final monday = _firstDayOfWeek(year, week);
       final sunday = monday.add(const Duration(days: 6));
-      final mondayStr = DateFormat("dd.MM", loc.localeName).format(monday);
-      final sundayStr = DateFormat("dd.MM", loc.localeName).format(sunday);
+      final dateLocale = (loc.localeName == 'sty') ? 'de' : loc.localeName;
+      final mondayStr = DateFormat("dd.MM", dateLocale).format(monday);
+      final sundayStr = DateFormat("dd.MM", dateLocale).format(sunday);
       return loc.progressTab_weekRange(week.toString(), mondayStr, sundayStr);
     }
 
@@ -301,8 +303,9 @@ class _ProgressTabViewState extends State<ProgressTabView> {
       final week2 = int.parse(parts[2]);
       final monday = _firstDayOfWeek(year, week1);
       final sunday = _firstDayOfWeek(year, week2).add(const Duration(days: 6));
-      final mondayStr = DateFormat("dd.MM", loc.localeName).format(monday);
-      final sundayStr = DateFormat("dd.MM", loc.localeName).format(sunday);
+      final dateLocale = (loc.localeName == 'sty') ? 'de' : loc.localeName;
+      final mondayStr = DateFormat("dd.MM", dateLocale).format(monday);
+      final sundayStr = DateFormat("dd.MM", dateLocale).format(sunday);
       return loc.progressTab_biweeklyRange(
         week1.toString(),
         week2.toString(),

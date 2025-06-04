@@ -4,6 +4,7 @@
   "appTitle": "Budget Buddy",
 
   "common_cancel": "إلغاء",
+   "common_save": "حفظ",
 
   "category_groceries": "البقالة",
   "category_rent": "الإيجار",
@@ -94,7 +95,6 @@
   "addBudgetDialog_thresholdMax": "100 %",
   "addBudgetDialog_alertDescription":
     "ستتلقى تنبيهًا عندما تصل مصروفاتك إلى هذه النسبة من ميزانيتك",
-  "addBudgetDialog_cancel": "إلغاء",
   "addBudgetDialog_createBudget": "إنشاء ميزانية",
   "addBudgetDialog_fillAllFields": "يرجى ملء جميع الحقول.",
   "addBudgetDialog_addedSuccess": "تمت إضافة الميزانية بنجاح!",
@@ -115,7 +115,6 @@
   "addExpenseDialog_notesLabel": "ملاحظات",
   "addExpenseDialog_notesHint": "ملاحظات اختيارية.",
   "addExpenseDialog_fillAll": "يرجى ملء جميع الحقول المطلوبة.",
-  "addExpenseDialog_cancel": "إلغاء",
   "addExpenseDialog_save": "حفظ المصروف",
   "addExpenseDialog_success": "تم حفظ المصروف بنجاح!",
   "addExpenseDialog_failure": "فشل في حفظ المصروف.",
@@ -273,5 +272,10 @@
   "editExpense_cancel": "إلغاء",
   "editExpense_saveChanges": "حفظ التغييرات",
   "editExpense_success": "تم تحديث المصروف بنجاح!",
-  "editExpense_error": "فشل تحديث المصروف."
+  "editExpense_error": "فشل تحديث المصروف.",
+  
+  "expensesTab_enterYourNotes": "أدخل ملاحظاتك...",
+  "expensesTab_editNotes": "تعديل الملاحظات",
+  "expensesTab_notesUpdated": "تم تحديث الملاحظات.",
+  "expensesTab_expenseDeleted": "تم حذف المصروف."
 }

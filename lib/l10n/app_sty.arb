@@ -1,0 +1,281 @@
+{
+  "@@locale": "sty",
+
+  "appTitle": "Budget Buddy",
+  "common_cancel": "Obbrechn",
+  "common_save": "Speichan",
+
+  "category_groceries":    "Lebnsmoid",
+  "category_rent":         "Mietn'",
+  "category_utilities":    "Nebnkost’n",
+  "category_entertainment": "Gaud’n",
+  "category_travel":       "Rais’n",
+  "category_dining":       "Futtan",
+  "category_shopping":     "Einkauf’n",
+  "category_other":        "Ois ondere",
+
+  "period_weekly":         "Wöchendlich",
+  "period_biweekly":       "Alle zwoa Woch’n",
+  "period_monthly":        "Alle Monat",
+
+  "paymentMethod_cash":          "Göd",
+  "paymentMethod_creditCard":    "Kreditkoat’n",
+  "paymentMethod_debitCard":     "Bankkoat’n",
+  "paymentMethod_onlinePayment": "Online‐Zahloch’n",
+
+  "settingsScreen_languageSaved": "Sproch g’speichad",
+  "settingsScreen_saveLanguagePreference": "Sprocheinstellunga speichan",
+  "settingsScreen_title": "Eistellunga",
+  "settingsScreen_subtitle": "Verwaltd dei Budget-Eistellunga",
+  "settingsScreen_languageTitle": "Sproch",
+  "settingsScreen_languageSubtitle": "Wähl dei liabste Sproch aus",
+
+  "expensesScreen_title": "Budget-Übersiage",
+  "expensesScreen_subtitle": "Verwaltd und verfolgd deine Ausgaben fürs Budget",
+  "expensesScreen_addButton": "Ausgab’n hinzufügn",
+
+  "helpScreen_title": "Hülf",
+  "helpScreen_label": "❓ Hülfseiddl",
+
+  "homeScreen_title": "Budget-Übersiage",
+  "homeScreen_subtitle": "Verwaltd und verfolgd dei Ausgab’n",
+  "homeScreen_createBudget": "Budget erstöia",
+
+  "loginScreen_title": "Anmeldn",
+  "loginScreen_subtitle": "Gib dei Daot’n ein, um di anzumeldn",
+  "loginScreen_emailLabel": "E‐Mail",
+  "loginScreen_emailHint": "beischpiel@beischpiel.sty",
+  "loginScreen_emailRequired": "E‐Mail brauch ma",
+  "loginScreen_emailInvalid": "E‐Mail is ned gültig",
+  "loginScreen_passwordLabel": "Passwort",
+  "loginScreen_passwordRequired": "Passwort brauch ma",
+  "loginScreen_failed": "Anmeldn is fehlgschlogn!",
+  "loginScreen_buttonText": "Anmeldn",
+  "loginScreen_noAccount": "Kaa Konto hondsd no ned?",
+  "loginScreen_createAccount": "Konto erstöia",
+  "loginScreen_signInButton": "Anmeldn",
+
+  "progressScreen_header": "Furtschritt",
+  "progressScreen_title": "Budget-Furtschritt",
+  "progressScreen_subtitle": "Verfoig dei Ausgab’n über d’Zeit",
+
+  "signupScreen_title": "Konto erstöia",
+  "signupScreen_subtitle": "Gib dei Daot’n ein, um na’s Konto z’erstöia",
+  "signupScreen_usernameLabel": "Nutzernomen",
+  "signupScreen_usernameRequired": "Nutzernomen briucht ma",
+  "signupScreen_emailLabel": "E‐Mail",
+  "signupScreen_emailRequired": "E‐Mail briucht ma",
+  "signupScreen_emailInvalid": "E‐Mail is ned gültig",
+  "signupScreen_passwordLabel": "Passwort",
+  "signupScreen_passwordRequired": "Passwort briucht ma",
+  "signupScreen_passwordTooShort": "Passwort muaß minum ocht Zeichn hob’n",
+  "signupScreen_button": "Registrier’n",
+  "signupScreen_alreadyAccount": "Host scho a Konto?",
+  "signupScreen_login": "Einloggn",
+  "signupScreen_failed": "Kontoerstellung fehlgschlogn!",
+  "signupScreen_hasAccount": "Host scho a Konto?",
+
+  "addBudgetDialog_title": "Neis Budget erstöia",
+  "addBudgetDialog_subtitle": "Leg a neis Budget o, um dei Ausgab’n z’verfolg’n.",
+  "addBudgetDialog_budgetNameLabel": "Budget-Naam",
+  "addBudgetDialog_budgetNameHint": "z.B. Lebnsmoid",
+  "addBudgetDialog_amountLabel": "Betrag",
+  "addBudgetDialog_amountHint": "0,00 €",
+  "addBudgetDialog_invalidAmount": "Gib an gültign Betrag ein",
+  "addBudgetDialog_categoryLabel": "Kategorie",
+  "addBudgetDialog_periodLabel": "Zeitraum",
+  "addBudgetDialog_alertThreshold": "Warnung bei: {percent} %",
+  "@addBudgetDialog_alertThreshold": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "addBudgetDialog_thresholdMin": "0 %",
+  "addBudgetDialog_thresholdMax": "100 %",
+  "addBudgetDialog_alertDescription":
+    "Du kriagst a Benachrichtigung, wenn dei Ausgab’n des Prozentsatz vom Budget erreich’n",
+  "addBudgetDialog_cancel": "A’brech’n",
+  "addBudgetDialog_createBudget": "Budget erstöia",
+  "addBudgetDialog_fillAllFields": "Füll aa Felder aus, bittschön.",
+  "addBudgetDialog_addedSuccess": "Budget erfolgreich hinzuagfügt!",
+  "addBudgetDialog_addFailed": "Budget hinzufügn fehlgschlogn.",
+
+  "addExpenseDialog_title": "Ausgab’n hinzufügn",
+  "addExpenseDialog_subtitle": "Gib de Daot’n vo da neian Ausgab’n ein.",
+  "addExpenseDialog_amountLabel": "Betrag *",
+  "addExpenseDialog_amountHint": "€",
+  "addExpenseDialog_invalidAmount": "Gib an gültign Betrag ein",
+  "addExpenseDialog_dateLabel": "Datum *",
+  "addExpenseDialog_dateRequired": "Datum briucht ma",
+  "addExpenseDialog_merchantLabel": "Händler *",
+  "addExpenseDialog_merchantHint": "z. B. Supermarkt",
+  "addExpenseDialog_merchantRequired": "Händler briucht ma",
+  "addExpenseDialog_categoryLabel": "Kategorie",
+  "addExpenseDialog_paymentMethodLabel": "Zahloonsoart",
+  "addExpenseDialog_notesLabel": "Notiz’n",
+  "addExpenseDialog_notesHint": "Optionala Notiz’n.",
+  "addExpenseDialog_fillAll": "Füll aa Pflichtfelder aus.",
+  "addExpenseDialog_save": "Ausgab’n spiecha",
+  "addExpenseDialog_success": "Ausgab’n erfolgreich g’spiecherd!",
+  "addExpenseDialog_failure": "Speichan der Ausgab’n fehlgslogn.",
+
+  "budgetCard_menuEdit": "Bearbeit’n",
+  "budgetCard_menuDelete": "Lösch’n",
+  "budgetCard_confirmDeletionTitle": "Lösch’n bestättign",
+  "budgetCard_confirmDeletionContent":
+    "Wüst du des Budget „{title}“ wirklich lösch’n? Des konnst nimmer rückgängig mochn.",
+  "@budgetCard_confirmDeletionContent": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "budgetCard_of": "von",
+  "budgetCard_remaining": "verbleibn",
+  "budgetCard_warningApproachingLimit": "Limit ausgschöpft",
+  "budgetCard_viewExpenses": "Ausgab’n anschau’n",
+  "budgetCard_delete": "Lösch’n",
+
+  "editBudgetDialog_title": "Budget bearbeit’n",
+  "editBudgetDialog_subtitle": "Aktualisier dei Budgetdetails.",
+  "editBudgetDialog_budgetNameLabel": "Budget-Naam",
+  "editBudgetDialog_budgetNameHint": "z.B. Lebnsmoid",
+  "editBudgetDialog_amountLabel": "Betrag",
+  "editBudgetDialog_amountHint": "0,00 €",
+  "editBudgetDialog_categoryLabel": "Kategorie",
+  "editBudgetDialog_periodLabel": "Zeitraum",
+  "editBudgetDialog_fillMissingFields": "Füll de fehlendn Felder aus.",
+  "editBudgetDialog_saveChanges": "Änderunga speichan",
+  "editBudgetDialog_success": "Budget erfolgreich aktualisait!",
+  "editBudgetDialog_failure": "Aktualisao vom Budget fehlgslogn.",
+  "editBudgetDialog_errorOccurred": "Es is a Frog’ aufg’tretn: {error}",
+  "@editBudgetDialog_errorOccurred": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+
+  "budgetList_noBudgets": "Ka Budgets vorrätig",
+  "budgetList_categoryLabel": "Kategorie:",
+  "budgetList_totalLabel": "G’samt:",
+  "budgetList_spentLabel": "Ausgeb’n:",
+
+  "budgetTab_title": "Dei Budget",
+  "budgetTab_all": "Olle",
+
+  "createBudgetButton_label": "Budget erstöia",
+
+  "expensesTab_title": "Ausgab’n",
+  "expensesTab_allExpenses": "Olle Ausgab’n",
+  "expensesTab_recent": "Neiasde",
+  "expensesTab_highest": "Höchste",
+  "expensesTab_tooltipReceipt": "Beleg",
+  "expensesTab_tooltipNotes": "Notiz’n",
+  "expensesTab_tooltipEdit": "Bearbeit’n",
+  "expensesTab_tooltipDelete": "Lösch’n",
+
+  "progressTab_title": "Dei Furtschritt",
+  "progressTab_yearProgress": "{year} Budgetfurtschritt",
+  "@progressTab_yearProgress": {
+    "placeholders": {
+      "year": { "type": "String" }
+    }
+  },
+  "progressTab_of": "von",
+  "progressTab_spent": "ausgeb’n",
+  "progressTab_overBudget": "im Minus",
+  "progressTab_remaining": "verbleibn",
+  "progressTab_weekRange": "Woch {week} ({start} - {end})",
+  "@progressTab_weekRange": {
+    "placeholders": {
+      "week": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+  "progressTab_biweeklyRange": "Woch {startWeek}-{endWeek} ({start} - {end})",
+  "@progressTab_biweeklyRange": {
+    "placeholders": {
+      "startWeek": { "type": "String" },
+      "endWeek": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+
+  "sidebar_appTitle": "Budget Buddy",
+  "sidebar_dashboard": "Übersiag",
+  "sidebar_progress": "Furtschritt",
+  "sidebar_statistics": "Statistik",
+  "sidebar_settings": "Eistellunga",
+  "sidebar_help": "Hülf",
+  "sidebar_logout": "Abmeldn",
+
+  "summary_totalBudget": "G’samtbudget",
+  "summary_totalSpent": "G’samtausgab’n",
+  "summary_remaining": "Verbleibn",
+
+  "expandAll": "Olle ausklapp’n",
+  "collapseAll": "Olle z’klapp’n",
+
+  "statisticsScreen_title": "Statistik-Dashboard",
+  "statisticsScreen_subtitle": "Visualisier dei Budgetdaten",
+  "statisticsScreen_noData": "Koa Budgetdaten zum Zeigna vorrätig",
+  "statisticsScreen_summary": "Übersiag",
+  "statisticsScreen_budgetUtilization": "Budgetauslastung",
+  "statisticsScreen_remainingBudget": "Verbleibns Budget",
+  "statisticsScreen_activeBudgets": "Aktive Budgets",
+
+  "budgetBarChart_noData": "Koa Budgetdaten vorrätig",
+  "budgetBarChart_tooltipBudget": "Budget: €{amount}",
+  "@budgetBarChart_tooltipBudget": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "budgetBarChart_tooltipSpent": "Ausgeb’n: €{amount}",
+  "@budgetBarChart_tooltipSpent": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "budgetPieChart_noData": "Koa Budgetdaten vorrätig",
+  "budgetPieChart_budgets": "Budgets",
+
+  "chartsDashboard_title": "Budget‐Eingliagn",
+  "chartsDashboard_tabOverview": "Übersiag",
+  "chartsDashboard_tabBudgetVsSpending": "Budget vs Ausgab’n",
+  "chartsDashboard_tabTrends": "Trends",
+
+  "chartsDashboard_overviewTitle": "Budgetverteilung",
+  "chartsDashboard_budgetVsSpendingTitle": "Budget vs Ausgab’n",
+  "chartsDashboard_trendsTitle": "Ausgabenverlauf (Dern 30 Tog)",
+  "chartsDashboard_legendBudget": "Budget",
+  "chartsDashboard_legendSpent": "Ausgeb’n",
+
+  "spendingTrendChart_noData": "Koa Ausgabendaten vorrätig",
+  "spendingTrendChart_noRecentData": "Koa neie Ausgabendaten vorrätig",
+
+  "editExpense_title": "Ausgab’n bearbeit’n",
+  "editExpense_subtitle": "Aktualisier de Daot’n vo deara Ausgab’n.",
+  "editExpense_amountLabel": "Betrag *",
+  "editExpense_amountHint": "€",
+  "editExpense_amountError": "Gib an gültign Betrag ein",
+  "editExpense_dateLabel": "Datum *",
+  "editExpense_merchantLabel": "Händler *",
+  "editExpense_merchantHint": "z.B. Supermarkt",
+  "editExpense_merchantError": "Händler briucht ma",
+  "editExpense_categoryLabel": "Kategorie",
+  "editExpense_paymentMethodLabel": "Zahloonsoart",
+  "editExpense_notesLabel": "Notiz’n",
+  "editExpense_notesHint": "Optionala Notiz’n.",
+  "editExpense_cancel": "A’brech’n",
+  "editExpense_saveChanges": "Änderunga spiecha",
+  "editExpense_success": "Ausgab’n erfolgreich aktualisiad!",
+  "editExpense_error": "Aktualisao vo da Ausgab’n fehlgslogn.",
+
+  "expensesTab_enterYourNotes": "Gib dei Noadzn o'…",
+  "expensesTab_editNotes": "Noadzn bearbeit’n",
+  "expensesTab_notesUpdated": "Noadzn worn aktualisait.",
+  "expensesTab_expenseDeleted": "Ausgab’n worn glöscht."
+}

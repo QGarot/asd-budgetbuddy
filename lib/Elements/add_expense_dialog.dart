@@ -229,7 +229,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
   List<Widget> _buildDialogActions(AppLocalizations loc) => [
     TextButton(
       onPressed: () => Navigator.of(context).pop(),
-      child: Text(loc.addExpenseDialog_cancel),
+      child: Text(loc.common_cancel),
     ),
     ElevatedButton(
       onPressed: _saveExpense,

@@ -2,6 +2,7 @@
   "@@locale": "he",
   "appTitle": "Budget Buddy",
   "common_cancel": "ביטול",
+  "common_save": "שמור",
 
   "category_groceries": "מכולת",
   "category_rent": "שכר דירה",
@@ -93,7 +94,6 @@
   "addBudgetDialog_thresholdMin": "0%",
   "addBudgetDialog_thresholdMax": "100%",
   "addBudgetDialog_alertDescription": "תקבל התראה כשההוצאות שלך יגיעו לאחוז זה מהתקציב",
-  "addBudgetDialog_cancel": "ביטול",
   "addBudgetDialog_createBudget": "צור תקציב",
   "addBudgetDialog_fillAllFields": "אנא מלא את כל השדות.",
   "addBudgetDialog_addedSuccess": "התקציב נוסף בהצלחה!",
@@ -114,7 +114,6 @@
   "addExpenseDialog_notesLabel": "הערות",
   "addExpenseDialog_notesHint": "הערות אופציונליות.",
   "addExpenseDialog_fillAll": "אנא מלא את כל השדות הנדרשים.",
-  "addExpenseDialog_cancel": "ביטול",
   "addExpenseDialog_save": "שמור הוצאה",
   "addExpenseDialog_success": "ההוצאה נשמרה בהצלחה!",
   "addExpenseDialog_failure": "נכשל בשמירת ההוצאה.",
@@ -291,5 +290,10 @@
   "editExpense_cancel": "ביטול",
   "editExpense_saveChanges": "שמור שינויים",
   "editExpense_success": "ההוצאה עודכנה בהצלחה!",
-  "editExpense_error": "שגיאה בעדכון ההוצאה."
+  "editExpense_error": "שגיאה בעדכון ההוצאה.",
+
+  "expensesTab_enterYourNotes": "הזן את ההערות שלך...",
+  "expensesTab_editNotes": "ערוך הערות",
+  "expensesTab_notesUpdated": "ההערות עודכנו.",
+  "expensesTab_expenseDeleted": "ההוצאה נמחקה."
 }
