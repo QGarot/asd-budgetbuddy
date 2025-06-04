@@ -67,9 +67,11 @@ class LoginScreenState extends State<LoginScreen> {
           subtitle: localization.loginScreen_subtitle,
           icon: Icons.person,
           maxWidth: 360,
+          actions: const [],
           content: StandardDialogBox.buildStandardForm(
             formKey: _formKey,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 StandardDialogBox.buildStandardFormField(
                   controller: _usernameController,
@@ -114,27 +116,30 @@ class LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(localization.loginScreen_noAccount),
-                    TextButton(
-                      onPressed:
-                          () => Navigator.pushReplacementNamed(
+                Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(localization.loginScreen_noAccount),
+                        TextButton(
+                          onPressed: () => Navigator.pushReplacementNamed(
                             context,
                             '/signup',
                           ),
-                      child: Text(
-                        localization.loginScreen_createAccount,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                          child: Text(
+                            localization.loginScreen_createAccount,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
           ),
-          actions: [],
         ),
       ),
     );

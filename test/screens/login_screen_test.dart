@@ -99,6 +99,7 @@ void main() {
     }
 
     testWidgets('Login screen', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1000, 1000));
       await tester.pumpWidget(createLoginWidget());
       await tester.pumpAndSettle();
 
