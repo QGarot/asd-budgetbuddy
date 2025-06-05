@@ -98,6 +98,26 @@ void main() {
       );
     }
 
+    testWidgets('Login form validation shows errors on empty or invalid inputs', (tester) async {
+      await tester.pumpWidget(createLoginWidget());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Sign in'));
+      await tester.pump();
+
+      final context = tester.element(find.byType(LoginScreen));
+      final localization = AppLocalizations.of(context)!;
+
+      expect(find.text(localization.loginScreen_emailRequired), findsOneWidget);
+      expect(find.text(localization.loginScreen_passwordRequired), findsOneWidget);
+
+      await tester.enterText(find.byType(TextFormField).first, 'invalidemail');
+      await tester.tap(find.text('Sign in'));
+      await tester.pump();
+
+      expect(find.text(localization.loginScreen_emailInvalid), findsOneWidget);
+    });
+
     testWidgets('Login screen', (tester) async {
       await tester.binding.setSurfaceSize(const Size(1000, 1000));
       await tester.pumpWidget(createLoginWidget());
