@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, avoid_types_as_parameter_names
+
 import 'dart:async';
 
 import 'package:budgetbuddy/pojos/budget.dart';
@@ -114,6 +116,7 @@ class DataCubit extends Cubit<AllUserData?> {
     }
   }
 
+  // ignore: unused_element
   bool _addBudgetOnLocalCopy(Budget budget) {
     if (_userData == null) return false;
 
@@ -353,6 +356,7 @@ class DataCubit extends Cubit<AllUserData?> {
     }
   }
 
+  // ignore: unused_element
   bool _addExpenseOnLocalCopy(String budgetId, Expense expense) {
     if (_userData == null) return false;
 
@@ -404,6 +408,7 @@ class DataCubit extends Cubit<AllUserData?> {
     }
   }
 
+  // ignore: unused_element
   bool _updateExpenseOnLocalCopy(String budgetId, Expense updatedExpense) {
     if (_userData == null) return false;
 
@@ -464,6 +469,7 @@ class DataCubit extends Cubit<AllUserData?> {
     }
   }
 
+  // ignore: unused_element
   bool _deleteExpenseFromLocalCopy(String budgetId, String expenseId) {
     if (_userData == null) return false;
 

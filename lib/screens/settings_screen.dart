@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/AppData/layout_constants.dart';
 import 'package:budgetbuddy/AppData/app_text_styles.dart';
@@ -161,6 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: ListTile(
                       shape: RoundedRectangleBorder(borderRadius: UIConstants.borderRadius),
                       leading: CircleAvatar(
+                        // ignore: deprecated_member_use
                         backgroundColor: AppColors.primaryColor.withOpacity(0.2),
                         child: Text(lang['code']!.toUpperCase()),
                       ),
@@ -172,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             );
-          }).toList(),
+          }),
           const SizedBox(height: 20),
           Align(
             alignment: Alignment.centerLeft,

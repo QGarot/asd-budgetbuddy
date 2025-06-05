@@ -35,6 +35,7 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -117,6 +118,7 @@ class _ChartsDashboardState extends State<ChartsDashboard> {
         decoration: BoxDecoration(
           color:
               isSelected
+                  // ignore: deprecated_member_use
                   ? AppColors.primaryColor.withOpacity(0.1)
                   : Colors.transparent,
           borderRadius: BorderRadius.circular(16),

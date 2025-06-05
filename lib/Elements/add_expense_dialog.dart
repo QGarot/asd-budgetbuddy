@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';
 import 'package:budgetbuddy/bloc/Data/data_event.dart';

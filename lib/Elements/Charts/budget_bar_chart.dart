@@ -55,6 +55,7 @@ class BudgetBarChart extends StatelessWidget {
           maxY: maxValue * 1.1, // 10% margin
           barTouchData: BarTouchData(
             touchTooltipData: BarTouchTooltipData(
+              // ignore: deprecated_member_use
               tooltipBgColor: Colors.white.withOpacity(0.8),
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 final budget = displayBudgets[groupIndex];

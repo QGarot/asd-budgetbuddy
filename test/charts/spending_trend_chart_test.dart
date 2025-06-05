@@ -50,7 +50,7 @@ void main() {
       ),
     ];
 
-    Widget _wrapWithMaterialApp({required Widget child}) {
+    Widget wrapWithMaterialApp({required Widget child}) {
       return MaterialApp(
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -68,7 +68,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: SpendingTrendChart(expenses: sampleExpenses, daysToShow: 200),
         ),
       );
@@ -84,7 +84,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: SpendingTrendChart(expenses: [])),
+        wrapWithMaterialApp(child: SpendingTrendChart(expenses: [])),
       );
 
       // Allow animations to complete
@@ -110,7 +110,7 @@ void main() {
       const double customHeight = 400.0;
 
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: SpendingTrendChart(
             expenses: sampleExpenses,
             height: customHeight,
@@ -143,7 +143,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: SpendingTrendChart(
             expenses: expensesWithRecent,
             daysToShow: customDaysToShow,
@@ -191,7 +191,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: SpendingTrendChart(expenses: oldExpenses)),
+        wrapWithMaterialApp(child: SpendingTrendChart(expenses: oldExpenses)),
       );
 
       await tester.pumpAndSettle();
@@ -211,7 +211,7 @@ void main() {
 
       // Now increase daysToShow to include these old expenses
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: SpendingTrendChart(
             expenses: oldExpenses,
             daysToShow: 100, // Now 60 and 90-day-old entries fall inside
