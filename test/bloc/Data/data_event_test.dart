@@ -1,3 +1,4 @@
+import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:budgetbuddy/pojos/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -122,7 +123,7 @@ void main() {
     verify(mockDataCubit.getFirebaseUserData()).called(1);
   });
 
-  testWidgets('DataEvent.getFirebaseUserData calls DataCubit.getFirebaseUserData', (tester) async {
+  testWidgets('DataEvent.fetchFirebaseUserData calls DataCubit.fetchFirebaseUserData', (tester) async {
     final dummyUserData = AllUserData(
       email: 'test@example.com',
       username: 'TestUser',
@@ -131,7 +132,7 @@ void main() {
       locale: 'en',
     );
 
-    when(mockDataCubit.getFirebaseUserData()).thenReturn(dummyUserData);
+    when(mockDataCubit.fetchFirebaseUserData()).thenAnswer((_) async => dummyUserData);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -140,11 +141,11 @@ void main() {
           child: Builder(
             builder: (context) {
               return ElevatedButton(
-                onPressed: () {
-                  final result = DataEvent.getFirebaseUserData(context);
+                onPressed: () async {
+                  final result = await DataEvent.fetchFirebaseUserData(context);
                   expect(result, equals(dummyUserData));
                 },
-                child: const Text('Get Data'),
+                child: const Text('Fetch User Data'),
               );
             },
           ),
@@ -155,6 +156,83 @@ void main() {
     await tester.tap(find.byType(ElevatedButton));
     await tester.pump();
 
-    verify(mockDataCubit.getFirebaseUserData()).called(1);
+    verify(mockDataCubit.fetchFirebaseUserData()).called(1);
+  });
+
+  testWidgets('DataEvent.updateBudget calls DataCubit.updateBudget correctly', (tester) async {
+    when(mockDataCubit.updateBudget(any, name: anyNamed('name'), category: anyNamed('category'), alertThreshold: anyNamed('alertThreshold')))
+        .thenAnswer((_) async => true);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BlocProvider<DataCubit>.value(
+          value: mockDataCubit,
+          child: Builder(
+            builder: (context) {
+              return ElevatedButton(
+                onPressed: () async {
+                  final result = await DataEvent.updateBudget(
+                    context,
+                    'budget1',
+                    name: 'Updated',
+                    category: 'Food',
+                    alertThreshold: 200,
+                  );
+                  expect(result, isTrue);
+                },
+                child: const Text('Update Budget'),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pump();
+
+    verify(mockDataCubit.updateBudget(
+      'budget1',
+      name: 'Updated',
+      category: 'Food',
+      alertThreshold: 200,
+    )).called(1);
+  });
+
+  testWidgets('DataEvent.addExpense calls DataCubit.addExpense correctly', (tester) async {
+    final expense = Expense(
+      id: 'e1',
+      amount: 3.5,
+      createdAt: DateTime(2025, 6, 1, 14, 30),
+      category: 'Food',
+      paymentMethod: 'Credit Card',
+      merchant: 'Starbucks',
+    );
+
+    when(mockDataCubit.addExpense(any, any)).thenAnswer((_) async => true);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BlocProvider<DataCubit>.value(
+          value: mockDataCubit,
+          child: Builder(
+            builder: (context) {
+              return ElevatedButton(
+                onPressed: () async {
+                  final result = await DataEvent.addExpense(context, 'budget1', expense);
+                  expect(result, isTrue);
+                },
+                child: const Text('Add Expense'),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pump();
+
+    verify(mockDataCubit.addExpense('budget1', expense)).called(1);
   });
 }
