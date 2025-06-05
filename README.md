@@ -1,5 +1,7 @@
+*This project was originally developed and maintained using GitLab, including its CI/CD pipelines.*
+
 # CI/CD Pipeline For Budget Buddy App Documentation
-This document outlines the Continuous Integration (CI) pipeline set up using GitLab CI/CD for our project "Budget Buddy". The pipeline is designed to ensure code quality, successful builds, and test coverage by automating static analysis, build, and test processes using GitLab Runners.
+This section outlines the Continuous Integration (CI) pipeline set up using GitLab CI/CD for our project "Budget Buddy". The pipeline is designed to ensure code quality, successful builds, and test coverage by automating static analysis, build, and test processes using GitLab Runners.
 
 ---
 
@@ -98,3 +100,17 @@ Note: Local environment must match the containerized CI environment as closely a
 
 ---
 
+# Credits
+
+## 🧩 My contributions
+
+This project was developed as part of the Agile Software Development (ASD) course at TU Graz. I was originally part of a different team where I worked as the lead developer. A few days before the delivery deadline, I was reassigned by the professor to join this team to support the final implementation and delivery of the project. The repository of the previous project I worked on will be available soon.
+
+## 👥 Project team and roles
+- David - Scrum master
+- Lukas - Product owner
+- Ronald - Lead developer
+- Hesham - Devops
+- Alexander - Developer
+- Elias - Developer
+- Quentin (me) - Developer, late joiner
