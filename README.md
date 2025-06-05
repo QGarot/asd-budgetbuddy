@@ -8,7 +8,7 @@ This document outlines the Continuous Integration (CI) pipeline set up using Git
 - **GitLab CI/CD**: Automation platform for continuous integration and deployment.
 - **Flutter**: Framework for building cross-platform applications.
 - **Static Analysis**: `flutter analyze` for Dart code linting and code style enforcement.
-- **Build**: `flutter build` for compiling the application for Linux.
+- **Build**: `flutter build` for compiling the application as a Web App.
 - **Testing**: `flutter test` for running unit tests.
 
 ---
@@ -25,12 +25,12 @@ The pipeline consists of three sequential stages:
 - **Failure Handling**: Pipeline fails if analysis reports critical issues.
 
 ### 2. **Build**
-- **Purpose**: Compile the application for Linux targets.
+- **Purpose**: Compile the application for as a Web App.
 - **Key Actions**:
-  - Execute `flutter build linux --release`.
+  - Execute `flutter build web --release`.
   - Output the compiled bundle as an artifact for traceability and future stages.
 - **Artifacts**:
-  - Linux release build saved to: `build/linux/x64/release/bundle`.
+  - Web App saved to: `build/web`.
 
 ### 3. **Testing**
 - **Purpose**: Run test suite to validate application correctness.
@@ -74,7 +74,7 @@ To mimic CI behavior locally, ensure the following:
 
 3. **Build the application**:
    ```bash
-   flutter build linux --release
+   flutter build web --release
    ```
 
 4. **Run tests**:
