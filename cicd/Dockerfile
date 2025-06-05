@@ -18,4 +18,9 @@ ENV PATH="/opt/flutter/bin:$PATH"
 
 RUN git config --global --add safe.directory /opt/flutter && flutter --disable-analytics && flutter doctor
 
+# NodeJs and Firebase
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+  apt-get install -y nodejs && \
+  npm install -g firebase-tools
+
 WORKDIR /root
