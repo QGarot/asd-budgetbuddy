@@ -196,7 +196,7 @@ class ExpenseListItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "${_formatDate(expense.createdAt)} • ${expense.notes.length > 18 ? expense.notes.substring(0, 18) + '…' : expense.notes}",
+                  "${_formatDate(expense.createdAt)} • ${expense.notes.length > 18 ? '${expense.notes.substring(0, 18)}…' : expense.notes}",
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,

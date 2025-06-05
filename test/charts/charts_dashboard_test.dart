@@ -100,7 +100,7 @@ void main() {
       ),
     ];
 
-    Widget _wrapWithMaterialApp({required Widget child}) {
+    Widget wrapWithMaterialApp({required Widget child}) {
       return MaterialApp(
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -118,7 +118,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
       // Obtain the localization instance
@@ -150,7 +150,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: ChartsDashboard(budgets: [])),
+        wrapWithMaterialApp(child: ChartsDashboard(budgets: [])),
       );
 
       // Obtain localization
@@ -174,7 +174,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
       await tester.pumpAndSettle();
@@ -192,7 +192,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
       await tester.pumpAndSettle();
@@ -223,7 +223,7 @@ void main() {
       // We wrap in a vertical SingleChildScrollView so the horizontally scrolling
       // tabs can slide off‐screen:
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: ChartsDashboard(budgets: sampleBudgets),
@@ -267,7 +267,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: ChartsDashboard(budgets: sampleBudgets)),
       );
 
       // Each budget name should appear somewhere in the legend area:

@@ -10,16 +10,16 @@ void main() {
     testWidgets('displays HeaderBar and Help text', (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          localizationsDelegates: const [
+          localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
+        supportedLocales: [
           Locale('en'), // English
         ],
-        locale: const Locale('en'), // Force English locale for tests
+        locale: Locale('en'), // Force English locale for tests
           home: Scaffold(body: HelpScreen()),
         ),
       );

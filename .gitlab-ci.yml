@@ -1,20 +1,41 @@
 stages:
+  - static_analysis
   - build
   - test
+  - deploy
 
-build:
-  stage: build
-  image: registry.gitlab.tugraz.at/asd25/repositories/team_03:latest
+static_analysis:
+  stage: static_analysis
+  image: registry.gitlab.tugraz.at/asd25/repositories/team_03:1
   script:
     - flutter doctor -v
     - flutter pub get
-    - flutter build linux --release
+    - flutter analyze --no-pub
+
+build:
+  stage: build
+  image: registry.gitlab.tugraz.at/asd25/repositories/team_03:1
+  script:
+    - flutter build web --release
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/build/linux/x64/release/bundle
+      - $CI_PROJECT_DIR/build/web
 
 test:
   stage: test
-  image: registry.gitlab.tugraz.at/asd25/repositories/team_03:latest
+  image: registry.gitlab.tugraz.at/asd25/repositories/team_03:1
   script:
-    - flutter test
+    - flutter test --coverage
+    - genhtml coverage/lcov.info -o coverage/html
+  coverage: '/\s*lines\.*:\s*([\d\.]+%)/'
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/coverage/html
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.tugraz.at/asd25/repositories/team_03:1
+  script:
+    - firebase deploy --project "budgetbuddy-asd" --token "$FIREBASE_DEPLOY_TOKEN"
+  only:
+    - main

@@ -39,7 +39,7 @@ void main() {
       ),
     ];
 
-    Widget _wrapWithMaterialApp({required Widget child}) {
+    Widget wrapWithMaterialApp({required Widget child}) {
       return MaterialApp(
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -57,7 +57,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: BudgetBarChart(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: BudgetBarChart(budgets: sampleBudgets)),
       );
 
       // Since we provided non-empty budgets, a BarChart should appear.
@@ -68,7 +68,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: BudgetBarChart(budgets: [])),
+        wrapWithMaterialApp(child: BudgetBarChart(budgets: [])),
       );
 
       // Look up the localized no-data string. In your English ARB it's still:
@@ -89,7 +89,7 @@ void main() {
       const double customHeight = 400.0;
 
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: BudgetBarChart(budgets: sampleBudgets, height: customHeight),
         ),
       );
@@ -121,7 +121,7 @@ void main() {
       const int maxToShow = 3;
 
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: BudgetBarChart(
             budgets: manyBudgets,
             maxBudgetsToShow: maxToShow,
@@ -155,7 +155,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: BudgetBarChart(budgets: sampleBudgets, showOnlyTop: false),
         ),
       );

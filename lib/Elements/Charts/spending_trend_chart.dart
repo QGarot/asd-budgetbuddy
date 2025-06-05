@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/pojos/expenses.dart';
 import 'package:fl_chart/fl_chart.dart';
