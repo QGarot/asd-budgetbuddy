@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/bloc/Data/summary_helper.dart';
 import 'package:flutter/material.dart';

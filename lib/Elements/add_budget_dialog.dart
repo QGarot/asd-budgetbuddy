@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, use_build_context_synchronously
+
 import 'package:budgetbuddy/AppData/app_colors.dart';
 import 'package:budgetbuddy/Elements/message_to_user.dart';
 import 'package:budgetbuddy/Elements/standard_dialog_box.dart';

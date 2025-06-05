@@ -31,6 +31,7 @@ class LocaleCubit extends Cubit<Locale> {
   }
 
   static Locale _deviceLocale() {
+    // ignore: deprecated_member_use
     final device = WidgetsBinding.instance.window.locale;
     return ['en', 'de', 'ar', 'he'].contains(device.languageCode)
         ? Locale(device.languageCode)

@@ -40,7 +40,7 @@ void main() {
     ];
 
     // Helper to wrap a widget in MaterialApp with localization
-    Widget _wrapWithMaterialApp({required Widget child}) {
+    Widget wrapWithMaterialApp({required Widget child}) {
       return MaterialApp(
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -58,7 +58,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: BudgetPieChart(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: BudgetPieChart(budgets: sampleBudgets)),
       );
 
       // Verify that a PieChart widget is present
@@ -78,7 +78,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: BudgetPieChart(budgets: [])),
+        wrapWithMaterialApp(child: BudgetPieChart(budgets: [])),
       );
 
       // Grab the localized “no data” string
@@ -99,7 +99,7 @@ void main() {
       const double customSize = 300.0;
 
       await tester.pumpWidget(
-        _wrapWithMaterialApp(
+        wrapWithMaterialApp(
           child: BudgetPieChart(budgets: sampleBudgets, size: customSize),
         ),
       );
@@ -118,7 +118,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: BudgetPieChart(budgets: sampleBudgets)),
+        wrapWithMaterialApp(child: BudgetPieChart(budgets: sampleBudgets)),
       );
 
       // Find the PieChart widget

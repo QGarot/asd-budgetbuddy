@@ -238,6 +238,7 @@ void main() {
 
         final mockWriteBatch = MockWriteBatch();
         when(mockFirestore.batch()).thenReturn(mockWriteBatch);
+        // ignore: void_checks
         when(mockWriteBatch.delete(any)).thenReturn(mockWriteBatch);
         when(mockWriteBatch.commit()).thenAnswer((_) async => {});
 

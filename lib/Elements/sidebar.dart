@@ -104,6 +104,7 @@ class _SidebarState extends State<Sidebar> {
                 child: InkWell(
                   onTap: () async {
                     await AuthEvent.signOut(context);
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).pushAndRemoveUntil(
                       PageRouteBuilder(
                         pageBuilder:

@@ -5,7 +5,8 @@ RUN apt-get update -y && apt-get upgrade -y && \
   clang cmake git \
   ninja-build pkg-config \
   libgtk-3-dev liblzma-dev \
-  libstdc++-12-dev wget
+  libstdc++-12-dev wget \
+  lcov
 
 WORKDIR /opt
 
