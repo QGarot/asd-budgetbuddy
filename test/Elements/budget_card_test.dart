@@ -6,6 +6,52 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  testWidgets('BudgetCard edit option opens edit dialog', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('en')],
+        locale: const Locale('en'),
+        home: Scaffold(
+          body: BudgetCard(
+            title: 'Groceries',
+            spent: 120,
+            limit: 200,
+            color: Colors.green,
+            warning: false,
+            period: 'Monthly',
+            icon: Icons.shopping_cart,
+            idOfBudget: '1',
+            isCollapsed: false,
+            onToggle: () {},
+            budget: Budget(
+              name: "name",
+              category: "Groceries",
+              createdAt: DateTime(2025, 4, 10),
+              resetPeriod: "Monthly",
+              alertThreshold: 0.8,
+              totalAmount: 200,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    // Open menu
+    await tester.tap(find.byIcon(Icons.arrow_drop_down));
+    await tester.pumpAndSettle();
+
+    // Click on 'edit'
+    await tester.tap(find.text('Edit'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(EditBudgetDialog), findsOneWidget);
+  });
   testWidgets(
     'BudgetCard displays title, amount and icon and triggers onToggle',
     (tester) async {
