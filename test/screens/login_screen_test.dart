@@ -98,6 +98,28 @@ void main() {
       );
     }
 
+    testWidgets('Signup form shows validation errors when fields are invalid', (tester) async {
+      await tester.pumpWidget(createSignupWidget());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Sign up'));
+      await tester.pump();
+
+      expect(find.text('Username is required'), findsOneWidget);
+      expect(find.text('Email is required'), findsOneWidget);
+      expect(find.text('Password is required'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextFormField).at(0), 'John');
+      await tester.enterText(find.byType(TextFormField).at(1), 'invalid-email');
+      await tester.enterText(find.byType(TextFormField).at(2), '123');
+
+      await tester.tap(find.text('Sign up'));
+      await tester.pump();
+
+      expect(find.text('Email is invalid'), findsOneWidget);
+      expect(find.text('Password must be at least 8 characters'), findsOneWidget);
+    });
+
     testWidgets('Login form validation shows errors on empty or invalid inputs', (tester) async {
       await tester.pumpWidget(createLoginWidget());
       await tester.pumpAndSettle();
